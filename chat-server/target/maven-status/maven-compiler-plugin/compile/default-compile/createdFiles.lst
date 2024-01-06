@@ -1,6 +1,0 @@
-com\example\view\UserView.class
-com\example\model\User$UserStatus.class
-com\example\model\User.class
-com\example\App.class
-com\example\controller\UserController.class
-com\example\DataAccessLayer\DbConnection.class
