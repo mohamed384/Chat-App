@@ -2,8 +2,8 @@ package org.example.controller.implementations;
 
 
 
+import org.example.interfaces.User;
 import org.example.interfaces.UserAuthentication;
-import org.example.model.entities.User;
 import org.example.utils.DBConnection;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -14,9 +14,7 @@ public class UserController extends UnicastRemoteObject implements UserAuthentic
     public UserController ()  throws RemoteException{
         super();
     }
-
-    public boolean signup() {
-        User user;
+    public boolean signup(User user) {
 
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {

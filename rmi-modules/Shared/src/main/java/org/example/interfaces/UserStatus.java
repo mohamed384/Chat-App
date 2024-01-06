@@ -1,4 +1,4 @@
-package org.example.model.enums;
+package org.example.interfaces;
 
 public enum UserStatus {
     OFFLINE,
@@ -6,4 +6,3 @@ public enum UserStatus {
     BUSY,
     AWAY
 }
-
