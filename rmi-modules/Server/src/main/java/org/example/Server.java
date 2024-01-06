@@ -1,5 +1,5 @@
 package org.example;
-import org.example.controller.implementations.AuthenticationImpl;
+import org.example.controller.implementations.UserController;
 import org.example.interfaces.UserAuthentication;
 import org.example.utils.DBConnection;
 
@@ -10,7 +10,7 @@ public class Server {
 
     public static void main(String[] args) {
         try {
-            UserAuthentication stub = new AuthenticationImpl();
+            UserAuthentication stub = new UserController();
             java.rmi.registry.LocateRegistry.createRegistry(1099);
             java.rmi.Naming.rebind("rmiObject", stub);
             Connection connection = DBConnection.getConnection();
