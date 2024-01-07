@@ -1,0 +1,65 @@
+
+.parent {
+    -fx-background-color: linear-gradient(to top right, #6F4CBB,#392467);
+}
+
+.forget-text:hover {
+    -fx-text-fill:white;
+    -fx-cursor: hand;
+}
+.btn-sigUp {
+    -fx-background-color: linear-gradient(to top right, #6F4CBB,#392467);
+    -fx-text-fill:white;
+    -fx-border-color: #392467;
+    -fx-border-width: 0;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+    -fx-font-weight: 500;
+    -fx-line-spacing: 20px;
+    -fx-padding: 5px 15px;
+}
+
+
+
+.btn-sigUp:hover {
+    -fx-background-color:#361b72;
+    -fx-transition-duration: 0.3s;
+}
+.btn-sigUp:pressed {
+    -fx-background-color:#361b72;
+}
+
+.have-account-label {
+   -fx-font-size: 14px;
+   -fx-font-weight: 500;
+    -fx-line-spacing: 20px;
+    -fx-text-fill:  #6F4CBB;
+     -fx-cursor: hand;
+}
+.create-account-label {
+   -fx-font-size: 14px;
+   -fx-font-weight: 500;
+    -fx-line-spacing: 20px;
+    -fx-text-fill: #392467;
+}
+
+.custom-text-field {
+     -fx-text-fill: #392467;
+     -fx-border-width: 0 0 2px 0;
+     -fx-border-color: #F5F7F8;
+     -fx-border-radius: 4px 4px 0 0;
+     -fx-padding: 5px;
+     -fx-focus-color: transparent;
+ }
+ .custom-text-field:focused {
+    -fx-outline:none;
+    -fx-focus-color: transparent;
+    -fx-border-color:  #392467;
+ }
+
+ .user-image {
+  -fx-border-radius:50%;
+   -fx-cursor: hand;
+
+ }
