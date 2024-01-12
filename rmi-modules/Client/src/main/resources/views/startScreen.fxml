@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" styleClass="parent" stylesheets="@../styles/startScreen.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.StartScreen">
+   <children>
+      <ImageView fitHeight="461.0" fitWidth="669.0" layoutX="38.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/WhatsApp_Image_2024-01-10_at_13.59.02_79b05b7e-removebg-preview.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
