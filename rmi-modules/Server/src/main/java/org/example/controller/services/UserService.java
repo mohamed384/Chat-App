@@ -36,7 +36,7 @@ public class UserService {
     }
     public User login (String phoneNumber,  String password) {
 
-        User user = userDAO.findByPhoneNumber(phoneNumber);
+        User user = UserDAO.findByPhoneNumber(phoneNumber);
         String passwordHash = user.getPasswordHash();
         password = PasswordHashing.hashPassword(password);
         System.out.println(passwordHash);

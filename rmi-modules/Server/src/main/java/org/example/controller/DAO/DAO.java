@@ -9,10 +9,9 @@ public interface DAO<T> {
    // List<T> getAll();
 
   //  void save(T t);
-    boolean create(T t);
+     boolean create(T t);
 
    // void update(T t, String[] params);
 
-    User findByPhoneNumber(String phoneNumber);
    // void delete(T t);
 }
