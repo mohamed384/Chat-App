@@ -3,6 +3,7 @@ package org.example.controller.services;
 
 import org.example.DTOs.UserDTO;
 import org.example.controller.DAO.UserDAO;
+import org.example.models.Mapper.UserMapper;
 import org.example.models.User;
 import org.example.utils.PasswordHashing;
 
@@ -10,6 +11,7 @@ import java.sql.SQLOutput;
 
 public class UserService {
     private UserDAO userDAO;
+    private UserMapper userMapper = new UserMapper();
 
     public UserService() {
         this.userDAO = new UserDAO();
@@ -32,7 +34,8 @@ public class UserService {
             System.out.println("Passwords don't match");
             return false;
         }
-        return userDAO.create(userDto);
+        User user = userMapper.toUser(userDto);
+        return userDAO.create(user);
     }
     public User login (String phoneNumber,  String password) {
 

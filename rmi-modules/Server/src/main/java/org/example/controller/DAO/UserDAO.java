@@ -9,15 +9,15 @@ import org.example.utils.PictureConverter;
 
 import java.sql.*;
 
-public class UserDAO implements DAO<UserDTO>{
+public class UserDAO implements DAO<User>{
 
     @Override
-    public boolean create(UserDTO userDto) {
+    public boolean create(User user) {
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
                 String checkQuery = "SELECT * FROM users WHERE phone_number = ?";
                 try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
-                    checkStatement.setString(1, userDto.getPhoneNumber());
+                    checkStatement.setString(1, user.getPhoneNumber());
                     ResultSet resultSet = checkStatement.executeQuery();
                     if (resultSet.next()) {
                         System.out.println("Phone number already exists");
@@ -31,31 +31,31 @@ public class UserDAO implements DAO<UserDTO>{
                 String query = "INSERT INTO users (phone_number, display_name, email, password_hash, gender, country, date_of_birth, bio, status ,last_seen,picture) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    preparedStatement.setString(1, userDto.getPhoneNumber());
-                    preparedStatement.setString(2, userDto.getDisplayName());
+                    preparedStatement.setString(1, user.getPhoneNumber());
+                    preparedStatement.setString(2, user.getDisplayName());
 
-                    preparedStatement.setString(3, userDto.getEmail());
-                    preparedStatement.setString(4, PasswordHashing.hashPassword(userDto.getPasswordHash()));
-                    preparedStatement.setString(5, userDto.getGender());
-                    preparedStatement.setString(6, userDto.getCountry());
-                    Date sqlDateOfBirth = new Date(userDto.getDateOfBirth().getTime());
+                    preparedStatement.setString(3, user.getEmail());
+                    preparedStatement.setString(4, PasswordHashing.hashPassword(user.getPasswordHash()));
+                    preparedStatement.setString(5, user.getGender());
+                    preparedStatement.setString(6, user.getCountry());
+                    Date sqlDateOfBirth = new Date(user.getDateOfBirth().getTime());
                     preparedStatement.setDate(7, sqlDateOfBirth);
-                    if(userDto.getBio().equals("")) {
+                    if(user.getBio().equals("")) {
                         preparedStatement.setString(8, "Hi there! I'm using CypherChat");
                     }
-                    preparedStatement.setString(9, userDto.getStatus().name());
+                    preparedStatement.setString(9, user.getStatus().name());
                     preparedStatement.setTimestamp(10, new Timestamp(System.currentTimeMillis()));
 
                     byte[] picture;
-                    System.out.println(userDto.getPicture());
-                    if (userDto.getPicture().equals("") || userDto.getPicture().indexOf("javafx") != -1) {
+                    System.out.println(user.getPicture());
+                    if (user.getPicture().equals("") || user.getPicture().indexOf("javafx") != -1) {
                         picture = new PictureConverter().getDefaultPictureData();
                         System.out.println("Default picture");
                     }
                     else {
                         // Load picture data from a file
                         System.out.println("User picture");
-                        picture = new PictureConverter().getPictureData(userDto.getPicture());
+                        picture = new PictureConverter().getPictureData(user.getPicture());
                     }
                     preparedStatement.setBytes(11, picture);
 
