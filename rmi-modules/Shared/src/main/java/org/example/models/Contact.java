@@ -7,6 +7,26 @@ public class Contact implements Serializable {
     String contactPhoneNumber;
     int isBlocked;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setContactPhoneNumber(String contactPhoneNumber) {
+        this.contactPhoneNumber = contactPhoneNumber;
+    }
+
+    public int getIsBlocked() {
+        return isBlocked;
+    }
+
+    public void setIsBlocked(int isBlocked) {
+        this.isBlocked = isBlocked;
+    }
+
     public String getContactPhoneNumber() {
         return contactPhoneNumber;
     }

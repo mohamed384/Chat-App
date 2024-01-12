@@ -2,6 +2,8 @@ package org.example.controller.DAO;
 
 import org.example.models.User;
 
+import java.sql.Connection;
+
 public interface DAO<T> {
 
    // Optional<T> get(long id);
@@ -10,8 +12,9 @@ public interface DAO<T> {
 
   //  void save(T t);
      boolean create(T t);
+     default boolean save(T t, Connection connection){return false;};
 
    // void update(T t, String[] params);
 
-   // void delete(T t);
+    default void delete(T t){};
 }

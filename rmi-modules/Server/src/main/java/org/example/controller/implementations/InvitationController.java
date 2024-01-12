@@ -1,10 +1,8 @@
 package org.example.controller.implementations;
 
-import org.example.controller.DAO.UserDAO;
 import org.example.controller.services.InvitationService;
 import org.example.interfaces.UserInvitation;
-import org.example.models.User;
-
+import org.example.models.Invitations;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -16,12 +14,15 @@ public class InvitationController extends UnicastRemoteObject implements UserInv
     }
 
     @Override
-    public void sendInvitation(String phoneNumber) {
-
+    public boolean sendInvitation(Invitations invitations) {
+       return invitationService.sendInvitation(invitations);
     }
 
     @Override
     public void rejectInvitation(String phoneNumber) {
+    }
 
+    public void deleteInvitation(Invitations invitations){
+        invitationService.deleteInvitation(invitations);
     }
 }
