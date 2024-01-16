@@ -36,8 +36,9 @@ public class USerController {
    @FXML
    private Pane pnSignUp;
    @FXML
-    Button btnDontHaveAccount;
-
+   private  Label btnDontHaveAccount;
+    @FXML
+    private ToggleGroup toggleGroup;
     //Login fields
    @FXML
    PasswordField PasswordLog;
