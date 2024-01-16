@@ -59,7 +59,7 @@ public class Client extends Application {
         stage.show();
 
             // Create a pause transition of 2 seconds
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
 
             // Set the action to be executed after the pause
         pause.setOnFinished(event ->

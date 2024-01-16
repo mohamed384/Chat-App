@@ -1,9 +1,9 @@
-.dark-gray {
-    -fx-background-color: #46474A;
+.dark-purper {
+    -fx-background-color: #6639a6;
 }
 
-.light-gray {
-    -fx-background-color: #636566;
+.light-purper {
+    -fx-background-color: #9b75d0;
 }
 
 .transparent {
@@ -11,7 +11,7 @@
 }
 
 .radius{
-    -fx-background-radius: 100px;
+    -fx-background-radius: 0px 50px 0px 0px;
 }
 
 .light-background-color{
@@ -33,5 +33,5 @@
 
 .light-color{
 
-    -fx-background-color: #E5E4E2;
+    -fx-background-color: #cfbceb;
 }
