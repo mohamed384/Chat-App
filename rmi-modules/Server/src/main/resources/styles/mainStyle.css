@@ -1,0 +1,25 @@
+.soft-button {
+    -fx-background-color: #e0e0e0; /* Set the background color */
+    -fx-border-color: #a0a0a0; /* Set the border color */
+    -fx-border-width: 2; /* Set the border width */
+    -fx-border-radius: 5; /* Set the border radius for rounded corners */
+    -fx-padding: 10; /* Set padding to provide some space around the text */
+    -fx-font-size: 14; /* Set the font size */
+}
+
+.parent {
+    -fx-background-color: linear-gradient(to top right, #6639a6,#9b75d0);
+}
+
+.parent-revers {
+    -fx-background-color: linear-gradient(to top left, #6639a6,#9b75d0);
+}
+
+.transparent {
+    -fx-background-color: transparent;
+}
+
+.light-purple {
+    -fx-background-color: #9b75d0;
+}
+
