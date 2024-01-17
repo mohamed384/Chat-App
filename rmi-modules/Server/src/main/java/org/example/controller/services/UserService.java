@@ -37,7 +37,7 @@ public class UserService {
         User user = userMapper.toUser(userDto);
         return userDAO.create(user);
     }
-    public User login (String phoneNumber,  String password) {
+    public UserDTO login (String phoneNumber,  String password) {
 
         User user = UserDAO.findByPhoneNumber(phoneNumber);
         String passwordHash = user.getPasswordHash();
@@ -46,7 +46,8 @@ public class UserService {
 
         if (passwordHash.equals(password)) {
             System.out.println("Login successful");
-            return user;
+            UserDTO userDto = userMapper.toDTO(user);
+            return userDto;
         }
 
         System.out.println("Login failed");

@@ -139,13 +139,13 @@ public class USerController {
 
 
     @FXML
-    protected User login(ActionEvent actionEvent) throws IOException {
+    protected UserDTO login(ActionEvent actionEvent) throws IOException {
         String password = PasswordLog.getText();
         String phone = PhoneLog.getText();
 
 
         UserAuthentication remoteObject = UserContror();
-        User user = null;
+        UserDTO user = null;
         if (remoteObject != null) {
 
             user = remoteObject.login(phone, password);

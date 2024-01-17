@@ -8,13 +8,23 @@ import java.util.Date;
 
 public class UserMapper {
 
-    public UserMapper() {}
+    public UserMapper() {
+    }
+
     /* ====================== USER CREATION MAPPER ==================== */
     public UserDTO toDTO(User user) {
         String name = user.getDisplayName();
         String phoneNumber = user.getPhoneNumber();
-        String password = user.getPasswordHash();
-        return new UserDTO(phoneNumber, name, password);
+        String email = user.getEmail();
+        String gender = user.getGender();
+        String country = user.getCountry();
+        Date dateOfBirth = user.getDateOfBirth();
+        String bio = user.getBio();
+        UserStatus status = user.getStatus();
+        String picture = user.getPicture();
+
+        return new UserDTO(phoneNumber, name, email, gender, country,
+                dateOfBirth, bio, status, picture);
     }
 
     public User toUser(UserDTO userDTO) {

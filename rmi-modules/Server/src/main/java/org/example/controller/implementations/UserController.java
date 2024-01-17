@@ -24,8 +24,7 @@ public class UserController extends UnicastRemoteObject implements UserAuthentic
     }
 
     @Override
-    public User login(String phoneNumber , String password ) throws RemoteException {
-
+    public UserDTO login(String phoneNumber , String password ) throws RemoteException {
         return userService.login( phoneNumber ,  password);
 
     }

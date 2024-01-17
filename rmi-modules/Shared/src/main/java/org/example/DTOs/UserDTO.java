@@ -36,15 +36,24 @@ import java.util.Date;
         }
 
 
+
         public UserDTO(String phoneNumber, String displayName, String email, String passwordHash,
                        String confirmPassword, String gender, String country, Date dateOfBirth,
+                       String bio, UserStatus status, String picture) {
+
+            this(phoneNumber, displayName, email, gender, country,
+                    dateOfBirth, bio, status, picture);
+            this.passwordHash = passwordHash;
+            this.confirmPassword = confirmPassword;
+        }
+
+        public UserDTO(String phoneNumber, String displayName, String email,
+                       String gender, String country, Date dateOfBirth,
                        String bio, UserStatus status, String picture) {
 
             this.phoneNumber = phoneNumber;
             this.displayName = displayName;
             this.email = email;
-            this.passwordHash = passwordHash;
-            this.confirmPassword = confirmPassword;
             this.gender = gender;
             this.country = country;
             this.dateOfBirth = dateOfBirth;
@@ -54,6 +63,7 @@ import java.util.Date;
 
         }
 
+
         public UserDTO(String phoneNumber, String displayName, String email, String passwordHash, String confirmPassword,
                        String gender, String country, Date dateOfBirth, String bio, UserStatus status, Timestamp lastSeen,
                        String picture) {
@@ -62,6 +72,9 @@ import java.util.Date;
                     dateOfBirth, bio, status, picture);
             this.lastSeen = lastSeen;
         }
+
+
+
 
         @Override
         public String toString() {
