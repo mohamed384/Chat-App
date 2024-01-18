@@ -2,9 +2,8 @@
 
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,15 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.control.TextArea?>
 <AnchorPane prefHeight="464.0" prefWidth="797.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.MainController">
    <children>
-      <HBox prefHeight="600.0" prefWidth="234.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox prefHeight="464.0" prefWidth="805.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" prefHeight="408.0" prefWidth="51.0" styleClass="dark-purper" stylesheets="@../styles/MainPage.css">
                <children>
@@ -101,269 +94,28 @@
                   </Button>
                </children>
             </VBox>
-            <VBox HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER" prefHeight="464.0" prefWidth="746.0" styleClass="light-purper" stylesheets="@../styles/MainPage.css" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="search-bar" stylesheets="@../styles/MainPage.css">
-                     <children>
-                        <ImageView fitHeight="30.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/icons8-search-50.png" />
-                           </image>
-                        </ImageView>
-                        <TextField promptText="Search.." style="-fx-background-color: transparent; -fx-text-fill: white;" />
-                     </children>
-                  </HBox>
-                  <ScrollPane prefHeight="599.0" prefWidth="166.0" styleClass="light-purper" stylesheets="@../styles/MainPage.css" VBox.vgrow="ALWAYS">
-                     <content>
-                        <Pane minHeight="700.0" minWidth="134.0" prefHeight="1000.0" prefWidth="163.0" styleClass="light-purper" stylesheets="@../styles/MainPage.css">
-                           <children>
-                              <HBox alignment="CENTER" layoutX="3.0" layoutY="14.0" prefHeight="69.0" prefWidth="157.0">
-                                 <children>
-                                    <ImageView fitHeight="42.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/user.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label prefWidth="78.0" text="Nada" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                                 <padding>
-                                    <Insets top="20.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="3.0" layoutY="83.0" prefHeight="70.0" prefWidth="157.0">
-                                 <children>
-                                    <ImageView fitHeight="42.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/user.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label prefWidth="78.0" text="Omar" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                                 <padding>
-                                    <Insets top="20.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="3.0" layoutY="153.0" prefHeight="70.0" prefWidth="157.0">
-                                 <children>
-                                    <ImageView fitHeight="42.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/user.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label prefWidth="78.0" text="Mohamed" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                                 <padding>
-                                    <Insets top="20.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="3.0" layoutY="223.0" prefHeight="70.0" prefWidth="157.0">
-                                 <children>
-                                    <ImageView fitHeight="42.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/user.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label prefWidth="78.0" text="Eslam" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                                 <padding>
-                                    <Insets top="20.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="3.0" layoutY="293.0" prefHeight="70.0" prefWidth="157.0">
-                                 <children>
-                                    <ImageView fitHeight="42.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/user.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label prefWidth="78.0" text="Eslam" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                                 <padding>
-                                    <Insets top="20.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="3.0" layoutY="363.0" prefHeight="70.0" prefWidth="157.0">
-                                 <children>
-                                    <ImageView fitHeight="42.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/user.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label prefWidth="78.0" text="Eslam" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                                 <padding>
-                                    <Insets top="20.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER" layoutX="3.0" layoutY="433.0" prefHeight="70.0" prefWidth="157.0">
-                                 <children>
-                                    <ImageView fitHeight="42.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/user.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <Label prefWidth="78.0" text="Eslam" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                 </children>
-                                 <padding>
-                                    <Insets top="20.0" />
-                                 </padding>
-                              </HBox>
-                           </children></Pane>
-                     </content>
-                  </ScrollPane>
+                  <Label prefHeight="35.0" prefWidth="130.0" text="Welcome">
+                     <font>
+                        <Font name="Bodoni MT Black Italic" size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Pane prefHeight="4.0" prefWidth="744.0" styleClass="parent" stylesheets="@../styles/register.css" />
+                  <ImageView fitHeight="316.0" fitWidth="491.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="30.0" top="40.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../images/WhatsApp_Image_2024-01-10_at_13.59.02_79b05b7e-removebg-preview.png" />
+                     </image>
+                  </ImageView>
                </children>
             </VBox>
          </children>
       </HBox>
-      <VBox layoutX="234.4" layoutY="-0.8" prefHeight="599.0" prefWidth="566.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="234.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
-         <children>
-            <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="51.0" prefWidth="596.0" styleClass="light-color" stylesheets="@../styles/MainPage.css" VBox.vgrow="ALWAYS">
-               <children>
-                  <ImageView fitHeight="37.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets bottom="15.0" left="15.0" top="15.0" />
-                     </HBox.margin>
-                     <image>
-                        <Image url="@../images/user.png" />
-                     </image>
-                  </ImageView>
-                  <Label text="Eslam Ahmed" textFill="#282323" wrapText="true" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets bottom="15.0" left="15.0" top="15.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Pane prefHeight="54.0" prefWidth="342.0" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Pane>
-                  <Button mnemonicParsing="false" styleClass="light-color" stylesheets="@../styles/MainPage.css" HBox.hgrow="ALWAYS">
-                     <graphic>
-                        <ImageView fitHeight="29.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/robot.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets right="15.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <ScrollPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="462.0" prefWidth="596.0" styleClass="transparent" stylesheets="@../styles/MainPage.css" VBox.vgrow="ALWAYS">
-               <content>
-                  <GridPane prefHeight="450.0" prefWidth="588.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                  </GridPane>
-               </content>
-            </ScrollPane>
-            <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="596.0" styleClass="light-purper" stylesheets="@../styles/MainPage.css" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button mnemonicParsing="false" styleClass="light-purper" stylesheets="@../styles/MainPage.css" HBox.hgrow="ALWAYS">
-                     <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/happy.png" />
-                           </image>
-                           <viewport>
-                              <Rectangle2D />
-                           </viewport>
-                        </ImageView>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="41.0" styleClass="light-purper" stylesheets="@../styles/MainPage.css" HBox.hgrow="ALWAYS">
-                     <graphic>
-                        <ImageView fitHeight="36.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/attach-file.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <TextArea prefHeight="71.0" prefWidth="467.0" HBox.hgrow="ALWAYS">
-                     <padding>
-                        <Insets left="5.0" right="5.0" />
-                     </padding>
-                  </TextArea>
-                  <Button mnemonicParsing="false" styleClass="light-purper" stylesheets="@../styles/MainPage.css" HBox.hgrow="ALWAYS">
-                     <graphic>
-                        <ImageView fitHeight="22.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/send-message.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets left="7.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
    </children>
 </AnchorPane>
