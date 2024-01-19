@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.example.DTOs.UserDTO;
 
+import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 import org.example.models.User;
 import org.example.interfaces.UserAuthentication;
@@ -20,6 +21,7 @@ import org.example.interfaces.UserAuthentication;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -200,9 +202,8 @@ public class USerController {
                 //return;
             }
 
-
             UserDTO user1 = new UserDTO(phone, name, email, password, passwordcon, "Male", country,
-                    birthDate,  "", UserStatus.Online,image);
+                    birthDate,  "", UserStatus.Online, UserMode.Available, image);
 
 
            user1.toString();
@@ -221,15 +222,15 @@ public class USerController {
         }
 
 
-         phoneSignUp.setText("");
-         NameSignUp.setText("");
-         EmailignUp.setText("");
-        CountrySignUp.setText("");
-        birthDateSignUp.setUserData(new Date());
-        passwordSignUp.setText("");
-        passwordconSignUp.setText("");
-        // genderSingnUp.setText("");
-        imageSignUp.setAccessibleText("");
+//         phoneSignUp.setText("");
+//         NameSignUp.setText("");
+//         EmailignUp.setText("");
+//        CountrySignUp.setText("");
+//        birthDateSignUp.setUserData(new Date());
+//        passwordSignUp.setText("");
+//        passwordconSignUp.setText("");
+//        // genderSingnUp.setText("");
+//        imageSignUp.setAccessibleText("");
        // return user;
     }
 

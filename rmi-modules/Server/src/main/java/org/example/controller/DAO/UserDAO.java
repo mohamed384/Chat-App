@@ -16,13 +16,25 @@ public class UserDAO implements DAO<User>{
     public boolean create(User user) {
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
-                   User loggedUser = findByPhoneNumber(user.getPhoneNumber());
-                    if (loggedUser!=null) {
+                String checkQuery = "SELECT * FROM users WHERE phonenumber = ?";
+                try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
+                    checkStatement.setString(1, user.getPhoneNumber());
+                    ResultSet resultSet = checkStatement.executeQuery();
+                    if (resultSet.next()) {
                         System.out.println("Phone number already exists");
                         return false;
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
 
-
+                if (user == null) {
+                    System.out.println("User is null");
+                } else if (user.getUserStatus() == null) {
+                    System.out.println("User status is null");
+                } else {
+                    System.out.println(user.getUserStatus().name());
+                }
 
                 String sql = "INSERT INTO Users (PhoneNumber, DisplayName, EmailAddress, " +
                         "ProfilePicture, PasswordHash, Gender, Country, DateOfBirth, Bio, " +
@@ -54,7 +66,9 @@ public class UserDAO implements DAO<User>{
                     if(user.getBio().isEmpty()) {
                         preparedStatement.setString(9, "Hi there! I'm using CypherChat");
                     }
+                    System.out.println(user.getEmailAddress());
                     preparedStatement.setString(10, user.getUserMode());
+                    System.out.println(user.getUserStatus().name());
                     preparedStatement.setString(11, user.getUserStatus().name());
                     preparedStatement.setTimestamp(12, new Timestamp(System.currentTimeMillis()));
 

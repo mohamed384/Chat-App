@@ -11,7 +11,7 @@ import java.sql.SQLOutput;
 
 public class UserService {
     private UserDAO userDAO;
-    private UserMapper userMapper = new UserMapper();
+    private UserMapper userMapper = UserMapper.INSTANCE;
 
     public UserService() {
         this.userDAO = new UserDAO();
@@ -34,7 +34,9 @@ public class UserService {
             System.out.println("Passwords don't match");
             return false;
         }
-        User user = userMapper.toUser(userDto);
+        //User user = userMapper.toUser(userDto);
+
+        User user = UserMapper.INSTANCE.toUser(userDto);
         return userDAO.create(user);
     }
     public UserDTO login (String phoneNumber,  String password) {
