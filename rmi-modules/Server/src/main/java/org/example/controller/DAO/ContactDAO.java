@@ -32,4 +32,6 @@ public class ContactDAO implements DAO<Contact> {
         }
         return false;
     }
+
+
 }

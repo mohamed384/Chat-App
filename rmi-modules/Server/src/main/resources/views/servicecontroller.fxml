@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_CENTER" prefHeight="506.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllerFx.ServiceController">
+   <children>
+      <Label prefHeight="70.0" prefWidth="325.0" text="Server Control" VBox.vgrow="ALWAYS">
+         <font>
+            <Font size="48.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="30.0" />
+         </VBox.margin>
+      </Label>
+      <Pane prefHeight="5.0" prefWidth="600.0" styleClass="parent" stylesheets="@../styles/mainStyle.css">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Pane>
+      <HBox alignment="CENTER_LEFT" prefHeight="376.0" prefWidth="560.0" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox alignment="CENTER" prefHeight="413.0" prefWidth="560.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button fx:id="onOffButton" mnemonicParsing="false" styleClass="transparent" stylesheets="@../styles/mainStyle.css">
+                     <graphic>
+                        <ImageView fx:id="toggleImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/green.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label fx:id="serverStatus" text="Server On" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets top="30.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>
