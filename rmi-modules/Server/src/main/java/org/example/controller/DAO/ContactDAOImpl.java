@@ -1,5 +1,6 @@
 package org.example.controller.DAO;
 
+import org.example.controller.DAO.interfaces.ContactDAO;
 import org.example.models.Contact;
 import org.example.utils.DBConnection;
 
@@ -7,7 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class ContactDAO implements DAO<Contact> {
+public class ContactDAOImpl implements ContactDAO {
     @Override
     public boolean create(Contact contact) {
         boolean isSaved=false;
@@ -19,19 +20,18 @@ public class ContactDAO implements DAO<Contact> {
 
     @Override
     public boolean save(Contact contact, Connection connection) {
-        String query = "INSERT INTO contacts (user_id, contact_phone_number, is_blocked) VALUES (?, ?, ?)";
+        String query = "INSERT INTO UserContacts (FriendID, UserID) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, contact.getUserID());
-            pstmt.setInt(2, contact.getFriendID());
-            pstmt.setBoolean(3, false);
+            pstmt.setInt(1, contact.getFriendID());
+            pstmt.setInt(2, contact.getUserID());
             pstmt.executeUpdate();
-            System.out.println(contact.getUserID() + " "+contact.getFriendID() );
-            System.out.println("the contact is added");
+            System.out.println("The contact is added: UserID " + contact.getUserID() + ", FriendID " + contact.getFriendID());
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-
+    //public void search
 }
