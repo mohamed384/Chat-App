@@ -1,38 +1,40 @@
 package org.example.models;
 
-import java.io.Serializable;
+import java.sql.Timestamp;
 
-public class Contact implements Serializable {
-    String userId;
-    String contactPhoneNumber;
-    int isBlocked;
+public class Contact {
+    private int friendID;
+    private int userID;
+    private Timestamp creationDate;
 
-    public String getUserId() {
-        return userId;
+
+    public Contact(int friendID, int userID, Timestamp creationDate) {
+        this.friendID = friendID;
+        this.userID = userID;
+        this.creationDate = creationDate;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public int getFriendID() {
+        return friendID;
     }
 
-    public void setContactPhoneNumber(String contactPhoneNumber) {
-        this.contactPhoneNumber = contactPhoneNumber;
+    public void setFriendID(int friendID) {
+        this.friendID = friendID;
     }
 
-    public int getIsBlocked() {
-        return isBlocked;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setIsBlocked(int isBlocked) {
-        this.isBlocked = isBlocked;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
-    public String getContactPhoneNumber() {
-        return contactPhoneNumber;
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 
-    public Contact(String userId, String contactPhoneNumber) {
-        this.userId = userId;
-        this.contactPhoneNumber = contactPhoneNumber;
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
     }
 }

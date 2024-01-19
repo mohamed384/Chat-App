@@ -21,11 +21,11 @@ public class ContactDAO implements DAO<Contact> {
     public boolean save(Contact contact, Connection connection) {
         String query = "INSERT INTO contacts (user_id, contact_phone_number, is_blocked) VALUES (?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, contact.getUserId());
-            pstmt.setString(2, contact.getContactPhoneNumber());
+            pstmt.setInt(1, contact.getUserID());
+            pstmt.setInt(2, contact.getFriendID());
             pstmt.setBoolean(3, false);
             pstmt.executeUpdate();
-            System.out.println(contact.getUserId() + " "+contact.getContactPhoneNumber() );
+            System.out.println(contact.getUserID() + " "+contact.getFriendID() );
             System.out.println("the contact is added");
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,20 +1,10 @@
 package org.example;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import org.example.controller.implementations.UserController;
 import org.example.interfaces.UserAuthentication;
-import org.example.models.Contact;
-import org.example.models.InvitaionStatus;
-import org.example.models.Invitations;
 import org.example.utils.DBConnection;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Timestamp;
 
 
 public class Server  {

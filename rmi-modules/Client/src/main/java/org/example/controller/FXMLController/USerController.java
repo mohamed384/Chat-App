@@ -12,14 +12,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.example.DTOs.UserDTO;
+
+import org.example.models.Enums.UserStatus;
 import org.example.models.User;
 import org.example.interfaces.UserAuthentication;
-import org.example.models.UserStatus;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
@@ -184,7 +182,7 @@ public class USerController {
 
         String passwordcon =  passwordconSignUp.getText().toString();
 
-        String gender =  genderSingnUp.getText().toString();
+        //String gender =  genderSingnUp.getText().toString();
 
         String image =  imageSignUp.getImage().toString();
 
@@ -203,8 +201,8 @@ public class USerController {
             }
 
 
-            UserDTO user1 = new UserDTO(phone, name, email, password, passwordcon, gender, country,
-                    birthDate,  "",UserStatus.AVAILABLE,image);
+            UserDTO user1 = new UserDTO(phone, name, email, password, passwordcon, "Male", country,
+                    birthDate,  "", UserStatus.Online,image);
 
 
            user1.toString();
@@ -230,7 +228,7 @@ public class USerController {
         birthDateSignUp.setUserData(new Date());
         passwordSignUp.setText("");
         passwordconSignUp.setText("");
-         genderSingnUp.setText("");
+        // genderSingnUp.setText("");
         imageSignUp.setAccessibleText("");
        // return user;
     }

@@ -1,8 +1,9 @@
 package org.example.controller.DAO;
 
-import org.example.DTOs.UserDTO;
+
+import org.example.models.Enums.UserMode;
+import org.example.models.Enums.UserStatus;
 import org.example.models.User;
-import org.example.models.UserStatus;
 import org.example.utils.DBConnection;
 import org.example.utils.PasswordHashing;
 import org.example.utils.PictureConverter;
@@ -15,40 +16,26 @@ public class UserDAO implements DAO<User>{
     public boolean create(User user) {
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
-                String checkQuery = "SELECT * FROM users WHERE phone_number = ?";
-                try (PreparedStatement checkStatement = connection.prepareStatement(checkQuery)) {
-                    checkStatement.setString(1, user.getPhoneNumber());
-                    ResultSet resultSet = checkStatement.executeQuery();
-                    if (resultSet.next()) {
+                   User loggedUser = findByPhoneNumber(user.getPhoneNumber());
+                    if (loggedUser!=null) {
                         System.out.println("Phone number already exists");
                         return false;
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
 
 
-                String query = "INSERT INTO users (phone_number, display_name, email, password_hash, gender, country, date_of_birth, bio, status ,last_seen,picture) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+                String sql = "INSERT INTO Users (PhoneNumber, DisplayName, EmailAddress, " +
+                        "ProfilePicture, PasswordHash, Gender, Country, DateOfBirth, Bio, " +
+                        "UserMode, UserStatus, LastLogin) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                     preparedStatement.setString(1, user.getPhoneNumber());
                     preparedStatement.setString(2, user.getDisplayName());
 
-                    preparedStatement.setString(3, user.getEmail());
-                    preparedStatement.setString(4, PasswordHashing.hashPassword(user.getPasswordHash()));
-                    preparedStatement.setString(5, user.getGender());
-                    preparedStatement.setString(6, user.getCountry());
-                    Date sqlDateOfBirth = new Date(user.getDateOfBirth().getTime());
-                    preparedStatement.setDate(7, sqlDateOfBirth);
-                    if(user.getBio().equals("")) {
-                        preparedStatement.setString(8, "Hi there! I'm using CypherChat");
-                    }
-                    preparedStatement.setString(9, user.getStatus().name());
-                    preparedStatement.setTimestamp(10, new Timestamp(System.currentTimeMillis()));
-
+                    preparedStatement.setString(3, user.getEmailAddress());
                     byte[] picture;
                     System.out.println(user.getPicture());
-                    if (user.getPicture().equals("") || user.getPicture().indexOf("javafx") != -1) {
+                    if (user.getPicture().isEmpty() || user.getPicture().contains("javafx")) {
                         picture = new PictureConverter().getDefaultPictureData();
                         System.out.println("Default picture");
                     }
@@ -57,8 +44,19 @@ public class UserDAO implements DAO<User>{
                         System.out.println("User picture");
                         picture = new PictureConverter().getPictureData(user.getPicture());
                     }
-                    preparedStatement.setBytes(11, picture);
+                    preparedStatement.setBytes(4, picture);
+                    preparedStatement.setString(5, PasswordHashing.hashPassword(user.getPasswordHash()));
 
+                    preparedStatement.setString(6, user.getGender());
+                    preparedStatement.setString(7, user.getCountry());
+                    Date sqlDateOfBirth = new Date(user.getDateOfBirth().getTime());
+                    preparedStatement.setDate(8, sqlDateOfBirth);
+                    if(user.getBio().isEmpty()) {
+                        preparedStatement.setString(9, "Hi there! I'm using CypherChat");
+                    }
+                    preparedStatement.setString(10, user.getUserMode());
+                    preparedStatement.setString(11, user.getUserStatus().name());
+                    preparedStatement.setTimestamp(12, new Timestamp(System.currentTimeMillis()));
 
                     preparedStatement.executeUpdate();
                 } catch (SQLException e) {
@@ -82,35 +80,31 @@ public class UserDAO implements DAO<User>{
 
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
-                String query = "SELECT * FROM users WHERE phone_number = ?";
+                String query = "SELECT * FROM users WHERE phonenumber = ?";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                     preparedStatement.setString(1, phoneNumber);
 
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         if (resultSet.next()) {
-                            UserStatus status;
-                            /*
-                            try {
-                                status = ;
-                            } catch (IllegalArgumentException e) {
-                                status = UserStatus.AVAILABLE; // Replace DEFAULT with your default UserStatus
-                            }*/
-                            // Assuming you have a User constructor that takes all fields as parameters
+
                             user = new User(
-                                    resultSet.getString(1),
                                     resultSet.getString(2),
                                     resultSet.getString(3),
                                     resultSet.getString(4),
                                     resultSet.getString(5),
                                     resultSet.getString(6),
-                                    resultSet.getDate(7),
+                                    resultSet.getString(7),
                                     resultSet.getString(8),
-                                    UserStatus.valueOf(resultSet.getString(9).toUpperCase()),
-                                    resultSet.getString(10)
+                                    resultSet.getDate(9),
+                                    resultSet.getString(10),
+                                    UserStatus.valueOf(resultSet.getString(12)),
+                                   resultSet.getString(11),
+                                    resultSet.getTimestamp(13)
+
                             );
 
                         } else {
-                            System.out.println("notfound user");
+                            System.out.println("not found user");
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();

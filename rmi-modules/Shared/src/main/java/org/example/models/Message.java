@@ -1,53 +1,47 @@
 package org.example.models;
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class Message {
-    private int id;
-    private String senderPhoneNumber;
-    private String recipientPhoneNumber;
+    private int messageID;
+    private int senderID;
+    private int receiverID;
     private String messageContent;
-    private Timestamp timestamp;
-    private Boolean isRead;
-    private String groupId;
+    private Timestamp messageTimestamp;
+    private boolean isAttachment;
 
-    // Constructors
-
-    public Message() {
-    }
-
-    public Message(String senderPhoneNumber, String recipientPhoneNumber, String messageContent, Timestamp timestamp, Boolean isRead, String groupId) {
-        this.senderPhoneNumber = senderPhoneNumber;
-        this.recipientPhoneNumber = recipientPhoneNumber;
+    public Message(int messageID, int senderID, int receiverID, String messageContent, Timestamp messageTimestamp, boolean isAttachment) {
+        this.messageID = messageID;
+        this.senderID = senderID;
+        this.receiverID = receiverID;
         this.messageContent = messageContent;
-        this.timestamp = timestamp;
-        this.isRead = isRead;
-        this.groupId = groupId;
+        this.messageTimestamp = messageTimestamp;
+        this.isAttachment = isAttachment;
     }
 
-    // Getter and Setter methods
-
-    public int getId() {
-        return id;
+    public int getMessageID() {
+        return messageID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setMessageID(int messageID) {
+        this.messageID = messageID;
     }
 
-    public String getSenderPhoneNumber() {
-        return senderPhoneNumber;
+    public int getSenderID() {
+        return senderID;
     }
 
-    public void setSenderPhoneNumber(String senderPhoneNumber) {
-        this.senderPhoneNumber = senderPhoneNumber;
+    public void setSenderID(int senderID) {
+        this.senderID = senderID;
     }
 
-    public String getRecipientPhoneNumber() {
-        return recipientPhoneNumber;
+    public int getReceiverID() {
+        return receiverID;
     }
 
-    public void setRecipientPhoneNumber(String recipientPhoneNumber) {
-        this.recipientPhoneNumber = recipientPhoneNumber;
+    public void setReceiverID(int receiverID) {
+        this.receiverID = receiverID;
     }
 
     public String getMessageContent() {
@@ -58,43 +52,19 @@ public class Message {
         this.messageContent = messageContent;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Timestamp getMessageTimestamp() {
+        return messageTimestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setMessageTimestamp(Timestamp messageTimestamp) {
+        this.messageTimestamp = messageTimestamp;
     }
 
-    public Boolean getIsRead() {
-        return isRead;
+    public boolean isAttachment() {
+        return isAttachment;
     }
 
-    public void setIsRead(Boolean isRead) {
-        this.isRead = isRead;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
-    // toString method
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", senderPhoneNumber='" + senderPhoneNumber + '\'' +
-                ", recipientPhoneNumber='" + recipientPhoneNumber + '\'' +
-                ", messageContent='" + messageContent + '\'' +
-                ", timestamp=" + timestamp +
-                ", isRead=" + isRead +
-                ", groupId='" + groupId + '\'' +
-                '}';
+    public void setAttachment(boolean attachment) {
+        isAttachment = attachment;
     }
 }
-
