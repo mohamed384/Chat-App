@@ -66,7 +66,7 @@ public class Client extends Application {
             {
                 try {
                     // Load the FXML file for the main screen
-                    Parent mainScreenParent = FXMLLoader.load(getClass().getResource("/views/Register.fxml"));
+                    Parent mainScreenParent = FXMLLoader.load(getClass().getResource("/views/AuthConatiner.fxml"));
                     Scene mainScreenScene = new Scene(mainScreenParent);
 
                     // Set the scene of the primary stage to the main screen
@@ -96,7 +96,7 @@ public class Client extends Application {
 
 
         /*
-        FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/views/Register.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/views/AuthConatiner.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
 

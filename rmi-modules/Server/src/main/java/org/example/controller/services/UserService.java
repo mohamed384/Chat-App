@@ -37,18 +37,18 @@ public class UserService {
         User user = userMapper.toUser(userDto);
         return userDAO.create(user);
     }
-    public UserDTO login (String phoneNumber,  String password) {
+    public UserDTO login (String phoneNumber,String password) {
 
         User user = UserDAO.findByPhoneNumber(phoneNumber);
-        String passwordHash = user.getPasswordHash();
-        password = PasswordHashing.hashPassword(password);
-        System.out.println(passwordHash);
-
-        if (passwordHash.equals(password)) {
-            System.out.println("Login successful");
-            UserDTO userDto = userMapper.toDTO(user);
-            return userDto;
+        if(user !=null){
+            String passwordHash = user.getPasswordHash();
+            password = PasswordHashing.hashPassword(password);
+            if (passwordHash.equals(password)) {
+                System.out.println("Login successful");
+                return userMapper.toDTO(user);
+            }
         }
+
 
         System.out.println("Login failed");
         return null;

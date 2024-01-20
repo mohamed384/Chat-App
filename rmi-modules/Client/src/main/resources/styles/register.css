@@ -53,12 +53,25 @@
      -fx-padding: 5px;
      -fx-focus-color: transparent;
  }
+ .not-valid-text-field{
+    -fx-text-fill:#9b75d0;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: red;
+    -fx-border-radius: 4px 4px 0 0;
+    -fx-padding: 5px;
+    -fx-focus-color: transparent;
+ }
  .custom-text-field:focused {
     -fx-outline:none;
     -fx-focus-color: transparent;
     -fx-border-color: #9b75d0;
  }
-
+.not-valid-label {
+    -fx-text-fill:red;
+}
+.valid-label {
+    -fx-text-fill:white;
+}
  .user-image {
   -fx-border-radius:50%;
    -fx-cursor: hand;
