@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.example.DTOs.UserDTO;
 
+import org.example.interfaces.UserContact;
+import org.example.models.Contact;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 import org.example.models.User;
@@ -206,6 +208,18 @@ public class USerController {
                     birthDate,  "", UserStatus.Online, UserMode.Available, image);
 
 
+
+            UserContact remoteObject2 = null;
+            try {
+                remoteObject2 = (UserContact) Naming.lookup("rmi://localhost:1099/rmiObject");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            UserDTO x = remoteObject.getUser("12345678912");
+
+
+
            user1.toString();
 
             System.out.println(user1.toString());
@@ -213,8 +227,6 @@ public class USerController {
 
 
             remoteObject.signup(user1);
-
-
 
 
         } else {

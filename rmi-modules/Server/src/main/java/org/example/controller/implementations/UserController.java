@@ -20,6 +20,7 @@ public class UserController extends UnicastRemoteObject implements UserAuthentic
 
     @Override
     public Boolean signup(UserDTO userDto) throws RemoteException {
+        System.out.println(userDto.toString());
         return userService.signup(userDto);
     }
 
@@ -27,6 +28,11 @@ public class UserController extends UnicastRemoteObject implements UserAuthentic
     public UserDTO login(String phoneNumber , String password ) throws RemoteException {
         return userService.login( phoneNumber ,  password);
 
+    }
+
+    @Override
+    public UserDTO getUser(String phoneNumber) throws RemoteException {
+        return userService.getUser(phoneNumber);
     }
 
 

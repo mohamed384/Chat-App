@@ -5,13 +5,13 @@ import java.sql.Timestamp;
 public class Contact {
     private int friendID;
     private int userID;
-    private Timestamp creationDate;
+    //private Timestamp creationDate;
 
 
-    public Contact(int friendID, int userID, Timestamp creationDate) {
+    public Contact(int friendID, int userID) {
         this.friendID = friendID;
         this.userID = userID;
-        this.creationDate = creationDate;
+        //this.creationDate = creationDate;
     }
 
     public int getFriendID() {
@@ -30,11 +30,11 @@ public class Contact {
         this.userID = userID;
     }
 
-    public Timestamp getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Timestamp creationDate) {
-        this.creationDate = creationDate;
-    }
+//    public Timestamp getCreationDate() {
+//        return creationDate;
+//    }
+//
+//    public void setCreationDate(Timestamp creationDate) {
+//        this.creationDate = creationDate;
+//    }
 }

@@ -175,6 +175,11 @@ public class UserDAOImpl implements DAO<User>{
     }
 
     public boolean validData(User user) {
+        if (user == null) {
+            System.out.println("User is null");
+            return false;
+        }
+
         if (!UserDataValidator.isValidPhoneNumber(user.getPhoneNumber())) {
             System.out.println("Invalid phone number");
             return false;

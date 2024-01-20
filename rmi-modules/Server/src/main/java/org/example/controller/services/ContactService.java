@@ -11,6 +11,5 @@ public class ContactService {
     }
     public boolean addContact(Contact contact) {
        return contactDAO.create(contact);
-
     }
 }

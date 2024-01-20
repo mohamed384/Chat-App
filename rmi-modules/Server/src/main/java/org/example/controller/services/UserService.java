@@ -28,7 +28,9 @@ public class UserService {
         } else if (userDto.getPasswordHash() == null) {
             System.out.println(" password is null");
             return false;
-
+        }else if (userDto.getEmailAddress() == null) {
+            System.out.println("Email is null");
+            return false;
         }
 
         if (!userDto.getPasswordHash().equals(userDto.getConfirmPassword())) {
@@ -36,7 +38,7 @@ public class UserService {
             return false;
         }
         //User user = userMapper.toUser(userDto);
-
+        System.out.println(userDto.toString());
         User user = UserMapper.INSTANCE.toUser(userDto);
         return userDAO.create(user);
     }
@@ -75,6 +77,16 @@ public class UserService {
         return userDAO.update(user);
     }
 
-
+    public UserDTO getUser(String phoneNumber) {
+        UserDTO userDto = new UserDTO();
+        User user = UserMapper.INSTANCE.toUser(userDto);
+        user = userDAO.findByPhoneNumber(user.getPhoneNumber());
+        if (user == null) {
+            System.out.println("From getUser: User not found");
+            return null;
+        }
+        userDto = UserMapper.INSTANCE.toDTO(user);
+        return userDto;
+    }
 
 }

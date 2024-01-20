@@ -1,13 +1,13 @@
 package org.example.models;
 import java.sql.Timestamp;
 public class UserNotification {
-    private int notificationID;
-    private int receiverID;
-    private int senderID;
+    private String notificationID;
+    private String receiverID;
+    private String senderID;
     private String notificationMessage;
     private Timestamp notificationSentDate;
 
-    public UserNotification(int receiverID, int senderID, String notificationMessage, Timestamp notificationSentDate) {
+    public UserNotification(String receiverID, String senderID, String notificationMessage, Timestamp notificationSentDate) {
         this.receiverID = receiverID;
         this.senderID = senderID;
         this.notificationMessage = notificationMessage;
@@ -15,30 +15,30 @@ public class UserNotification {
     }
 
     public UserNotification() {
-
+        this.notificationMessage = "Hi, I want to connect with you!";
     }
 
-    public int getNotificationID() {
+    public String getNotificationID() {
         return notificationID;
     }
 
-    public void setNotificationID(int notificationID) {
+    public void setNotificationID(String notificationID) {
         this.notificationID = notificationID;
     }
 
-    public int getReceiverID() {
+    public String getReceiverID() {
         return receiverID;
     }
 
-    public void setReceiverID(int receiverID) {
+    public void setReceiverID(String receiverID) {
         this.receiverID = receiverID;
     }
 
-    public int getSenderID() {
+    public String getSenderID() {
         return senderID;
     }
 
-    public void setSenderID(int senderID) {
+    public void setSenderID(String senderID) {
         this.senderID = senderID;
     }
 

@@ -6,6 +6,7 @@ import org.example.utils.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ContactDAOImpl implements ContactDAO {
@@ -33,5 +34,30 @@ public class ContactDAOImpl implements ContactDAO {
         return false;
     }
 
-    //public void search
+    public boolean acceptInvite(int userID, int friendID) {
+        if (isPendingRequest(friendID, userID)) {
+            Contact newContact1 = new Contact(friendID, userID);
+            Contact newContact2 = new Contact(userID, friendID);
+            return create(newContact1) && create(newContact2);
+        } else {
+            return false;
+        }
+    }
+
+    private boolean isPendingRequest(int userID, int friendID) {
+        String query = "SELECT * FROM UserContacts WHERE UserID = ? AND FriendID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, userID);
+            pstmt.setInt(2, friendID);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+//    private boolean isPendingRequest(int userID, int friendID) {
+//        return isFriend(userID, friendID);
+//    }
 }
