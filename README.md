@@ -1,2 +1,2 @@
 # Chat-App
-Chat App using javaFx, Rmi, mysql
+Chat App using javaFX, RMI, MySQL
