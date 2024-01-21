@@ -1,28 +1,39 @@
 package org.example.controller.DAO;
 
 
-import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 import org.example.models.User;
 import org.example.utils.DBConnection;
 import org.example.utils.PasswordHashing;
 import org.example.utils.PictureConverter;
+import org.example.utils.UserDataValidator;
 
 import java.sql.*;
 
-public class UserDAO implements DAO<User>{
+public class UserDAOImpl implements DAO<User>{
 
     @Override
     public boolean create(User user) {
+        if (!validData(user)) {
+            return false;
+        }
+
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
-                   User loggedUser = findByPhoneNumber(user.getPhoneNumber());
-                    if (loggedUser!=null) {
+
+                    User existingUser = findByPhoneNumber(user.getPhoneNumber());
+                    if (existingUser != null) {
                         System.out.println("Phone number already exists");
                         return false;
                     }
 
-
+                if (user == null) {
+                    System.out.println("User is null");
+                } else if (user.getUserStatus() == null) {
+                    System.out.println("User status is null");
+                } else {
+                    System.out.println(user.getUserStatus().name());
+                }
 
                 String sql = "INSERT INTO Users (PhoneNumber, DisplayName, EmailAddress, " +
                         "ProfilePicture, PasswordHash, Gender, Country, DateOfBirth, Bio, " +
@@ -54,7 +65,9 @@ public class UserDAO implements DAO<User>{
                     if(user.getBio().isEmpty()) {
                         preparedStatement.setString(9, "Hi there! I'm using CypherChat");
                     }
+                    System.out.println(user.getEmailAddress());
                     preparedStatement.setString(10, user.getUserMode());
+                    System.out.println(user.getUserStatus().name());
                     preparedStatement.setString(11, user.getUserStatus().name());
                     preparedStatement.setTimestamp(12, new Timestamp(System.currentTimeMillis()));
 
@@ -73,6 +86,45 @@ public class UserDAO implements DAO<User>{
         return true;
 
 
+    }
+
+    @Override
+    public boolean update(User user) {
+        try (Connection connection = DBConnection.getConnection()) {
+            if (connection != null) {
+
+                String sql = "UPDATE Users SET DisplayName = ?, EmailAddress = ?, " +
+                        "ProfilePicture = ?, PasswordHash = ?, Gender = ?, Country = ?, DateOfBirth = ?, Bio = ?, " +
+                        "UserMode = ?, UserStatus = ?, LastLogin = ? WHERE PhoneNumber = ?";
+
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    preparedStatement.setString(1, user.getDisplayName());
+                    preparedStatement.setString(2, user.getEmailAddress());
+                    preparedStatement.setBytes(3, new PictureConverter().getPictureData(user.getPicture()));
+                    preparedStatement.setString(4, PasswordHashing.hashPassword(user.getPasswordHash()));
+                    preparedStatement.setString(5, user.getGender());
+                    preparedStatement.setString(6, user.getCountry());
+                    Date sqlDateOfBirth = new Date(user.getDateOfBirth().getTime());
+                    preparedStatement.setDate(7, sqlDateOfBirth);
+                    preparedStatement.setString(8, user.getBio());
+                    preparedStatement.setString(9, user.getUserMode());
+                    preparedStatement.setString(10, user.getUserStatus().name());
+                    preparedStatement.setTimestamp(11, user.getLastLogin());
+                    preparedStatement.setString(12, user.getPhoneNumber());
+
+                    preparedStatement.executeUpdate();
+                    return true;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Failed to connect to the database.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public static User findByPhoneNumber(String phoneNumber) {
@@ -122,6 +174,29 @@ public class UserDAO implements DAO<User>{
         return user;
     }
 
+    public boolean validData(User user) {
+        if (user == null) {
+            System.out.println("User is null");
+            return false;
+        }
 
+        if (!UserDataValidator.isValidPhoneNumber(user.getPhoneNumber())) {
+            System.out.println("Invalid phone number");
+            return false;
+        }
+        if (!UserDataValidator.isValidName(user.getDisplayName())) {
+            System.out.println("Invalid name");
+            return false;
+        }
+        if (!UserDataValidator.isValidEmail(user.getEmailAddress())) {
+            System.out.println("Invalid email");
+            return false;
+        }
+        if (!UserDataValidator.isValidPassword(user.getPasswordHash())) {
+            System.out.println("Invalid password");
+            return false;
+        }
+        return true;
+    }
 
 }

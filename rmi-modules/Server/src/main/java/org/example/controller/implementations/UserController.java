@@ -30,6 +30,11 @@ public class UserController extends UnicastRemoteObject implements UserAuthentic
 
     }
 
+    @Override
+    public UserDTO getUser(String phoneNumber) throws RemoteException {
+        return userService.getUser(phoneNumber);
+    }
+
 
 }
 

@@ -141,4 +141,23 @@ public class User {
     public void setLastLogin(Timestamp lastLogin) {
         this.lastLogin = lastLogin;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userID=" + userID +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", picture='" + picture + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", gender='" + gender + '\'' +
+                ", country='" + country + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", bio='" + bio + '\'' +
+                ", userStatus=" + userStatus +
+                ", userMode='" + userMode + '\'' +
+                ", lastLogin=" + lastLogin +
+                '}';
+    }
 }
