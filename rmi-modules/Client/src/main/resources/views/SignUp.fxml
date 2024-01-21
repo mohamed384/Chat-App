@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="600.0" minWidth="600.0" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.USerSignUpController">
+   <center>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+      <children>
+          <Button layoutX="195.0" layoutY="483.0" mnemonicParsing="false" onAction="#signup" styleClass="btn-sigUp" text="SIGN UP" textFill="WHITE" />
+          <Label alignment="CENTER" layoutX="80.0" prefHeight="100.0" prefWidth="336.0" text="Create Account" textAlignment="CENTER" textFill="#392467">
+              <font>
+                  <Font name="Roboto" size="48.0" />
+              </font>
+              <padding>
+                  <Insets top="30.0" />
+              </padding>
+          </Label>
+          <TextField fx:id="phoneSignUp" layoutX="14.0" layoutY="214.0" prefHeight="40.0" prefWidth="224.0" promptText="Phone Number" styleClass="custom-text-field" />
+          <TextField fx:id="NameSignUp" layoutX="262.0" layoutY="214.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="224.0" promptText="Name" styleClass="custom-text-field" />
+          <TextField fx:id="EmailLogin" layoutX="14.0" layoutY="285.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="224.0" promptText="Email" styleClass="custom-text-field" />
+          <ImageView fx:id="imageSignUp" fitHeight="100.0" fitWidth="100.0" layoutX="198.0" layoutY="100.0" onMouseClicked="#loadImage" pickOnBounds="true" smooth="false" styleClass="user-image">
+              <image>
+                  <Image url="@../images/user.png" />
+              </image>
+          </ImageView>
+          <DatePicker fx:id="birthDateSignUp" layoutX="15.0" layoutY="418.0" prefHeight="26.0" prefWidth="224.0" promptText="Date of Birth">
+              <cursor>
+                  <Cursor fx:constant="HAND" />
+              </cursor>
+          </DatePicker>
+          <PasswordField fx:id="passwordConfirmationSignUp" layoutX="262.0" layoutY="352.0" prefHeight="40.0" prefWidth="224.0" promptText="Confirm Password" styleClass="custom-text-field" />
+          <PasswordField fx:id="passwordSignUp" layoutX="14.0" layoutY="352.0" prefHeight="40.0" prefWidth="224.0" promptText="Password" styleClass="custom-text-field" />
+          <Label layoutX="190.0" layoutY="531.0" onMouseClicked="#onBtnAlreadyRegisterClicked" styleClass="have-account-label" text="Already registered?" textFill="#6f4cbb">
+              <font>
+                  <Font size="14.0" />
+              </font>
+          </Label>
+            <Label fx:id="phoneValidLabel" layoutX="17.0" layoutY="254.0" prefHeight="17.0" prefWidth="209.0" styleClass="valid-label" text="phone number must be 11 numbers" />
+            <Label fx:id="nameValidLabel" layoutX="262.0" layoutY="254.0" prefHeight="17.0" prefWidth="223.0" styleClass="valid-label" text="please enter a valid name" />
+            <Label fx:id="emailValidLabel" layoutX="15.0" layoutY="325.0" prefHeight="17.0" prefWidth="223.0" styleClass="valid-label" text="please enter a valid email" />
+            <Label fx:id="counrtyValidLabel" layoutX="262.0" layoutY="325.0" prefHeight="17.0" prefWidth="223.0" styleClass="valid-label" text="please choose country " />
+            <Label fx:id="passwordValidLabel" layoutX="17.0" layoutY="394.0" prefHeight="17.0" prefWidth="209.0" styleClass="valid-label" text="password must be at least 8 characters" />
+            <Label fx:id="confirmPassValidLabel" layoutX="262.0" layoutY="394.0" prefHeight="17.0" prefWidth="209.0" styleClass="valid-label" text="password must be matched" />
+            <RadioButton fx:id="maleRadio" layoutX="262.0" layoutY="423.0" mnemonicParsing="false" text="Male" />
+            <RadioButton fx:id="femaleRadio" layoutX="343.0" layoutY="423.0" mnemonicParsing="false" text="Female" />
+            <ComboBox fx:id="countryComboBox" layoutX="262.0" layoutY="285.0" prefHeight="40.0" prefWidth="224.0" promptText="Country" />
+      </children>
+      </Pane>
+   </center>
+</BorderPane>

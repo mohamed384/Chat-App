@@ -61,6 +61,11 @@
     -fx-padding: 5px;
     -fx-focus-color: transparent;
  }
+ .not-valid-text-field:focused{
+     -fx-outline:none;
+     -fx-focus-color: transparent;
+     -fx-border-color: red;
+  }
  .custom-text-field:focused {
     -fx-outline:none;
     -fx-focus-color: transparent;
@@ -73,7 +78,6 @@
     -fx-text-fill:white;
 }
  .user-image {
-  -fx-border-radius:50%;
+   -fx-border-radius: 10px;
    -fx-cursor: hand;
-
  }
