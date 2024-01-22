@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserDataValidator;
 import org.example.interfaces.UserAuthentication;
+import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ import java.util.Date;
 public class UserAuthService {
     protected void switchToMessagePage(ActionEvent actionEvent) {
 
-        Parent newScreenParent = null;
+        Parent newScreenParent;
         try {
             newScreenParent = FXMLLoader.load(getClass().getResource("/views/MessagePage.fxml"));
         } catch (IOException e) {
@@ -190,31 +191,12 @@ public class UserAuthService {
 
         UserAuthentication remoteObject = UserAuthRemoteObject();
         if (remoteObject != null) {
-
-//            if (!password.equals(passwordcon)) {
-//                Alert alert = new Alert(Alert.AlertType.ERROR);
-//                alert.setTitle("Error");
-//                alert.setHeaderText("Password not match");
-//                alert.setContentText("Please enter the same password");
-//                alert.showAndWait();
-//            }
-
-
             UserDTO user1 = new UserDTO(phone, name, email, password, passwordConfirm, selectedGender, selectedCountry,
-                    birthDate, "", UserStatus.Online, image);
+                    birthDate, "", UserStatus.Online, UserMode.Available, image);
             remoteObject.signup(user1);
             System.out.println("iam here");
         } else {
             System.out.println("Cant connect to server");
         }
-
-
-//        phoneSignUp.setText("");
-//        NameSignUp.setText("");
-//        EmailLogin.setText("");
-//        CountrySignUp.setText("");
-//        passwordSignUp.setText("");
-//        passwordConfirmationSignUp.setText("");
-//        imageSignUp.setAccessibleText("");
     }
 }
