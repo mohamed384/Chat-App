@@ -204,6 +204,7 @@
                               <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="153.0" styleClass="light-purper" text="Button" />
                            </children>
                         </HBox>
+
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <ImageView fitHeight="44.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">

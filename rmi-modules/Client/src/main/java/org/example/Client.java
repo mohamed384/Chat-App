@@ -7,13 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.models.User;
-import org.example.interfaces.UserAuthentication;
 
 
 import java.io.IOException;
-import java.rmi.Naming;
-import java.util.Date;
 
 
 public class Client extends Application {
@@ -52,7 +48,7 @@ public class Client extends Application {
 
 
             // Load the FXML file for the start screen
-        Parent startScreenParent = FXMLLoader.load(getClass().getResource("/views/startScreen.fxml"));
+        Parent startScreenParent = FXMLLoader.load(getClass().getResource("/views/StartScreen.fxml"));
         Scene startScreenScene = new Scene(startScreenParent);
 
         stage.setScene(startScreenScene);
@@ -66,7 +62,7 @@ public class Client extends Application {
             {
                 try {
                     // Load the FXML file for the main screen
-                    Parent mainScreenParent = FXMLLoader.load(getClass().getResource("/views/Register.fxml"));
+                    Parent mainScreenParent = FXMLLoader.load(getClass().getResource("/views/AuthConatiner.fxml"));
                     Scene mainScreenScene = new Scene(mainScreenParent);
 
                     // Set the scene of the primary stage to the main screen
@@ -96,7 +92,7 @@ public class Client extends Application {
 
 
         /*
-        FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/views/Register.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/views/AuthConatiner.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
 

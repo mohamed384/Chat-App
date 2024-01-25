@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane  fx:id="bordePane" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.UserLoginController">
+   <center>
+      <Pane  maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="phoneNumber" layoutX="87.0" layoutY="137.0" minHeight="40.0" minWidth="224.0" promptText="Phone Number" styleClass="custom-text-field" />
+            <PasswordField fx:id="password" layoutX="87.0" layoutY="209.0" minHeight="40.0" minWidth="224.0" promptText="Confirm Password" styleClass="custom-text-field" />
+            <Button layoutX="212.0" layoutY="266.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="99.0" style="-fx-background-radius: 10;" styleClass="btn-sigUp" text="Sign in" textFill="#3e0505" />
+            <Label layoutX="75.0" layoutY="60.0" prefHeight="35.0" prefWidth="99.0" text="Sign In" textFill="#392467">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="btnDontHaveAccount" layoutX="205.0" layoutY="321.0" onMouseClicked="#onBtnDontHaveAccountClicked" styleClass="have-account-label" text="Don't have an account?" textFill="#6f4cbb">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </center>
+</BorderPane>

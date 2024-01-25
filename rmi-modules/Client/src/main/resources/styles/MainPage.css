@@ -35,3 +35,9 @@
 
     -fx-background-color: #cfbceb;
 }
+
+.search-bar{
+    -fx-background-color: #9b75d0;
+
+-fx-border-color: black; -fx-border-width: 2px;
+}

@@ -1,6 +1,9 @@
 package org.example.DTOs;
 
-import org.example.models.UserStatus;
+
+
+import org.example.models.Enums.UserMode;
+import org.example.models.Enums.UserStatus;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -14,61 +17,86 @@ import java.util.Date;
         // Other fields...
         private String phoneNumber;
         private String displayName;
-        private String email;
+        private String emailAddress;
         private String passwordHash;
         private String confirmPassword;
         private String gender;
         private String country;
         private Date dateOfBirth;
         private String bio;
-        private UserStatus status;
-        private Timestamp lastSeen;
+        private UserMode userMode;
+        private UserStatus userStatus;
+        private Timestamp lastSeen =new Timestamp(System.currentTimeMillis());;
 
         private String picture;
 
         public UserDTO() {
         }
 
+//        public UserDTO(String phoneNumber, String displayName, String passwordHash) {
+//            this.phoneNumber = phoneNumber;
+//            this.displayName = displayName;
+//            this.passwordHash = passwordHash;
+//        }
+
+
+
         public UserDTO(String phoneNumber, String displayName, String email, String passwordHash,
                        String confirmPassword, String gender, String country, Date dateOfBirth,
-                       String bio, UserStatus status, String picture) {
+                       String bio, UserStatus status, UserMode userMode, String picture) {
+
+            this(phoneNumber, displayName, email, gender, country,
+                    dateOfBirth, bio, status, userMode, picture);
+            this.passwordHash = passwordHash;
+            this.confirmPassword = confirmPassword;
+            this.lastSeen  = new Timestamp(System.currentTimeMillis());
+
+        }
+
+        public UserDTO(String phoneNumber, String displayName, String email,
+                       String gender, String country, Date dateOfBirth,
+                       String bio, UserStatus status, UserMode userMode, String picture) {
 
             this.phoneNumber = phoneNumber;
             this.displayName = displayName;
-            this.email = email;
-            this.passwordHash = passwordHash;
-            this.confirmPassword = confirmPassword;
+            this.emailAddress = email;
             this.gender = gender;
             this.country = country;
             this.dateOfBirth = dateOfBirth;
             this.bio = bio;
-            this.status = status;
+            this.userStatus = status;
+            this.userMode = userMode;
             this.picture = picture;
+            this.lastSeen  = new Timestamp(System.currentTimeMillis());
 
         }
 
-        public UserDTO(String phoneNumber, String displayName, String email, String passwordHash, String confirmPassword,
-                       String gender, String country, Date dateOfBirth, String bio, UserStatus status, Timestamp lastSeen,
-                       String picture) {
 
-            this(phoneNumber, displayName, email, passwordHash, confirmPassword, gender, country,
-                    dateOfBirth, bio, status, picture);
-            this.lastSeen = lastSeen;
-        }
+//        public UserDTO(String phoneNumber, String displayName, String email, String passwordHash, String confirmPassword,
+//                       String gender, String country, Date dateOfBirth, String bio, UserStatus status, Timestamp lastSeen,
+//                       String picture) {
+//
+//            this(phoneNumber, displayName, email, passwordHash, confirmPassword, gender, country,
+//                    dateOfBirth, bio, status, picture);
+//            this.lastSeen = lastSeen;
+//        }
+
+
+
 
         @Override
         public String toString() {
             return "UserDTO{" +
                     "phoneNumber='" + phoneNumber + '\'' +
                     ", displayName='" + displayName + '\'' +
-                    ", email='" + email + '\'' +
+                    ", email='" + emailAddress + '\'' +
                     ", passwordHash='" + passwordHash + '\'' +
                     ", confirmPassword='" + confirmPassword + '\'' +
                     ", gender='" + gender + '\'' +
                     ", country='" + country + '\'' +
                     ", dateOfBirth=" + dateOfBirth +
                     ", bio='" + bio + '\'' +
-                    ", status=" + status +
+                    ", status=" + userStatus +
                     ", lastSeen=" + lastSeen +
                     ", picture='" + picture + '\'' +
                     '}';
@@ -98,12 +126,12 @@ import java.util.Date;
             this.displayName = displayName;
         }
 
-        public String getEmail() {
-            return email;
+        public String getEmailAddress() {
+            return emailAddress;
         }
 
-        public void setEmail(String email) {
-            this.email = email;
+        public void setEmailAddress(String emailAddress) {
+            this.emailAddress = emailAddress;
         }
 
         public String getPasswordHash() {
@@ -146,12 +174,12 @@ import java.util.Date;
             this.bio = bio;
         }
 
-        public UserStatus getStatus() {
-            return status;
+        public UserStatus getUserStatus() {
+            return userStatus;
         }
 
-        public void setStatus(UserStatus status) {
-            this.status = status;
+        public void setUserStatus(UserStatus status) {
+            this.userStatus = status;
         }
 
         public Timestamp getLastSeen() {
@@ -168,6 +196,14 @@ import java.util.Date;
 
         public void setPicture(String picture) {
             this.picture = picture;
+        }
+
+        public UserMode getUserMode() {
+            return userMode;
+        }
+
+        public void setUserMode(UserMode userMode) {
+            this.userMode = userMode;
         }
     }
 
