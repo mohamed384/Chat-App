@@ -1,6 +1,6 @@
-package org.example.controller.DAO.interfaces;
+package org.example.DAO.interfaces;
 
-import org.example.controller.DAO.DAO;
+import org.example.DAO.DAO;
 import org.example.models.User;
 
 import java.sql.Connection;

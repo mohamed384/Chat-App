@@ -1,10 +1,9 @@
-package org.example.controller.implementations;
+package org.example.controller;
 
 
 
 import org.example.DTOs.UserDTO;
-import org.example.controller.services.UserService;
-import org.example.models.User;
+import org.example.services.UserService;
 import org.example.interfaces.UserAuthentication;
 
 import java.rmi.RemoteException;

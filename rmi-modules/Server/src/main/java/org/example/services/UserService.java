@@ -1,12 +1,13 @@
-package org.example.controller.services;
+package org.example.services;
 
 
 import org.example.DTOs.UserDTO;
-import org.example.controller.DAO.UserDAOImpl;
+import org.example.DAO.UserDAOImpl;
 import org.example.models.Enums.UserStatus;
 import org.example.models.Mapper.UserMapper;
 import org.example.models.User;
 import org.example.utils.PasswordHashing;
+import org.example.utils.SessionManager;
 
 import java.sql.Timestamp;
 
@@ -53,6 +54,8 @@ public class UserService {
             System.out.println("Login successful");
             //UserDTO userDto = userMapper.toDTO(user);
             UserDTO userDto = UserMapper.INSTANCE.toDTO(user);
+            SessionManager.getInstance().startSession(userDto);
+
             return userDto;
         }
 
@@ -74,7 +77,12 @@ public class UserService {
         user.setLastLogin(new Timestamp(System.currentTimeMillis()));
 
         //User user = userMapper.toUser(userDto);
-        return userDAO.update(user);
+        boolean result = userDAO.update(user);
+
+        if (result) {
+            SessionManager.getInstance().endSession();
+        }
+        return result;
     }
 
     public UserDTO getUser(String phoneNumber) {

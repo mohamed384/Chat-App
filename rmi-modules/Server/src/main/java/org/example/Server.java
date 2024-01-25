@@ -1,17 +1,12 @@
 package org.example;
 
 import javafx.animation.PauseTransition;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.controller.implementations.UserController;
+import org.example.controller.UserController;
 import org.example.interfaces.UserAuthentication;
 import org.example.utils.DBConnection;
 
@@ -19,7 +14,7 @@ import java.io.IOException;
 import java.sql.Connection;
 
 
-public class Server extends Application {
+public class Server  {
 
     public static void main(String[] args) {
 
@@ -35,9 +30,9 @@ public class Server extends Application {
             e.printStackTrace();
         }
 
-        launch(args);
+        //launch(args);
 
-       System.exit(0);
+       //System.exit(0);
     }
 
 

@@ -1,8 +1,6 @@
-package org.example.controller.implementations;
+package org.example.controller;
 
-import org.example.controller.services.UserNotificationService;
-import org.example.controller.services.UserService;
-import org.example.interfaces.UserContact;
+import org.example.services.UserNotificationService;
 import org.example.interfaces.UserSendNotification;
 
 import java.rmi.RemoteException;

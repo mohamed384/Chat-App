@@ -1,6 +1,6 @@
-package org.example.controller.services;
+package org.example.services;
 
-import org.example.controller.DAO.ContactDAOImpl;
+import org.example.DAO.ContactDAOImpl;
 import org.example.models.Contact;
 
 public class ContactService {

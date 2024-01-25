@@ -1,4 +1,4 @@
-package org.example.controller.DAO;
+package org.example.DAO;
 import org.example.models.Message;
 import java.sql.Connection;
 

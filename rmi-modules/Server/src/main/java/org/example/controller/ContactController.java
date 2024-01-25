@@ -1,6 +1,6 @@
-package org.example.controller.implementations;
+package org.example.controller;
 
-import org.example.controller.services.ContactService;
+import org.example.services.ContactService;
 import org.example.interfaces.UserContact;
 import org.example.models.Contact;
 
