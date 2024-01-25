@@ -7,7 +7,7 @@ import org.example.models.Enums.UserStatus;
 import org.example.models.Mapper.UserMapper;
 import org.example.models.User;
 import org.example.utils.PasswordHashing;
-import org.example.utils.SessionManager;
+import org.example.Utils.SessionManager;
 
 import java.sql.Timestamp;
 

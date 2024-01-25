@@ -37,6 +37,21 @@ public class MainController {
     @FXML
     public void goToProfile(ActionEvent event) {
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UserProfile.fxml"));
+
+        try {
+            BorderPane pane = loader.load();
+            pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+            borderPane.setCenter(null);
+            BorderPane.setAlignment(pane, Pos.CENTER);
+            BorderPane.setMargin(pane, new Insets(0, 0, 0, 0));
+            borderPane.setCenter(pane);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @FXML

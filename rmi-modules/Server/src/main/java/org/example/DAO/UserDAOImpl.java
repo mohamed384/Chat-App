@@ -3,12 +3,13 @@ package org.example.DAO;
 
 import org.example.models.Enums.UserStatus;
 import org.example.models.User;
-import org.example.utils.DBConnection;
-import org.example.utils.PasswordHashing;
-import org.example.utils.PictureConverter;
-import org.example.utils.UserDataValidator;
+import org.example.utils.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.sql.*;
+import java.util.Base64;
 
 public class UserDAOImpl implements DAO<User>{
 
@@ -44,6 +45,8 @@ public class UserDAOImpl implements DAO<User>{
                     preparedStatement.setString(2, user.getDisplayName());
 
                     preparedStatement.setString(3, user.getEmailAddress());
+
+                   /*
                     byte[] picture;
                     System.out.println(user.getPicture());
                     if (user.getPicture().isEmpty() || user.getPicture().contains("javafx")) {
@@ -55,7 +58,12 @@ public class UserDAOImpl implements DAO<User>{
                         System.out.println("User picture");
                         picture = new PictureConverter().getPictureData(user.getPicture());
                     }
-                    preparedStatement.setBytes(4, picture);
+
+                    */
+
+                    Blob picture = ImageConvertor.bytesToBlob(user.getPicture());
+
+                    preparedStatement.setBlob(4, picture);
                     preparedStatement.setString(5, PasswordHashing.hashPassword(user.getPasswordHash()));
 
                     preparedStatement.setString(6, user.getGender());
@@ -96,11 +104,11 @@ public class UserDAOImpl implements DAO<User>{
                 String sql = "UPDATE Users SET DisplayName = ?, EmailAddress = ?, " +
                         "ProfilePicture = ?, PasswordHash = ?, Gender = ?, Country = ?, DateOfBirth = ?, Bio = ?, " +
                         "UserMode = ?, UserStatus = ?, LastLogin = ? WHERE PhoneNumber = ?";
-
+            //ImageConvertor.bytesToBlob(user.getPicture())
                 try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                     preparedStatement.setString(1, user.getDisplayName());
                     preparedStatement.setString(2, user.getEmailAddress());
-                    preparedStatement.setBytes(3, new PictureConverter().getPictureData(user.getPicture()));
+                    preparedStatement.setBlob(3, ImageConvertor.bytesToBlob(user.getPicture()));
                     preparedStatement.setString(4, PasswordHashing.hashPassword(user.getPasswordHash()));
                     preparedStatement.setString(5, user.getGender());
                     preparedStatement.setString(6, user.getCountry());
@@ -139,11 +147,15 @@ public class UserDAOImpl implements DAO<User>{
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         if (resultSet.next()) {
 
+                            Blob picture = resultSet.getBlob(5);
+                            byte[] pictureBytes = ImageConvertor.BlobToBytes(picture);
+
+
                             user = new User(
                                     resultSet.getString(2),
                                     resultSet.getString(3),
                                     resultSet.getString(4),
-                                    resultSet.getString(5),
+                                    pictureBytes,
                                     resultSet.getString(6),
                                     resultSet.getString(7),
                                     resultSet.getString(8),

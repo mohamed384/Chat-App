@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="847.0" stylesheets="@../styles/profile.css"
+            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controller.FXMLController.UserProfileController">
+    <center>
+        <GridPane alignment="CENTER" hgap="10.0" maxHeight="490.0" prefHeight="490.0" prefWidth="767.0"
+                  BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="196.00001220703126" minHeight="10.0" prefHeight="190.40000610351564"
+                                vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <BorderPane.margin>
+                <Insets bottom="60.0" left="40.0" right="40.0"/>
+            </BorderPane.margin>
+            <TextField fx:id="nameField" editable="false" prefHeight="40.0" prefWidth="400.0" promptText="Name"
+                       styleClass="text-field" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                       GridPane.rowIndex="1"/>
+            <TextField fx:id="emailField" prefHeight="40.0" prefWidth="214.0" promptText="Email"
+                       styleClass="text-field" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                       GridPane.rowIndex="2"/>
+            <TextField fx:id="bioField" editable="false" prefHeight="40.0" prefWidth="400.0" promptText="Bio"
+                       styleClass="text-field" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                       GridPane.rowIndex="3"/>
+            <Button fx:id="updateBtn" mnemonicParsing="false" onMouseClicked="#updateClick" prefHeight="38.0"
+                    prefWidth="130.0" styleClass="btn-update" text="Update" GridPane.columnIndex="1"
+                    GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                <GridPane.margin>
+                    <Insets/>
+                </GridPane.margin>
+            </Button>
+            <ImageView fx:id="profileImg" cache="true" cacheHint="SCALE" fitHeight="200.0" fitWidth="250.0"
+                       onMouseClicked="#imgClicked" pickOnBounds="true" styleClass="profile-image"
+                       GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                <clip>
+                    <Circle centerX="125" centerY="95" radius="85"/>
+                </clip>
+            </ImageView>
+
+        </GridPane>
+    </center>
+
+</BorderPane>

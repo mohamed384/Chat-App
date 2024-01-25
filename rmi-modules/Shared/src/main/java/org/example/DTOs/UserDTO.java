@@ -6,6 +6,7 @@ import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -28,7 +29,7 @@ import java.util.Date;
         private UserStatus userStatus;
         private Timestamp lastSeen =new Timestamp(System.currentTimeMillis());;
 
-        private String picture;
+        private byte[] picture;
 
         public UserDTO() {
         }
@@ -43,7 +44,7 @@ import java.util.Date;
 
         public UserDTO(String phoneNumber, String displayName, String email, String passwordHash,
                        String confirmPassword, String gender, String country, Date dateOfBirth,
-                       String bio, UserStatus status, UserMode userMode, String picture) {
+                       String bio, UserStatus status, UserMode userMode, byte[] picture) {
 
             this(phoneNumber, displayName, email, gender, country,
                     dateOfBirth, bio, status, userMode, picture);
@@ -55,7 +56,7 @@ import java.util.Date;
 
         public UserDTO(String phoneNumber, String displayName, String email,
                        String gender, String country, Date dateOfBirth,
-                       String bio, UserStatus status, UserMode userMode, String picture) {
+                       String bio, UserStatus status, UserMode userMode, byte[] picture) {
 
             this.phoneNumber = phoneNumber;
             this.displayName = displayName;
@@ -190,11 +191,11 @@ import java.util.Date;
             this.lastSeen = lastSeen;
         }
 
-        public String getPicture() {
+        public byte[] getPicture() {
             return picture;
         }
 
-        public void setPicture(String picture) {
+        public void setPicture(byte[] picture) {
             this.picture = picture;
         }
 

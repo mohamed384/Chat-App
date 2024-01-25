@@ -1,13 +1,17 @@
 package org.example.service;
 
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserDataValidator;
@@ -15,7 +19,12 @@ import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -24,6 +33,31 @@ import java.util.Date;
 
 
 public class UserAuthService {
+
+
+    private byte[] convertImageToByteArray(Image image)  {
+        int width = (int) image.getWidth();
+        int height = (int) image.getHeight();
+        byte[] imageBytes = new byte[width * height * 4]; // Assuming 4 bytes per pixel (RGBA)
+
+        PixelReader pixelReader = image.getPixelReader();
+        int pixelIndex = 0;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Color color = pixelReader.getColor(x, y);
+                imageBytes[pixelIndex++] = (byte) (color.getRed() * 255);     // Red
+                imageBytes[pixelIndex++] = (byte) (color.getGreen() * 255);   // Green
+                imageBytes[pixelIndex++] = (byte) (color.getBlue() * 255);    // Blue
+                imageBytes[pixelIndex++] = (byte) (color.getOpacity() * 255); // Alpha
+            }
+        }
+
+        return imageBytes;
+    }
+
+
+
     protected void switchToMessagePage(ActionEvent actionEvent) {
 
         Parent newScreenParent;
@@ -139,7 +173,7 @@ public class UserAuthService {
                        TextField emailSignUp, String selectedCountry, DatePicker birthDateSignUp
             , PasswordField passwordSignUp, PasswordField passwordConfirmationSignUp, ImageView imageSignUp,
                        String selectedGender, Label phoneValidLabel, Label nameValidLabel,
-                       Label emailValidLabel, Label passwordValidLabel, Label confirmPassValidLabel, Label counrtyValidLabel) throws RemoteException {
+                       Label emailValidLabel, Label passwordValidLabel, Label confirmPassValidLabel, Label counrtyValidLabel) throws IOException {
 
         String phone = phoneSignUp.getText();
 
@@ -154,7 +188,9 @@ public class UserAuthService {
         String password = passwordSignUp.getText();
 
         String passwordConfirm = passwordConfirmationSignUp.getText();
-        String image = imageSignUp.getImage().toString();
+
+        byte[] image = convertImageToByteArray(imageSignUp.getImage());
+
 
         boolean isValidPhone = checkFiledValidation(phone, phoneValidLabel, phoneSignUp, ValidationType.phone);
         boolean isValidName = checkFiledValidation(name, nameValidLabel, nameSignUp, ValidationType.name);

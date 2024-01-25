@@ -130,11 +130,15 @@ public class USerSignUpController implements Initializable {
 
     @FXML
     protected void signup(ActionEvent actionEvent) throws RemoteException {
-       Boolean bool =  userAuthService.signup(actionEvent, phoneSignUp, NameSignUp, EmailLogin, selectedCountry,
-                birthDateSignUp, passwordSignUp,
-                passwordConfirmationSignUp, imageSignUp,
-                selectedGender, phoneValidLabel, nameValidLabel,
-                emailValidLabel, passwordValidLabel, confirmPassValidLabel, counrtyValidLabel);
+        try {
+            Boolean bool =  userAuthService.signup(actionEvent, phoneSignUp, NameSignUp, EmailLogin, selectedCountry,
+                     birthDateSignUp, passwordSignUp,
+                     passwordConfirmationSignUp, imageSignUp,
+                     selectedGender, phoneValidLabel, nameValidLabel,
+                     emailValidLabel, passwordValidLabel, confirmPassValidLabel, counrtyValidLabel);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

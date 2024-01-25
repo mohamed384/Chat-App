@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.animation.PauseTransition;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,11 +11,12 @@ import org.example.controller.UserController;
 import org.example.interfaces.UserAuthentication;
 import org.example.utils.DBConnection;
 
+import java.awt.desktop.AppEvent;
 import java.io.IOException;
 import java.sql.Connection;
 
 
-public class Server  {
+public class Server extends Application {
 
     public static void main(String[] args) {
 
@@ -30,7 +32,7 @@ public class Server  {
             e.printStackTrace();
         }
 
-        //launch(args);
+        launch(args);
 
        //System.exit(0);
     }

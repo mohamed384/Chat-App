@@ -4,6 +4,7 @@ import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import java.sql.Timestamp;
 import java.util.Date;
 public class User {
@@ -11,7 +12,7 @@ public class User {
     private String phoneNumber;
     private String displayName;
     private String emailAddress;
-    private String picture;
+    private byte[] picture;
     private String passwordHash;
     private String gender;
     private String country;
@@ -22,7 +23,9 @@ public class User {
 
     private Timestamp lastLogin;
 
-    public User( String phoneNumber, String displayName, String emailAddress, String profilePicture, String passwordHash, String gender, String country, Date dateOfBirth, String bio, UserStatus userStatus, String userMode, Timestamp lastLogin) {
+
+
+    public User( String phoneNumber, String displayName, String emailAddress, byte[] profilePicture, String passwordHash, String gender, String country, Date dateOfBirth, String bio, UserStatus userStatus, String userMode, Timestamp lastLogin) {
 
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
@@ -70,11 +73,11 @@ public class User {
         this.emailAddress = emailAddress;
     }
 
-    public String getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(String profilePicture) {
+    public void setPicture(byte[] profilePicture) {
         this.picture = profilePicture;
     }
 
