@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" styleClass="BorderPane" stylesheets="@../styles/contacts.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.ContactController">
+   <top>
+      <AnchorPane styleClass="light-purple" BorderPane.alignment="CENTER">
+         <children>
+            <TextField alignment="CENTER" layoutX="42.0" layoutY="38.0" prefHeight="38.0" prefWidth="222.0" promptText="Search">
+               <styleClass>
+                  <String fx:value="button" />
+                  <String fx:value="textfield" />
+               </styleClass></TextField>
+            <ImageView fitHeight="21.0" fitWidth="15.0" layoutX="241.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../images/icons8-search-50.png" />
+                </image>
+            </ImageView>
+            <HBox layoutX="70.0" layoutY="112.0" spacing="20.0">
+               <children>
+                  <Button fx:id="offlineButton" mnemonicParsing="false" onAction="#onOfflineButtonClick">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/offline.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="onlineButton" mnemonicParsing="false" onAction="#onOnlineButtonClick">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="54.0" onKeyPressed="#onOnlineButtonClick" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/online.png" />
+                            </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="addContact" mnemonicParsing="false" onAction="#onAddContactClick">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+                          <image>
+                            <Image url="@../images/add-contact.png" />
+                          </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <ListView fx:id="listView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" styleClass="light-purple" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

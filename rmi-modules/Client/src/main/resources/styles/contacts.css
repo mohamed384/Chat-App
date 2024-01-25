@@ -1,0 +1,40 @@
+.button {
+    -fx-background-color: transparent;
+}
+
+/* Set the pane's background color to purple */
+.BorderPane {
+    -fx-background-color: #9b75d0;
+}
+.textfield{
+    -fx-border-radius:10;
+    -fx-padding:8;
+    -fx-background-radius:25;
+    -fx-border-color: #0F3D3E;
+    -fx-border-width:2;
+    -fx-background-color: white;
+}
+.light-purple {
+    -fx-background-color: #9b75d0;
+}
+
+.button:hover {
+    -fx-background-color:#361b72;
+    -fx-transition-duration: 0.3s;
+}
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.list-view {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-control-inner-background-alt: transparent;
+}
+.textfield:hover {
+    -fx-background-color: white;
+}
+.contact-color{
+    -fx-background-color: #d3bdde;
+}
