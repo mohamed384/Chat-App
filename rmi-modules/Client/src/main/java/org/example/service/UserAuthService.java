@@ -28,7 +28,7 @@ public class UserAuthService {
 
         Parent newScreenParent;
         try {
-            newScreenParent = FXMLLoader.load(getClass().getResource("/views/MessagePage.fxml"));
+            newScreenParent = FXMLLoader.load(getClass().getResource("/views/MainPage.fxml"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -135,7 +135,7 @@ public class UserAuthService {
         }
     }
 
-    public void signup(ActionEvent actionEvent, TextField phoneSignUp, TextField nameSignUp,
+    public Boolean signup(ActionEvent actionEvent, TextField phoneSignUp, TextField nameSignUp,
                        TextField emailSignUp, String selectedCountry, DatePicker birthDateSignUp
             , PasswordField passwordSignUp, PasswordField passwordConfirmationSignUp, ImageView imageSignUp,
                        String selectedGender, Label phoneValidLabel, Label nameValidLabel,
@@ -163,7 +163,7 @@ public class UserAuthService {
         if (selectedCountry == null) {
             counrtyValidLabel.getStyleClass().remove("valid-label");
             counrtyValidLabel.getStyleClass().add("not-valid-label");
-            return;
+            return false;
         } else {
             counrtyValidLabel.getStyleClass().add("valid-label");
             counrtyValidLabel.getStyleClass().remove("not-valid-label");
@@ -174,7 +174,7 @@ public class UserAuthService {
                 confirmPassValidLabel.getStyleClass().add("not-valid-label");
                 passwordConfirmationSignUp.getStyleClass().remove("custom-text-field");
                 passwordConfirmationSignUp.getStyleClass().add("not-valid-text-field");
-                return;
+                return false;
 
 
             } else {
@@ -185,7 +185,7 @@ public class UserAuthService {
             }
         }
         if (!(isValidPhone && isValidName && isValidEmail && isValidPassword)) {
-            return;
+            return false;
         }
 
 
@@ -195,8 +195,15 @@ public class UserAuthService {
                     birthDate, "", UserStatus.Online, UserMode.Available, image);
             remoteObject.signup(user1);
             System.out.println("iam here");
+
+            switchToMessagePage(actionEvent);
+            return true;
+
         } else {
             System.out.println("Cant connect to server");
+            return false;
         }
+
+
     }
 }

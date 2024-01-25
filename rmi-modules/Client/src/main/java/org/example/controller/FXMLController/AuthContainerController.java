@@ -1,10 +1,8 @@
 package org.example.controller.FXMLController;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
@@ -31,11 +29,12 @@ public class AuthContainerController implements Initializable {
     private void loadLoginPane() {
         try {
             // Load the FXML file for the login pane
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Login.fxml"));
             BorderPane loginPane = loader.load();
 
             // Set the login pane as the center of the BorderPane
             mainBorderPane.setCenter(loginPane);
+
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
@@ -44,5 +43,8 @@ public class AuthContainerController implements Initializable {
     public void switchToPane(Pane signupPane) {
         mainBorderPane.setCenter(signupPane);
     }
+
+
+
 
 }

@@ -3,10 +3,14 @@ package org.example.controller.FXMLController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.example.DTOs.UserDTO;
 import org.example.service.UserAuthService;
 
@@ -19,6 +23,8 @@ public class UserLoginController {
         this.userAuthService = new UserAuthService();
     }
 
+    @FXML
+    BorderPane bordePane;
 
     @FXML
     protected TextField phoneNumber;
@@ -29,7 +35,9 @@ public class UserLoginController {
 
     @FXML
     protected UserDTO login(ActionEvent actionEvent) throws IOException {
-        return userAuthService.login(actionEvent, password, phoneNumber);
+        UserDTO userDTO =  userAuthService.login(actionEvent, password, phoneNumber);
+
+        return userDTO;
     }
 
 
@@ -42,4 +50,5 @@ public class UserLoginController {
 
 
     }
+
 }

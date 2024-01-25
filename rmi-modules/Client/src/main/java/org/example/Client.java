@@ -7,13 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.models.User;
-import org.example.interfaces.UserAuthentication;
 
 
 import java.io.IOException;
-import java.rmi.Naming;
-import java.util.Date;
 
 
 public class Client extends Application {
@@ -52,7 +48,7 @@ public class Client extends Application {
 
 
             // Load the FXML file for the start screen
-        Parent startScreenParent = FXMLLoader.load(getClass().getResource("/views/startScreen.fxml"));
+        Parent startScreenParent = FXMLLoader.load(getClass().getResource("/views/StartScreen.fxml"));
         Scene startScreenScene = new Scene(startScreenParent);
 
         stage.setScene(startScreenScene);

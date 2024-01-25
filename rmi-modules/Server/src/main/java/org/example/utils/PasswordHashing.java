@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class PasswordHashing {
     public static String hashPassword(String password) {
@@ -13,11 +14,13 @@ public class PasswordHashing {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+
         byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
         BigInteger number = new BigInteger(1, hash);
         String hashedPassword = number.toString(16);
         while (hashedPassword.length() < 32) {
             hashedPassword = "0" + hashedPassword;
+
         }
         return hashedPassword;
     }

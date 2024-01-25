@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.example.models.Enums.Gender;
 import org.example.service.UserAuthService;
 
@@ -126,18 +129,35 @@ public class USerSignUpController implements Initializable {
 
     @FXML
     protected void signup(ActionEvent actionEvent) throws RemoteException {
-        userAuthService.signup(actionEvent, phoneSignUp, NameSignUp, EmailLogin, selectedCountry,
+       Boolean bool =  userAuthService.signup(actionEvent, phoneSignUp, NameSignUp, EmailLogin, selectedCountry,
                 birthDateSignUp, passwordSignUp,
                 passwordConfirmationSignUp, imageSignUp,
                 selectedGender, phoneValidLabel, nameValidLabel,
                 emailValidLabel, passwordValidLabel, confirmPassValidLabel, counrtyValidLabel);
 
+       if (bool){
+           try {
+               // Load the new FXML file
+               Parent startScreenParent = FXMLLoader.load(getClass().getResource("/views/MainPage.fxml"));
+               Scene startScreenScene = new Scene(startScreenParent);
+
+               // Get the current stage from the button's scene
+               Stage currentStage = (Stage) phoneSignUp.getScene().getWindow();
+
+               // Set the new scene and show the stage
+               currentStage.setScene(startScreenScene);
+               currentStage.show();
+           } catch (Exception e) {
+               // Handle the exception
+               e.printStackTrace();
+           }
+       }
     }
 
 
     public void onBtnAlreadyRegisterClicked(MouseEvent event) throws IOException {
         AuthContainerController authContainerController = AuthContainerController.getInstance();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Login.fxml"));
         Pane signupPane = loader.load();
         authContainerController.switchToPane(signupPane);
     }
