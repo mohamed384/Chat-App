@@ -1,6 +1,5 @@
-package org.example.controller.DAO;
+package org.example.DAO;
 
-import org.example.controller.DAO.interfaces.UserNotificationDAO;
 import org.example.models.UserNotification;
 import org.example.utils.DBConnection;
 

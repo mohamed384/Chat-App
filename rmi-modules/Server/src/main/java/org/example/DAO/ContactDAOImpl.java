@@ -1,6 +1,6 @@
-package org.example.controller.DAO;
+package org.example.DAO;
 
-import org.example.controller.DAO.interfaces.ContactDAO;
+import org.example.DAO.interfaces.ContactDAO;
 import org.example.models.Contact;
 import org.example.utils.DBConnection;
 

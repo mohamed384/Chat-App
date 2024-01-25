@@ -39,7 +39,6 @@ public class DBConnection {
         return dataSource.getConnection();
     }
 
-
     public static void stopConnection(){
         if(instance == null){
             System.out.println("No DB connection");

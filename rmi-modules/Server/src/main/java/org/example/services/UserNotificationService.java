@@ -1,10 +1,6 @@
-package org.example.controller.services;
+package org.example.services;
 
-import org.example.controller.DAO.UserDAOImpl;
-import org.example.controller.DAO.UserNotificationDAOImpl;
-import org.example.controller.DAO.interfaces.UserNotificationDAO;
-import org.example.models.Contact;
-import org.example.models.Mapper.UserMapper;
+import org.example.DAO.UserNotificationDAOImpl;
 import org.example.models.UserNotification;
 
 public class UserNotificationService {

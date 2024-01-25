@@ -1,4 +1,4 @@
-package org.example.controller.services;
+package org.example.services;
 
 
 public class InvitationService {
