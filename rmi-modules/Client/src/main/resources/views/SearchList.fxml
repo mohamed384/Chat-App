@@ -59,6 +59,6 @@
       </AnchorPane>
    </top>
    <center>
-      <ListView fx:id="listView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" styleClass="light-purple" BorderPane.alignment="CENTER" />
+      <ListView fx:id="userlistView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" styleClass="light-purple" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

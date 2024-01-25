@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="contact" alignment="CENTER" prefHeight="81.0" prefWidth="300.0" style="-fx-background-radius: 100;" stylesheets="@../styles/contacts.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.demo.ContactCardController">
+<HBox fx:id="contact" alignment="CENTER" prefHeight="81.0" prefWidth="300.0" style="-fx-background-radius: 100;" stylesheets="@../styles/contacts.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <ImageView fx:id="userImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
          <HBox.margin>

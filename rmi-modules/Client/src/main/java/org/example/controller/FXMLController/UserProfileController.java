@@ -53,7 +53,6 @@ public class UserProfileController implements Initializable {
         emailField.setText(userDTO.getEmailAddress());
         bioField.setText(userDTO.getBio());
 
-//ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(userDTO.getPicture());
         profileImg.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
     }
 

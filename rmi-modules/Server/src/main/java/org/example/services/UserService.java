@@ -86,14 +86,14 @@ public class UserService {
     }
 
     public UserDTO getUser(String phoneNumber) {
-        UserDTO userDto = new UserDTO();
-        User user = UserMapper.INSTANCE.toUser(userDto);
-        user = userDAO.findByPhoneNumber(user.getPhoneNumber());
+
+        User user = userDAO.findByPhoneNumber(phoneNumber);
         if (user == null) {
             System.out.println("From getUser: User not found");
             return null;
         }
-        userDto = UserMapper.INSTANCE.toDTO(user);
+
+        UserDTO userDto = UserMapper.INSTANCE.toDTO(user);
         return userDto;
     }
 
