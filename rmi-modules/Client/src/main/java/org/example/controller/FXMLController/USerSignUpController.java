@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -135,23 +136,6 @@ public class USerSignUpController implements Initializable {
                 selectedGender, phoneValidLabel, nameValidLabel,
                 emailValidLabel, passwordValidLabel, confirmPassValidLabel, counrtyValidLabel);
 
-       if (bool){
-           try {
-               // Load the new FXML file
-               Parent startScreenParent = FXMLLoader.load(getClass().getResource("/views/MainPage.fxml"));
-               Scene startScreenScene = new Scene(startScreenParent);
-
-               // Get the current stage from the button's scene
-               Stage currentStage = (Stage) phoneSignUp.getScene().getWindow();
-
-               // Set the new scene and show the stage
-               currentStage.setScene(startScreenScene);
-               currentStage.show();
-           } catch (Exception e) {
-               // Handle the exception
-               e.printStackTrace();
-           }
-       }
     }
 
 

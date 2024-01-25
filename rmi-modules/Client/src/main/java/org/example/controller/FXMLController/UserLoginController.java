@@ -37,6 +37,7 @@ public class UserLoginController {
     protected UserDTO login(ActionEvent actionEvent) throws IOException {
         UserDTO userDTO =  userAuthService.login(actionEvent, password, phoneNumber);
 
+        System.out.println(userDTO.getPicture());
         return userDTO;
     }
 
