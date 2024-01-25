@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane fx:id="contactListview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <ScrollPane  fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="610.0" prefWidth="187.0" BorderPane.alignment="CENTER">
+         <content>
+            <ListView fx:id="listView" prefHeight="600.0" prefWidth="182.0" />
+         </content>
+      </ScrollPane>
+   </left>
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="light-color" stylesheets="@../styles/MainPage.css" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
