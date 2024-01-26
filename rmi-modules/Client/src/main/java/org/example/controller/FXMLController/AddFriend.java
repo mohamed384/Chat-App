@@ -111,6 +111,12 @@ public class AddFriend {
             }
         }
     }
+    @FXML
+    void sendAddRequest(ActionEvent event) {
+
+
+    }
+
 
 //    @Override
 //    public void initialize(URL url, ResourceBundle resourceBundle) {
