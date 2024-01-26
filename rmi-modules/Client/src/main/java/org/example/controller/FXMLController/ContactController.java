@@ -38,7 +38,7 @@ public class ContactController {
             throw new RuntimeException(e);
         }
 
-        Scene secondScene = new Scene(root, 550, 550);
+        Scene secondScene = new Scene(root, 550, 300);
 
         Stage newWindow = new Stage();
         newWindow.initModality(Modality.APPLICATION_MODAL);

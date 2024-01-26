@@ -22,7 +22,7 @@
 
 .send-button{
     -fx-background-radius:25;
-    -fx-background-color:purple;
+    -fx-focus-color: transparent;
 }
 
 .numbers-scroll-pane{
