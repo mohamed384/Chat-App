@@ -16,6 +16,7 @@ public class ContactController extends UnicastRemoteObject implements UserContac
 
     @Override
     public boolean addContact(Contact contact) {
+
         return contactService.addContact(contact);
     }
 }
