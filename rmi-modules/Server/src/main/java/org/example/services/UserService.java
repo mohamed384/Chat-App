@@ -3,11 +3,12 @@ package org.example.services;
 
 import org.example.DTOs.UserDTO;
 import org.example.DAO.UserDAOImpl;
+import org.example.Utils.SessionManager;
 import org.example.models.Enums.UserStatus;
 import org.example.models.Mapper.UserMapper;
 import org.example.models.User;
 import org.example.utils.PasswordHashing;
-import org.example.Utils.SessionManager;
+
 
 import java.sql.Timestamp;
 
@@ -39,8 +40,10 @@ public class UserService {
             return false;
         }
         //User user = userMapper.toUser(userDto);
-        System.out.println(userDto.toString());
+
         User user = UserMapper.INSTANCE.toUser(userDto);
+        SessionManager.getInstance().startSession(userDto);
+        System.out.println("I'm SessionManager from Server Service before accessing userDAO.Create()" + userDto.toString());
         return userDAO.create(user);
     }
     public UserDTO login (String phoneNumber,  String password) {
@@ -54,6 +57,7 @@ public class UserService {
             System.out.println("Login successful");
             //UserDTO userDto = userMapper.toDTO(user);
             UserDTO userDto = UserMapper.INSTANCE.toDTO(user);
+
             SessionManager.getInstance().startSession(userDto);
 
             return userDto;

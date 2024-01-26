@@ -11,6 +11,14 @@ public class UserNotificationService {
         this.userNotificationDAO = new UserNotificationDAOImpl();
     }
     public boolean sendNotification(String sender, String receiver) {
+        UserNotification existingNotification =
+                userNotificationDAO.findBySenderAndReceiver(sender, receiver);
+
+        if (existingNotification != null) {
+            System.out.println("Notification already exists.");
+            return false;
+        }
+
         UserNotification userNotification = new UserNotification();
         userNotification.setSenderID(sender);
         userNotification.setReceiverID(receiver);

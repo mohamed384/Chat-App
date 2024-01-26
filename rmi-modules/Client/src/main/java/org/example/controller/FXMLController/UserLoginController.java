@@ -47,7 +47,8 @@ public class UserLoginController {
 
     @FXML
     protected void onBtnDontHaveAccountClicked() throws IOException {
-        AuthContainerController authContainerController = AuthContainerController.getInstance();
+       // AuthContainerController authContainerController = AuthContainerController.getInstance();
+       AuthContainerController authContainerController = AuthContainerController.getInstance();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/SignUp.fxml"));
         Pane signupPane = loader.load();
         authContainerController.switchToPane(signupPane);

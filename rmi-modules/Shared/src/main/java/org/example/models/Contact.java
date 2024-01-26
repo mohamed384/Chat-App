@@ -3,30 +3,30 @@ package org.example.models;
 import java.sql.Timestamp;
 
 public class Contact {
-    private int friendID;
-    private int userID;
+    private String friendID;
+    private String userID;
     //private Timestamp creationDate;
 
 
-    public Contact(int friendID, int userID) {
+    public Contact(String friendID, String userID) {
         this.friendID = friendID;
         this.userID = userID;
         //this.creationDate = creationDate;
     }
 
-    public int getFriendID() {
+    public String getFriendID() {
         return friendID;
     }
 
-    public void setFriendID(int friendID) {
+    public void setFriendID(String friendID) {
         this.friendID = friendID;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

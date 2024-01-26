@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="550.0" stylesheets="@../styles/AddFriendStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.AddFriend">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="550.0" stylesheets="@../styles/AddFriendStyle.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.AddFriend">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -46,7 +46,7 @@
             </Button>
          </children>
       </HBox>
-      <Button alignment="CENTER" prefHeight="40.0" prefWidth="444.0" styleClass="send-button" text="Send Invite" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+      <Button alignment="CENTER" onAction="#sendAdd" prefHeight="40.0" prefWidth="444.0" styleClass="send-button" text="Send Invite" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>

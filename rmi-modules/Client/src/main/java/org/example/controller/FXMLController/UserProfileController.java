@@ -1,6 +1,6 @@
 package org.example.controller.FXMLController;
 
-import javafx.embed.swing.SwingFXUtils;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -46,8 +46,9 @@ public class UserProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        sessionManager= SessionManager.getInstance();
-        System.out.println(sessionManager.getCurrentUser().toString());
+
+        sessionManager = SessionManager.getInstance();
+        //System.out.println(sessionManager.getCurrentUser().toString());
         userDTO= sessionManager.getCurrentUser();
         nameField.setText(userDTO.getDisplayName());
         emailField.setText(userDTO.getEmailAddress());

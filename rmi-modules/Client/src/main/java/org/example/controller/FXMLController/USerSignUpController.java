@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.example.Utils.LoadImage;
 import org.example.models.Enums.Gender;
 import org.example.service.UserAuthService;
 
@@ -76,16 +77,7 @@ public class USerSignUpController implements Initializable {
     );
 
     public void loadImage() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.bmp"));
-        File selectedFile = fileChooser.showOpenDialog(null);
-        if (selectedFile != null) {
-            Image image = new Image(selectedFile.toURI().toString());
-
-            imageSignUp.setImage(image);
-
-        }
+            imageSignUp.setImage(LoadImage.loadImage());
     }
 
     @Override

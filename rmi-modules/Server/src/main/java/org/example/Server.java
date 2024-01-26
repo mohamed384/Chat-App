@@ -8,34 +8,48 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.controller.UserController;
+import org.example.controller.UserNotificationController;
 import org.example.interfaces.UserAuthentication;
+import org.example.interfaces.UserSendNotification;
 import org.example.utils.DBConnection;
+import org.example.utils.StubContext;
 
 import java.awt.desktop.AppEvent;
 import java.io.IOException;
 import java.sql.Connection;
 
 
-public class Server extends Application {
+public class Server {
 
     public static void main(String[] args) {
 
+        StubContext context = new StubContext();
 
         try {
-            UserAuthentication stub = new UserController();
+            // Hena 3mlna el stubs bta3tna
+            UserAuthentication userAuthenticationStub = new UserController();
+            UserSendNotification userSendNotificationStub = new UserNotificationController();
+
+            // Hena 3mlna add lel stubs bta3tna
+            context.addStub("UserAuthenticationStub", userAuthenticationStub);
+            context.addStub("UserSendNotificationStub", userSendNotificationStub);
+
+            // Hena 3mlna create lel registry w 3mlna rebind lel stubs bta3tna
             java.rmi.registry.LocateRegistry.createRegistry(1099);
-            java.rmi.Naming.rebind("rmiObject", stub);
+            java.rmi.Naming.rebind("UserAuthenticationStub", userAuthenticationStub);
+            java.rmi.Naming.rebind("UserSendNotificationStub", userSendNotificationStub);
+
             Connection connection = DBConnection.getConnection();
             System.out.println("RMI Server is running...");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        launch(args);
-
-       //System.exit(0);
     }
+
+    //launch(args);
+
+    //System.exit(0);
 
 
 

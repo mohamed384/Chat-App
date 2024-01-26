@@ -1,7 +1,7 @@
 package org.example.service;
 
 
-import javafx.embed.swing.SwingFXUtils;
+//import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,6 +14,7 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.example.DTOs.UserDTO;
+import org.example.Utils.SessionManager;
 import org.example.Utils.UserDataValidator;
 import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
@@ -87,7 +88,7 @@ public class UserAuthService {
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
         try {
-            remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/rmiObject");
+            remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,8 +230,10 @@ public class UserAuthService {
         if (remoteObject != null) {
             UserDTO user1 = new UserDTO(phone, name, email, password, passwordConfirm, selectedGender, selectedCountry,
                     birthDate, "", UserStatus.Online, UserMode.Available, image);
+            SessionManager sessionManager = SessionManager.getInstance();
+            sessionManager.startSession(user1);
             remoteObject.signup(user1);
-            System.out.println("iam here");
+            System.out.println("signup from client auth service is successfully done");
 
             switchToMessagePage(actionEvent);
             return true;

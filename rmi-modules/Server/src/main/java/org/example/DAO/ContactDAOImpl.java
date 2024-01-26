@@ -23,8 +23,8 @@ public class ContactDAOImpl implements ContactDAO {
     public boolean save(Contact contact, Connection connection) {
         String query = "INSERT INTO UserContacts (FriendID, UserID) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, contact.getFriendID());
-            pstmt.setInt(2, contact.getUserID());
+            pstmt.setString(1, contact.getFriendID());
+            pstmt.setString(2, contact.getUserID());
             pstmt.executeUpdate();
             System.out.println("The contact is added: UserID " + contact.getUserID() + ", FriendID " + contact.getFriendID());
             return true;
@@ -34,7 +34,7 @@ public class ContactDAOImpl implements ContactDAO {
         return false;
     }
 
-    public boolean acceptInvite(int userID, int friendID) {
+    public boolean acceptInvite(String userID, String friendID) {
         if (isPendingRequest(friendID, userID)) {
             Contact newContact1 = new Contact(friendID, userID);
             Contact newContact2 = new Contact(userID, friendID);
@@ -44,12 +44,12 @@ public class ContactDAOImpl implements ContactDAO {
         }
     }
 
-    private boolean isPendingRequest(int userID, int friendID) {
+    private boolean isPendingRequest(String userID, String friendID) {
         String query = "SELECT * FROM UserContacts WHERE UserID = ? AND FriendID = ?";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, userID);
-            pstmt.setInt(2, friendID);
+            pstmt.setString(1, userID);
+            pstmt.setString(2, friendID);
             ResultSet rs = pstmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {

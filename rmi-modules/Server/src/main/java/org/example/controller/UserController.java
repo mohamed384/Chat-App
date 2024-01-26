@@ -19,7 +19,7 @@ public class UserController extends UnicastRemoteObject implements UserAuthentic
 
     @Override
     public Boolean signup(UserDTO userDto) throws RemoteException {
-        System.out.println(userDto.toString());
+        System.out.println("From Server UserController: " + userDto.toString());
         return userService.signup(userDto);
     }
 

@@ -1,6 +1,8 @@
 package org.example.utils;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,5 +30,16 @@ public class PictureConverter {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public URI convertBytesToURI(byte[] pictureBytes, String fileName) {
+        Path path = Paths.get(System.getProperty("user.dir"), fileName);
+        try (FileOutputStream fos = new FileOutputStream(path.toFile())) {
+            fos.write(pictureBytes);
+            return path.toUri();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
