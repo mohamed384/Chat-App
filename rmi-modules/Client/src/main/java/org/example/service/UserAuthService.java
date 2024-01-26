@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserDataValidator;
+import org.example.Utils.UserToken;
 import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
@@ -97,6 +98,8 @@ public class UserAuthService {
         UserDTO user;
         if (remoteObject != null) {
             user = remoteObject.login(phone, password);
+            UserToken userToken = UserToken.getInstance();
+            userToken.setUser(user);
             if (user != null) {
                 switchToMessagePage(actionEvent);
             } else {
@@ -122,27 +125,24 @@ public class UserAuthService {
     public boolean checkFiledValidation(String text, Label TextLabel, TextField textfield, ValidationType validationType) {
         boolean isValid = false;
         switch (validationType) {
-            case phone:
+            case phone -> {
                 isValid = UserDataValidator.isValidPhoneNumber(text);
                 System.out.println("Phone validation: " + isValid);
-
-                break;
-            case name:
+            }
+            case name -> {
                 isValid = UserDataValidator.isValidName(text);
                 System.out.println("Name validation: " + isValid);
-
-                break;
-            case email:
+            }
+            case email -> {
                 isValid = UserDataValidator.isValidEmail(text);
                 System.out.println("email validation: " + isValid);
-
-                break;
-            case password:
+            }
+            case password -> {
                 isValid = UserDataValidator.isValidPassword(text);
                 System.out.println("password validation: " + text);
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
 
 

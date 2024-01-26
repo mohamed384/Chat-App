@@ -2,15 +2,18 @@ package org.example.utils;
 
 import org.example.DTOs.UserDTO;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class SessionManager {
 
     private static SessionManager instance;
-    private UserDTO currentUser;
-    private UUID sessionToken;
+    private Set<UserDTO> currentUser;
+//    private UUID sessionToken;
 
     private SessionManager() {
+        currentUser= new HashSet<>();
     }
 
     public static SessionManager getInstance() {
@@ -21,22 +24,25 @@ public class SessionManager {
     }
 
     public void startSession(UserDTO user) {
-        this.currentUser = user;
-        this.sessionToken = UUID.randomUUID();
+        currentUser.add(user);
+//        this.sessionToken = UUID.randomUUID();
 
     }
 
-    public void endSession() {
-        this.currentUser = null;
-        this.sessionToken = null;
+    public void endSession(UserDTO user) {
+//        this.currentUser = null;
+        currentUser.remove(user);
+    }
+    public void endAllSessions(){
+        currentUser.clear();
     }
 
-    public UserDTO getCurrentUser() {
-        return currentUser;
-    }
-
-    public UUID getSessionToken() {
-        return sessionToken;
-    }
+//    public UserDTO getCurrentUser() {
+//        return currentUser;
+//    }
+//
+//    public UUID getSessionToken() {
+//        return sessionToken;
+//    }
 }
 

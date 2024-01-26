@@ -39,7 +39,7 @@ public class AddFriend {
     @FXML
     private Label searchNumber;
     UserDTO userDTO = null;
-    SessionManager sessionManager;
+
 
 
 
@@ -89,10 +89,9 @@ public class AddFriend {
 
 
     @FXML
-    void sendAdd(ActionEvent event) {
-        sessionManager = SessionManager.getInstance();
+    void sendAddRequest(ActionEvent event) {
         UserSendNotification remoteObject = UserNotificationController();
-        String senderId = sessionManager.getCurrentUser().getPhoneNumber();
+        String senderId = UserToken.getInstance().getUser().getPhoneNumber();
         String receiverId = userDTO.getPhoneNumber();
         System.out.println("Sender ID: " + senderId);
         System.out.println("Receiver ID: " + receiverId);

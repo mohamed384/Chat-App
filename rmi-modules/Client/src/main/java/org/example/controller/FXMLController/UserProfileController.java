@@ -28,7 +28,6 @@ public class UserProfileController implements Initializable {
     private Button updateBtn;
     @FXML
     private ImageView profileImg;
-    SessionManager sessionManager;
     UserDTO userDTO;
     public UserProfileController(){
 
@@ -39,9 +38,8 @@ public class UserProfileController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        sessionManager = SessionManager.getInstance();
         //System.out.println(sessionManager.getCurrentUser().toString());
-        userDTO= sessionManager.getCurrentUser();
+        userDTO= UserToken.getInstance().getUser();
         nameField.setText(userDTO.getDisplayName());
         emailField.setText(userDTO.getEmailAddress());
         bioField.setText(userDTO.getBio());
