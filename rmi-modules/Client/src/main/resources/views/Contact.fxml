@@ -8,17 +8,25 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="contact" alignment="CENTER" prefHeight="81.0" prefWidth="300.0" style="-fx-background-radius: 100;" stylesheets="@../styles/contacts.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
+<HBox fx:id="contact" alignment="CENTER" prefHeight="81.0" prefWidth="300.0" style="-fx-background-radius: 100;" stylesheets="@../styles/contacts.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.ContactAddFriendController">
    <children>
       <ImageView fx:id="userImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-         <HBox.margin>
-            <Insets bottom="10.0" right="10.0" top="10.0" />
-         </HBox.margin>
+
          <image>
             <Image url="@../images/profile.jpg" />
          </image>
+
+         <clip>
+            <Circle centerX="25" centerY="25" radius="25" />
+         </clip>
+
+         <HBox.margin>
+            <Insets bottom="10.0" right="10.0" top="10.0" />
+         </HBox.margin>
+
       </ImageView>
       <VBox prefHeight="70.0" prefWidth="187.0">
          <children>
@@ -49,7 +57,7 @@
             <Insets bottom="5.0" />
          </HBox.margin>
       </VBox>
-      <ImageView fx:id="status" fitHeight="54.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="status" fitHeight="54.0" fitWidth="43.0" onMouseClicked="#SendAddFriend" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../images/online.png" />
             </image>

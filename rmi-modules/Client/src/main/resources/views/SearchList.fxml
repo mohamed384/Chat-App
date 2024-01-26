@@ -48,7 +48,7 @@
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
                           <image>
-                            <Image url="@../images/add-contact.png" />
+                            <Image url="@../images/add-friend.png" />
                           </image>
                         </ImageView>
                      </graphic>
