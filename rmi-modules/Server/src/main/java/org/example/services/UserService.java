@@ -3,7 +3,7 @@ package org.example.services;
 
 import org.example.DTOs.UserDTO;
 import org.example.DAO.UserDAOImpl;
-import org.example.Utils.SessionManager;
+import org.example.utils.SessionManager;
 import org.example.models.Enums.UserStatus;
 import org.example.models.Mapper.UserMapper;
 import org.example.models.User;
@@ -84,7 +84,7 @@ public class UserService {
         boolean result = userDAO.update(user);
 
         if (result) {
-            SessionManager.getInstance().endSession();
+            //SessionManager.getInstance().endSession();
         }
         return result;
     }

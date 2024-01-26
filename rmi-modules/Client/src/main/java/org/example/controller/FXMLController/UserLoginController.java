@@ -12,7 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.example.DTOs.UserDTO;
-import org.example.Utils.SessionManager;
+import org.example.Utils.UserToken;
 import org.example.service.UserAuthService;
 
 import java.io.IOException;
@@ -39,9 +39,9 @@ public class UserLoginController {
     protected UserDTO login(ActionEvent actionEvent) throws IOException {
         UserDTO userDTO =  userAuthService.login(actionEvent, password, phoneNumber);
 
-        SessionManager sessionManager = SessionManager.getInstance();
-        sessionManager.startSession(userDTO);
-        return userDTO;
+//        SessionManager sessionManager = SessionManager.getInstance();
+//        sessionManager.startSession(userDTO);
+        return userAuthService.login(actionEvent, password, phoneNumber);
     }
 
 

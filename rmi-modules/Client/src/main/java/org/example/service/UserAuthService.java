@@ -14,20 +14,13 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.example.DTOs.UserDTO;
-import org.example.Utils.SessionManager;
 import org.example.Utils.UserDataValidator;
 import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.rmi.Naming;
-import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -230,9 +223,11 @@ public class UserAuthService {
         if (remoteObject != null) {
             UserDTO user1 = new UserDTO(phone, name, email, password, passwordConfirm, selectedGender, selectedCountry,
                     birthDate, "", UserStatus.Online, UserMode.Available, image);
-            SessionManager sessionManager = SessionManager.getInstance();
-            sessionManager.startSession(user1);
-            remoteObject.signup(user1);
+            if(!remoteObject.signup(user1)) return false;
+            UserToken userToken = UserToken.getInstance();
+            userToken.setUser(user1);
+//            SessionManager sessionManager = SessionManager.getInstance();
+//            sessionManager.startSession(user1);
             System.out.println("signup from client auth service is successfully done");
 
             switchToMessagePage(actionEvent);

@@ -4,14 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Circle;
 import org.example.DTOs.UserDTO;
-import org.example.Utils.SessionManager;
+import org.example.Utils.UserToken;
 import org.example.interfaces.UserAuthentication;
 import org.example.interfaces.UserSendNotification;
 
@@ -102,6 +100,7 @@ public class AddFriend {
             try {
                 boolean isNotificationSent = remoteObject.sendNotification(senderId, receiverId);
                 if (isNotificationSent) {
+                    requestImage.setImage(new Image("/images/remove.png"));
                     System.out.println("Notification sent successfully.");
                 } else {
                     System.out.println("Failed to send notification.");
@@ -111,11 +110,8 @@ public class AddFriend {
             }
         }
     }
-    @FXML
-    void sendAddRequest(ActionEvent event) {
 
 
-    }
 
 
 //    @Override

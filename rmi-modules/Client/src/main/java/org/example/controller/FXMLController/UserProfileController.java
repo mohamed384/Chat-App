@@ -8,21 +8,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Circle;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.LoadImage;
-import org.example.Utils.SessionManager;
+import org.example.Utils.UserToken;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 public class UserProfileController implements Initializable {
 

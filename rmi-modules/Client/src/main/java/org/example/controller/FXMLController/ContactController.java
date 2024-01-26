@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -28,6 +29,13 @@ public class ContactController {
 
     }
 
+    @FXML
+    private BorderPane borderPane;
+    public void initialize() {
+        borderPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("Height of the parent BorderPane: " + newValue);
+        });
+    }
     @FXML
     public void onAddContactClick(ActionEvent event) {
 
