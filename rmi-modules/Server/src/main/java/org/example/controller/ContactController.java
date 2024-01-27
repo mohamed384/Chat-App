@@ -6,6 +6,7 @@ import org.example.models.Contact;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 public class ContactController extends UnicastRemoteObject implements UserContact {
 
@@ -15,8 +16,25 @@ public class ContactController extends UnicastRemoteObject implements UserContac
     }
 
     @Override
-    public boolean addContact(Contact contact) {
+    public boolean addContact(String sender, String receiver)throws RemoteException {
 
+       Contact contact = new Contact(sender,receiver);
         return contactService.addContact(contact);
+    }
+
+
+
+    @Override
+    public boolean removeContact(String sender, String receiver) throws RemoteException {
+
+        Contact contact = new Contact(sender,receiver);
+        return contactService.removeContact(contact);
+
+    }
+
+    @Override
+    public List<Contact> getAllContactsByUserPhoneNumber(String sender) throws RemoteException {
+
+        return contactService.getAllContactsByUserId(sender);
     }
 }

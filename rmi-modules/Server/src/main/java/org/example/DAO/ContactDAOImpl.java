@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactDAOImpl implements ContactDAO {
     @Override
@@ -75,7 +77,42 @@ public class ContactDAOImpl implements ContactDAO {
         }
         return false;
     }
-//    private boolean isPendingRequest(int userID, int friendID) {
-//        return isFriend(userID, friendID);
-//    }
+
+
+    @Override
+    public List<Contact> getAllContactsByUserId(String userId) {
+        List<Contact> contacts = new ArrayList<>();
+        String query = "SELECT * FROM UserContacts WHERE UserID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                contacts.add(new Contact(rs.getString("FriendID"), rs.getString("UserID")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return contacts;
+
+    }
+
+
+    public boolean deleteContact(String userID, String friendID) {
+        String query = "DELETE FROM UserContacts WHERE (UserID = ? AND FriendID = ?) AND (UserID = ? AND FriendID = ?)";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, userID);
+            pstmt.setString(2, friendID);
+            pstmt.setString(3, friendID);
+            pstmt.setString(4, userID);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }
