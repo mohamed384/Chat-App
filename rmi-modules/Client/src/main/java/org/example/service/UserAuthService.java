@@ -14,6 +14,8 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.example.DTOs.UserDTO;
+import org.example.Utils.CheckFiledValidation;
+import org.example.Utils.Enum.ValidationTypes;
 import org.example.Utils.UserDataValidator;
 import org.example.Utils.UserToken;
 import org.example.interfaces.UserAuthentication;
@@ -71,13 +73,7 @@ public class UserAuthService {
         currentStage.show();
     }
 
-    private enum ValidationType {
-        phone,
-        name,
-        email,
-        password
 
-    }
 
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
@@ -98,10 +94,11 @@ public class UserAuthService {
         UserDTO user;
         if (remoteObject != null) {
             user = remoteObject.login(phone, password);
-            UserToken userToken = UserToken.getInstance();
-            userToken.setUser(user);
+
             if (user != null) {
                 switchToMessagePage(actionEvent);
+                UserToken userToken = UserToken.getInstance();
+                userToken.setUser(user);
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Login Failed");
@@ -117,51 +114,12 @@ public class UserAuthService {
             return null;
         }
 
-        PasswordLog.setText("");
-        PhoneLog.setText("");
+//        PasswordLog.setText("");
+//        PhoneLog.setText("");
         return user;
     }
 
-    public boolean checkFiledValidation(String text, Label TextLabel, TextField textfield, ValidationType validationType) {
-        boolean isValid = false;
-        switch (validationType) {
-            case phone -> {
-                isValid = UserDataValidator.isValidPhoneNumber(text);
-                System.out.println("Phone validation: " + isValid);
-            }
-            case name -> {
-                isValid = UserDataValidator.isValidName(text);
-                System.out.println("Name validation: " + isValid);
-            }
-            case email -> {
-                isValid = UserDataValidator.isValidEmail(text);
-                System.out.println("email validation: " + isValid);
-            }
-            case password -> {
-                isValid = UserDataValidator.isValidPassword(text);
-                System.out.println("password validation: " + text);
-            }
-            default -> {
-            }
-        }
 
-
-        if (!isValid) {
-            TextLabel.getStyleClass().add("not-valid-label");
-            TextLabel.getStyleClass().remove("valid-label");
-            textfield.getStyleClass().remove("custom-text-field");
-            textfield.getStyleClass().add("not-valid-text-field");
-            return false;
-        } else {
-
-            TextLabel.getStyleClass().add("valid-label");
-            TextLabel.getStyleClass().remove("not-valid-label");
-            textfield.getStyleClass().remove("not-valid-text-field");
-            textfield.getStyleClass().add("custom-text-field");
-            return true;
-
-        }
-    }
 
     public Boolean signup(ActionEvent actionEvent, TextField phoneSignUp, TextField nameSignUp,
                        TextField emailSignUp, String selectedCountry, DatePicker birthDateSignUp
@@ -186,10 +144,10 @@ public class UserAuthService {
         byte[] image = convertImageToByteArray(imageSignUp.getImage());
 
 
-        boolean isValidPhone = checkFiledValidation(phone, phoneValidLabel, phoneSignUp, ValidationType.phone);
-        boolean isValidName = checkFiledValidation(name, nameValidLabel, nameSignUp, ValidationType.name);
-        boolean isValidEmail = checkFiledValidation(email, emailValidLabel, emailSignUp, ValidationType.email);
-        boolean isValidPassword = checkFiledValidation(password, passwordValidLabel, passwordSignUp, ValidationType.password);
+        boolean isValidPhone = CheckFiledValidation.checkFiledValidation(phone, phoneValidLabel, phoneSignUp, ValidationTypes.phone);
+        boolean isValidName = CheckFiledValidation.checkFiledValidation(name, nameValidLabel, nameSignUp, ValidationTypes.name);
+        boolean isValidEmail = CheckFiledValidation.checkFiledValidation(email, emailValidLabel, emailSignUp, ValidationTypes.email);
+        boolean isValidPassword = CheckFiledValidation.checkFiledValidation(password, passwordValidLabel, passwordSignUp, ValidationTypes.password);
         if (selectedCountry == null) {
             counrtyValidLabel.getStyleClass().remove("valid-label");
             counrtyValidLabel.getStyleClass().add("not-valid-label");
@@ -226,8 +184,6 @@ public class UserAuthService {
             if(!remoteObject.signup(user1)) return false;
             UserToken userToken = UserToken.getInstance();
             userToken.setUser(user1);
-//            SessionManager sessionManager = SessionManager.getInstance();
-//            sessionManager.startSession(user1);
             System.out.println("signup from client auth service is successfully done");
 
             switchToMessagePage(actionEvent);

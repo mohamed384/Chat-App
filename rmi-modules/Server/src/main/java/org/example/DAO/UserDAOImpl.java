@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.sql.*;
 import java.util.Base64;
 
-public class UserDAOImpl implements DAO<User>{
+public class UserDAOImpl implements DAO<User> {
 
     @Override
     public boolean create(User user) {
@@ -22,11 +22,11 @@ public class UserDAOImpl implements DAO<User>{
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
 
-                    User existingUser = findByPhoneNumber(user.getPhoneNumber());
-                    if (existingUser != null) {
-                        System.out.println("Phone number already exists");
-                        return false;
-                    }
+                User existingUser = findByPhoneNumber(user.getPhoneNumber());
+                if (existingUser != null) {
+                    System.out.println("Phone number already exists");
+                    return false;
+                }
 
                 if (user == null) {
                     System.out.println("User is null");
@@ -45,22 +45,6 @@ public class UserDAOImpl implements DAO<User>{
                     preparedStatement.setString(2, user.getDisplayName());
 
                     preparedStatement.setString(3, user.getEmailAddress());
-
-                   /*
-                    byte[] picture;
-                    System.out.println(user.getPicture());
-                    if (user.getPicture().isEmpty() || user.getPicture().contains("javafx")) {
-                        picture = new PictureConverter().getDefaultPictureData();
-                        System.out.println("Default picture");
-                    }
-                    else {
-                        // Load picture data from a file
-                        System.out.println("User picture");
-                        picture = new PictureConverter().getPictureData(user.getPicture());
-                    }
-
-                    */
-
                     Blob picture = ImageConvertor.bytesToBlob(user.getPicture());
 
                     preparedStatement.setBlob(4, picture);
@@ -70,7 +54,7 @@ public class UserDAOImpl implements DAO<User>{
                     preparedStatement.setString(7, user.getCountry());
                     Date sqlDateOfBirth = new Date(user.getDateOfBirth().getTime());
                     preparedStatement.setDate(8, sqlDateOfBirth);
-                    if(user.getBio().isEmpty()) {
+                    if (user.getBio().isEmpty()) {
                         preparedStatement.setString(9, "Hi there! I'm using CypherChat");
                     }
                     System.out.println(user.getEmailAddress());
@@ -101,26 +85,22 @@ public class UserDAOImpl implements DAO<User>{
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
 
-                String sql = "UPDATE Users SET DisplayName = ?, EmailAddress = ?, " +
-                        "ProfilePicture = ?, PasswordHash = ?, Gender = ?, Country = ?, DateOfBirth = ?, Bio = ?, " +
-                        "UserMode = ?, UserStatus = ?, LastLogin = ? WHERE PhoneNumber = ?";
-            //ImageConvertor.bytesToBlob(user.getPicture())
+                String sql = "UPDATE Users " +
+                        "SET DisplayName = ?, " +
+                        "    EmailAddress = ?, " +
+                        "    ProfilePicture = ?, " +
+                        "    Bio = ? " +
+                        "WHERE PhoneNumber = ?";
+
+                //ImageConvertor.bytesToBlob(user.getPicture())
                 try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                     preparedStatement.setString(1, user.getDisplayName());
                     preparedStatement.setString(2, user.getEmailAddress());
                     preparedStatement.setBlob(3, ImageConvertor.bytesToBlob(user.getPicture()));
-                    preparedStatement.setString(4, PasswordHashing.hashPassword(user.getPasswordHash()));
-                    preparedStatement.setString(5, user.getGender());
-                    preparedStatement.setString(6, user.getCountry());
-                    Date sqlDateOfBirth = new Date(user.getDateOfBirth().getTime());
-                    preparedStatement.setDate(7, sqlDateOfBirth);
-                    preparedStatement.setString(8, user.getBio());
-                    preparedStatement.setString(9, user.getUserMode());
-                    preparedStatement.setString(10, user.getUserStatus().name());
-                    preparedStatement.setTimestamp(11, user.getLastLogin());
-                    preparedStatement.setString(12, user.getPhoneNumber());
-
+                    preparedStatement.setString(4, user.getBio());
+                    preparedStatement.setString(5, user.getPhoneNumber());
                     preparedStatement.executeUpdate();
+                    System.out.println("Updated Successfully");
                     return true;
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -162,7 +142,7 @@ public class UserDAOImpl implements DAO<User>{
                                     resultSet.getDate(9),
                                     resultSet.getString(10),
                                     UserStatus.valueOf(resultSet.getString(12)),
-                                   resultSet.getString(11),
+                                    resultSet.getString(11),
                                     resultSet.getTimestamp(13)
 
                             );

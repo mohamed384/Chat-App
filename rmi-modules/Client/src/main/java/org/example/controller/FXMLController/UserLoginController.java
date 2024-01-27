@@ -33,9 +33,6 @@ public class UserLoginController {
 
     @FXML
     protected UserDTO login(ActionEvent actionEvent) throws IOException {
-
-//        SessionManager sessionManager = SessionManager.getInstance();
-//        sessionManager.startSession(userDTO);
         return userAuthService.login(actionEvent, password, phoneNumber);
     }
 

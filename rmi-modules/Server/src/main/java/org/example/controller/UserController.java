@@ -11,7 +11,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class UserController extends UnicastRemoteObject implements UserAuthentication {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserController() throws RemoteException {
         this.userService = new UserService();
@@ -32,6 +32,11 @@ public class UserController extends UnicastRemoteObject implements UserAuthentic
     @Override
     public UserDTO getUser(String phoneNumber) throws RemoteException {
         return userService.getUser(phoneNumber);
+    }
+
+    @Override
+    public boolean updateUser(UserDTO userDto) throws RemoteException {
+        return userService.updateUser(userDto);
     }
 
 

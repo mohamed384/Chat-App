@@ -43,15 +43,19 @@ public class UserService {
 
         User user = UserMapper.INSTANCE.toUser(userDto);
         SessionManager.getInstance().startSession(userDto);
-        System.out.println("I'm SessionManager from Server Service before accessing userDAO.Create()" + userDto.toString());
+        System.out.println("I'm SessionManager from Server Service before accessing userDAO.Create()" + userDto);
         return userDAO.create(user);
     }
     public UserDTO login (String phoneNumber,  String password) {
 
         User user = UserDAOImpl.findByPhoneNumber(phoneNumber);
-        String passwordHash = user.getPasswordHash();
+        String passwordHash ;
+        if(user == null){
+            System.out.println("user Not Found");
+             return null;
+        }
+        passwordHash = user.getPasswordHash();
         password = PasswordHashing.hashPassword(password);
-        System.out.println(passwordHash);
 
         if (passwordHash.equals(password)) {
             System.out.println("Login successful");
@@ -99,6 +103,10 @@ public class UserService {
 
         UserDTO userDto = UserMapper.INSTANCE.toDTO(user);
         return userDto;
+    }
+    public boolean updateUser(UserDTO userDto){
+        User user = UserMapper.INSTANCE.toUser(userDto);
+       return userDAO.update(user);
     }
 
 }

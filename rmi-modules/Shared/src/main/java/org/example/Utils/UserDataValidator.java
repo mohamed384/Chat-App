@@ -18,6 +18,9 @@ public class UserDataValidator {
     public static boolean isValidPassword(String password) {
         return password.length() >= 8;
     }
+    public static boolean isValidBio(String bio) {
+        return bio.length() <= 50;
+    }
 
     private static final Pattern NAME_PATTERN =
             Pattern.compile("^[a-zA-Z]{1,30}( [a-zA-Z]{1,30})?$");
