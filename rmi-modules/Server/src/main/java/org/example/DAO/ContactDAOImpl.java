@@ -42,16 +42,34 @@ public class ContactDAOImpl implements ContactDAO {
         } else {
             return false;
         }
+
     }
 
-    private boolean isPendingRequest(String userID, String friendID) {
-        String query = "SELECT * FROM UserContacts WHERE UserID = ? AND FriendID = ?";
+    private boolean inviteAccepted(String userID, String friendID) {
+        String query = "SELECT * FROM usernotifications  WHERE ReceiverID = ? AND SenderID = ? AND" +
+                "NotificationMessage = 'Hi, I want to connect with you!'";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, userID);
-            pstmt.setString(2, friendID);
+            pstmt.setString(1,userID  );
+            pstmt.setString(2, friendID );
             ResultSet rs = pstmt.executeQuery();
             return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    private boolean isPendingRequest(String userID, String friendID) {
+        String query = "SELECT * FROM usernotifications  WHERE ReceiverID = ? AND SenderID = ? AND" +
+                "NotificationMessage = 'Hi, I want to connect with you!'";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, userID );
+            pstmt.setString(2,  friendID );
+            ResultSet rs = pstmt.executeQuery();
+           return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
