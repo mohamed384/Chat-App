@@ -91,6 +91,7 @@ public class AddFriend {
     @FXML
     void sendAddRequest(ActionEvent event) {
         UserSendNotification remoteObject = UserNotificationController();
+        System.out.println(remoteObject);
         String senderId = UserToken.getInstance().getUser().getPhoneNumber();
         String receiverId = userDTO.getPhoneNumber();
         System.out.println("Sender ID: " + senderId);

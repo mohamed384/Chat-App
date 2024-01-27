@@ -1,10 +1,13 @@
 package org.example.models;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Contact {
+public class Contact implements Serializable {
     private String friendID;
     private String userID;
+
+
     //private Timestamp creationDate;
 
 

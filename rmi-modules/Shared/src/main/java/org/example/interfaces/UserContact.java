@@ -1,5 +1,7 @@
 package org.example.interfaces;
 
+import org.example.DTOs.ContactDTO;
+import org.example.DTOs.UserDTO;
 import org.example.models.Contact;
 
 import java.rmi.Remote;
@@ -11,5 +13,5 @@ public interface UserContact extends Remote {
 
     boolean removeContact(String sender, String receiver) throws RemoteException;
 
-    List<Contact> getAllContactsByUserPhoneNumber(String sender) throws RemoteException;
+    List<UserDTO> getAllContactsByUserPhoneNumber(String sender) throws RemoteException;
 }

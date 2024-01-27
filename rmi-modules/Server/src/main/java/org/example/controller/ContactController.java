@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import org.example.DTOs.ContactDTO;
+import org.example.DTOs.UserDTO;
 import org.example.services.ContactService;
 import org.example.interfaces.UserContact;
 import org.example.models.Contact;
@@ -33,7 +35,7 @@ public class ContactController extends UnicastRemoteObject implements UserContac
     }
 
     @Override
-    public List<Contact> getAllContactsByUserPhoneNumber(String sender) throws RemoteException {
+    public List<UserDTO> getAllContactsByUserPhoneNumber(String sender) throws RemoteException {
 
         return contactService.getAllContactsByUserId(sender);
     }

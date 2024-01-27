@@ -2,12 +2,12 @@ package org.example.DAO;
 
 import org.example.DAO.interfaces.ContactDAO;
 import org.example.models.Contact;
+import org.example.models.Enums.UserStatus;
+import org.example.models.User;
 import org.example.utils.DBConnection;
+import org.example.utils.ImageConvertor;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,21 +80,58 @@ public class ContactDAOImpl implements ContactDAO {
 
 
     @Override
-    public List<Contact> getAllContactsByUserId(String userId) {
-        List<Contact> contacts = new ArrayList<>();
-        String query = "SELECT * FROM UserContacts WHERE UserID = ?";
+//    public List<Contact> getAllContactsByUserId(String userId) {
+//        List<Contact> contacts = new ArrayList<>();
+//        String query = "SELECT * FROM UserContacts WHERE UserID = ?";
+//        try (Connection connection = DBConnection.getConnection();
+//             PreparedStatement pstmt = connection.prepareStatement(query)) {
+//            pstmt.setString(1, userId);
+//            ResultSet rs = pstmt.executeQuery();
+//            while (rs.next()) {
+//                contacts.add(new Contact(rs.getString("FriendID"), rs.getString("UserID")));
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(contacts);
+//        return contacts;
+//
+//    }
+    public List<User> getAllContactsByUserId(String userId) {
+        List<User> contacts = new ArrayList<>();
+        String query = "SELECT users.* FROM \n" +
+                "users inner join usercontacts \n" +
+                "on usercontacts.UserID  = ? \n" +
+                "where usercontacts.FriendID = users.PhoneNumber;";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                contacts.add(new Contact(rs.getString("FriendID"), rs.getString("UserID")));
+                Blob picture = rs.getBlob(5);
+                byte[] pictureBytes = ImageConvertor.BlobToBytes(picture);
+                User contact = new User(
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        pictureBytes,
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getDate(9),
+                        rs.getString(10),
+                        UserStatus.valueOf(rs.getString(12)),
+                        rs.getString(11),
+                        rs.getTimestamp(13)
+                );
+                contacts.add(contact);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return contacts;
-
     }
 
 
