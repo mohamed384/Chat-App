@@ -26,8 +26,6 @@ public class ContactController {
     private TreeView<UserDTO> contactsTreeView;
 
     private final ContactService contactService;
-    private final ObservableList<UserDTO> offlineContacts = FXCollections.observableArrayList();
-    private final ObservableList<UserDTO> onlineContacts = FXCollections.observableArrayList();
 
     public ContactController() {
         this.contactService = new ContactService();
@@ -62,6 +60,8 @@ public class ContactController {
 
         onlineContactsTreeItem.setExpanded(true);
         offlineContactsTreeItem.setExpanded(true);
+
+
 
         contactsTreeView.setCellFactory(param -> new TreeCell<UserDTO>() {
             @Override
@@ -125,8 +125,5 @@ public class ContactController {
         newWindow.setTitle("Add Friend");
         newWindow.setScene(secondScene);
         newWindow.show();
-
-
-
     }
 }
