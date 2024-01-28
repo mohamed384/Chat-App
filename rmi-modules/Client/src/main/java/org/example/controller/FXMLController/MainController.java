@@ -60,15 +60,6 @@ public class MainController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessagePage.fxml"));
 
         try {
-            /*
-            HiddenSidesPane pane = loader.load();
-            pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-            borderPane.setCenter(null);
-            borderPane.setCenter(pane);
-
-             */
-
             HiddenSidesPane pane = loader.load();
             pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -100,6 +91,17 @@ public class MainController {
 
     @FXML
     public void goToNotification(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Notification.fxml"));
+        try {
+            BorderPane pane = loader.load();
+            pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+            borderPane.setCenter(null);
+            borderPane.setCenter(pane);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @FXML
