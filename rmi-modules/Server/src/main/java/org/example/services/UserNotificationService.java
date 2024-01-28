@@ -1,7 +1,10 @@
 package org.example.services;
 
 import org.example.DAO.UserNotificationDAOImpl;
+import org.example.DTOs.NotificationDto;
 import org.example.models.UserNotification;
+
+import java.util.List;
 
 public class UserNotificationService {
     private final UserNotificationDAOImpl userNotificationDAO;
@@ -23,6 +26,10 @@ public class UserNotificationService {
         userNotification.setSenderID(sender);
         userNotification.setReceiverID(receiver);
         return userNotificationDAO.create(userNotification);
+    }
+
+    public List<NotificationDto> receiveNotification(String phone){
+       return userNotificationDAO.receiveNotification(phone);
     }
 
 }

@@ -1,0 +1,33 @@
+.accept-btn{
+    -fx-background-color: linear-gradient(to top right ,#9b75d0  , #6639a6);
+    -fx-text-fill:white;
+    -fx-border-color:#9b75d0;
+    -fx-border-width: 0;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+    -fx-font-weight: 500;
+    -fx-line-spacing: 20px;
+    -fx-padding: 5px 15px;
+}
+.accept-btn:hover{
+    -fx-background-color:#361b72;
+    -fx-transition-duration: 0.3s;
+    }
+
+.cancel-btn{
+    -fx-background-color: #FF0000;
+    -fx-text-fill:white;
+    -fx-border-color:red;
+    -fx-border-width: 0;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+    -fx-font-weight: 500;
+    -fx-line-spacing: 20px;
+    -fx-padding: 5px 15px;
+}
+.cancel-btn:hover{
+    -fx-background-color: #8b0000;
+    -fx-transition-duration: 0.3s;
+}

@@ -34,11 +34,6 @@ import java.util.Date;
         public UserDTO() {
         }
 
-//        public UserDTO(String phoneNumber, String displayName, String passwordHash) {
-//            this.phoneNumber = phoneNumber;
-//            this.displayName = displayName;
-//            this.passwordHash = passwordHash;
-//        }
 
 
 
@@ -71,19 +66,6 @@ import java.util.Date;
             this.lastSeen  = new Timestamp(System.currentTimeMillis());
 
         }
-
-
-//        public UserDTO(String phoneNumber, String displayName, String email, String passwordHash, String confirmPassword,
-//                       String gender, String country, Date dateOfBirth, String bio, UserStatus status, Timestamp lastSeen,
-//                       String picture) {
-//
-//            this(phoneNumber, displayName, email, passwordHash, confirmPassword, gender, country,
-//                    dateOfBirth, bio, status, picture);
-//            this.lastSeen = lastSeen;
-//        }
-
-
-
 
         @Override
         public String toString() {
