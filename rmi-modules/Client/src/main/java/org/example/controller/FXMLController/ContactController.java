@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TreeCell;
@@ -19,13 +20,17 @@ import org.example.models.Enums.UserStatus;
 import org.example.service.ContactService;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ContactController {
+public class ContactController implements Initializable {
 
     @FXML
     private TreeView<UserDTO> contactsTreeView;
 
     private final ContactService contactService;
+    private final ObservableList<UserDTO> offlineContacts = FXCollections.observableArrayList();
+    private final ObservableList<UserDTO> onlineContacts = FXCollections.observableArrayList();
 
     public ContactController() {
         this.contactService = new ContactService();
@@ -40,9 +45,8 @@ public class ContactController {
 
     }
 
-    @FXML
-    public void initialize() {
-        //contactsTreeView.getStylesheets().add(getClass().getResource("/styles/treeview.css").toExternalForm());
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         populateContactsTree();
     }
 
@@ -60,8 +64,6 @@ public class ContactController {
 
         onlineContactsTreeItem.setExpanded(true);
         offlineContactsTreeItem.setExpanded(true);
-
-
 
         contactsTreeView.setCellFactory(param -> new TreeCell<UserDTO>() {
             @Override
@@ -125,5 +127,10 @@ public class ContactController {
         newWindow.setTitle("Add Friend");
         newWindow.setScene(secondScene);
         newWindow.show();
+
+
+
     }
+
+
 }

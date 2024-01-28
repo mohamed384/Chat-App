@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
+import java.io.ByteArrayInputStream;
+
 public class ContactAddFriendController {
 
     @FXML
@@ -39,6 +41,17 @@ public class ContactAddFriendController {
     void SendAddFriend(MouseEvent event) {
 
 
+    }
+
+    public void setUserName(String name) {
+        userName.setText(name);
+    }
+
+    public void setUserNumber(String number) {
+        userNumber.setText(number);
+    }
+    public void setUserImg(byte [] img){
+        userImg.setImage(new Image(new ByteArrayInputStream(img)));
     }
 
 
