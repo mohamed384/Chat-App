@@ -22,12 +22,8 @@
     -fx-background-color:#361b72;
     -fx-transition-duration: 0.3s;
 }
-.list-cell {
-    -fx-background-color: transparent;
-    -fx-padding: 10;
-}
 
-.list-view {
+.tree-view {
     -fx-background-color: transparent;
     -fx-control-inner-background: transparent;
     -fx-control-inner-background-alt: transparent;
@@ -35,6 +31,22 @@
 .textfield:hover {
     -fx-background-color: white;
 }
-.contact-color{
-    -fx-background-color: #d3bdde;
+
+
+.tree-cell {
+    -fx-padding: 5px;
+    -fx-background-color: transparent;
+}
+
+.tree-cell:selected {
+    -fx-background-color: purple;
+    -fx-text-fill: white;
+}
+
+.tree-cell:focused {
+    -fx-background-color: purple;
+}
+
+.tree-cell:focused:selected {
+    -fx-background-color:purple;
 }
