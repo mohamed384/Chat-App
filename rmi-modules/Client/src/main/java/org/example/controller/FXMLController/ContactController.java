@@ -1,6 +1,7 @@
 package org.example.controller.FXMLController;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,6 +49,16 @@ public class ContactController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateContactsTree();
+
+//        // Add ListChangeListener to onlineContacts
+//        onlineContacts.addListener((ListChangeListener.Change<? extends UserDTO> c) -> {
+//            populateContactsTree();
+//        });
+//
+//        // Add ListChangeListener to offlineContacts
+//        offlineContacts.addListener((ListChangeListener.Change<? extends UserDTO> c) -> {
+//            populateContactsTree();
+//        });
     }
 
     private void populateContactsTree() {
@@ -59,8 +70,8 @@ public class ContactController implements Initializable {
         contactsTreeView.setRoot(root);
         contactsTreeView.getRoot().getChildren().addAll(onlineContactsTreeItem, offlineContactsTreeItem);
 
-        populateContacts(onlineContactsTreeItem, getContactsByStatus(UserStatus.Online));
-        populateContacts(offlineContactsTreeItem, getContactsByStatus(UserStatus.Offline));
+        populateContacts(onlineContactsTreeItem,getOnlineContacts());
+        populateContacts(offlineContactsTreeItem, getOfflineContacts());
 
         onlineContactsTreeItem.setExpanded(true);
         offlineContactsTreeItem.setExpanded(true);
@@ -107,6 +118,17 @@ public class ContactController implements Initializable {
         for (UserDTO contact : contacts) {
             treeItem.getChildren().add(new TreeItem<>(contact));
         }
+    }
+
+    private ObservableList<UserDTO> getOfflineContacts() {
+        ObservableList<UserDTO> contacts = FXCollections.observableArrayList(contactService.getAllContacts());
+        contacts.removeIf(contact -> contact.getUserStatus() != UserStatus.Offline);
+        return contacts;
+    }
+    private ObservableList<UserDTO> getOnlineContacts() {
+        ObservableList<UserDTO> contacts = FXCollections.observableArrayList(contactService.getAllContacts());
+        contacts.removeIf(contact -> contact.getUserStatus() != UserStatus.Online);
+        return contacts;
     }
 
     @FXML
