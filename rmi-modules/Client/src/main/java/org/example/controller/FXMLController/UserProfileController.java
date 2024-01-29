@@ -2,7 +2,6 @@ package org.example.controller.FXMLController;
 
 
 import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -59,18 +58,7 @@ public class UserProfileController implements Initializable {
         nameField.setText(userDTO.getDisplayName());
         emailField.setText(userDTO.getEmailAddress());
         bioField.setText(userDTO.getBio());
-//        Image image = new Image("/images/profile.jpg");
-//
-//        profileImg.setImage(image);
-//        System.out.println(image);
-
-        Image image = new Image(new ByteArrayInputStream(userDTO.getPicture()));
-
-// Create an ImageView and set the Image
-        ImageView imageView = new ImageView(image);
-
-// Assuming profileImg is your ImageView
-        profileImg.setImage(imageView.getImage());
+        profileImg.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
         btnUpdateAccordingField();
     }
 

@@ -7,7 +7,6 @@ import org.example.utils.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.sql.*;
 import java.util.Base64;
@@ -46,9 +45,9 @@ public class UserDAOImpl implements DAO<User> {
                     preparedStatement.setString(2, user.getDisplayName());
 
                     preparedStatement.setString(3, user.getEmailAddress());
-                   // Blob picture = ImageConvertor.bytesToBlob(user.getPicture());
+                    Blob picture = ImageConvertor.bytesToBlob(user.getPicture());
 
-                    preparedStatement.setBinaryStream(4,new ByteArrayInputStream( user.getPicture()));
+                    preparedStatement.setBlob(4, picture);
                     preparedStatement.setString(5, PasswordHashing.hashPassword(user.getPasswordHash()));
 
                     preparedStatement.setString(6, user.getGender());
@@ -97,7 +96,7 @@ public class UserDAOImpl implements DAO<User> {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                     preparedStatement.setString(1, user.getDisplayName());
                     preparedStatement.setString(2, user.getEmailAddress());
-                    preparedStatement.setBytes(3, user.getPicture());
+                    preparedStatement.setBytes(3,user.getPicture());
                     preparedStatement.setString(4, user.getBio());
                     preparedStatement.setString(5, user.getPhoneNumber());
                     preparedStatement.executeUpdate();
@@ -128,15 +127,15 @@ public class UserDAOImpl implements DAO<User> {
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         if (resultSet.next()) {
 
-                            Blob picture = resultSet.getBlob(5);
-                            byte[] pictureBytes = picture.getBytes(1,(int)picture.length());
 
+                         //   Blob picture = resultSet.getBlob(5);
+                          //  byte[] pictureBytes = ImageConvertor.BlobToBytes(picture);
 
                             user = new User(
                                     resultSet.getString(2),
                                     resultSet.getString(3),
                                     resultSet.getString(4),
-                                    pictureBytes,
+                                    resultSet.getBytes(5),
                                     resultSet.getString(6),
                                     resultSet.getString(7),
                                     resultSet.getString(8),
