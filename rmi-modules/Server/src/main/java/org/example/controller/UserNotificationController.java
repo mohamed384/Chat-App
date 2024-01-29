@@ -23,4 +23,15 @@ public class UserNotificationController extends UnicastRemoteObject implements U
     public List<NotificationDto> receiveNotification(String phoneNumber) throws RemoteException {
         return userNotificationService.receiveNotification(phoneNumber);
     }
+
+    @Override
+    public boolean notificationExists(String senderId, String receiverId) throws RemoteException{
+        return userNotificationService.notificationExists(senderId, receiverId);
+    }
+
+    @Override
+    public boolean deleteNotification(String userID, String friendID) throws RemoteException {
+        return userNotificationService.deleteNotification(userID,friendID);
+    }
+
 }

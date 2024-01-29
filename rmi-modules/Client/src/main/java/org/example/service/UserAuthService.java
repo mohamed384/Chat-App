@@ -2,6 +2,7 @@ package org.example.service;
 
 
 //import javafx.embed.swing.SwingFXUtils;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -22,6 +23,9 @@ import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.time.LocalDate;
@@ -32,25 +36,16 @@ import java.util.Date;
 public class UserAuthService {
 
 
-    private byte[] convertImageToByteArray(Image image)  {
-        int width = (int) image.getWidth();
-        int height = (int) image.getHeight();
-        byte[] imageBytes = new byte[width * height * 4]; // Assuming 4 bytes per pixel (RGBA)
-
-        PixelReader pixelReader = image.getPixelReader();
-        int pixelIndex = 0;
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Color color = pixelReader.getColor(x, y);
-                imageBytes[pixelIndex++] = (byte) (color.getRed() * 255);     // Red
-                imageBytes[pixelIndex++] = (byte) (color.getGreen() * 255);   // Green
-                imageBytes[pixelIndex++] = (byte) (color.getBlue() * 255);    // Blue
-                imageBytes[pixelIndex++] = (byte) (color.getOpacity() * 255); // Alpha
-            }
+    public byte[] convertImageToByteArray(Image image) {
+        try {
+            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", baos);
+            return baos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-
-        return imageBytes;
     }
 
 
@@ -184,6 +179,7 @@ public class UserAuthService {
             if(!remoteObject.signup(user1)) return false;
             UserToken userToken = UserToken.getInstance();
             userToken.setUser(user1);
+            System.out.println("from User Auth"+ user1.getPicture());
             System.out.println("signup from client auth service is successfully done");
 
             switchToMessagePage(actionEvent);

@@ -128,8 +128,8 @@ public class UserDAOImpl implements DAO<User> {
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         if (resultSet.next()) {
 
-//                            Blob picture = resultSet.getBlob(5);
-                            byte[] pictureBytes = resultSet.getBytes(5);
+                            Blob picture = resultSet.getBlob(5);
+                            byte[] pictureBytes = picture.getBytes(1,(int)picture.length());
 
 
                             user = new User(

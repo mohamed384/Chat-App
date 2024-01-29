@@ -42,6 +42,8 @@ public class UserService {
         //User user = userMapper.toUser(userDto);
 
         User user = UserMapper.INSTANCE.toUser(userDto);
+        System.out.println("#############################################");
+        System.out.println("from User service"+ user.getPicture());
         SessionManager.getInstance().startSession(userDto);
         System.out.println("I'm SessionManager from Server Service before accessing userDAO.Create()" + userDto);
         return userDAO.create(user);

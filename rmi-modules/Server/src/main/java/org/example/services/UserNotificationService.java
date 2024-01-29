@@ -4,6 +4,7 @@ import org.example.DAO.UserNotificationDAOImpl;
 import org.example.DTOs.NotificationDto;
 import org.example.models.UserNotification;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class UserNotificationService {
@@ -31,5 +32,14 @@ public class UserNotificationService {
     public List<NotificationDto> receiveNotification(String phone){
        return userNotificationDAO.receiveNotification(phone);
     }
+    public boolean notificationExists(String sender, String receiver) {
+        return userNotificationDAO.findBySenderAndReceiver(sender, receiver) != null;
+    }
+    public boolean deleteNotification(String userID, String friendID) {
+        return userNotificationDAO.deleteNotification(userID,friendID);
+    }
+
+
+
 
 }

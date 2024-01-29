@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserNotificationDAOImpl implements DAO<UserNotification> {
+public class UserNotificationDAOImpl extends HandleContactAndNotification implements DAO<UserNotification> {
     @Override
     public boolean create(UserNotification notification) {
         try (Connection connection = DBConnection.getConnection()) {
@@ -84,6 +84,8 @@ public class UserNotificationDAOImpl implements DAO<UserNotification> {
 
         return notifications;
     }
+
+
 
 }
 

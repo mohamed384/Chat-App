@@ -7,10 +7,11 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public interface UserContact extends Remote {
+public interface UserContact extends Remote  {
     boolean addContact(String sender, String receiver) throws RemoteException;
 
     boolean removeContact(String sender, String receiver) throws RemoteException;
 
     List<UserDTO> getAllContactsByUserPhoneNumber(String sender) throws RemoteException;
+    boolean acceptInvite(String senderId, String receiverId) throws RemoteException;
 }

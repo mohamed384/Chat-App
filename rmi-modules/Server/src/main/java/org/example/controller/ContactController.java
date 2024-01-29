@@ -39,4 +39,11 @@ public class ContactController extends UnicastRemoteObject implements UserContac
 
         return contactService.getAllContactsByUserId(sender);
     }
+
+    @Override
+    public boolean acceptInvite(String senderId, String receiverId) throws RemoteException{
+        return contactService.acceptInvite(senderId, receiverId);
+    }
+
+
 }
