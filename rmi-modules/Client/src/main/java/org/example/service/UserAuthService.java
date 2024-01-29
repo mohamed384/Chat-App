@@ -8,16 +8,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.DisplacementMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.CheckFiledValidation;
 import org.example.Utils.Enum.ValidationTypes;
 import org.example.Utils.UserDataValidator;
 import org.example.Utils.UserToken;
+import org.example.interfaces.CallBackClient;
+import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
@@ -90,15 +94,15 @@ public class UserAuthService {
         String phone = PhoneLog.getText();
         UserAuthentication remoteObject = UserAuthRemoteObject();
 
-
         UserDTO user;
         if (remoteObject != null) {
             user = remoteObject.login(phone, password);
 
             if (user != null) {
-                switchToMessagePage(actionEvent);
                 UserToken userToken = UserToken.getInstance();
                 userToken.setUser(user);
+                switchToMessagePage(actionEvent);
+
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Login Failed");
@@ -113,7 +117,7 @@ public class UserAuthService {
         } else {
             return null;
         }
-
+            
 //        PasswordLog.setText("");
 //        PhoneLog.setText("");
         return user;

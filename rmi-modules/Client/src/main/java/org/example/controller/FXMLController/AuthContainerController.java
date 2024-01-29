@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import org.example.Utils.UserToken;
+import org.example.interfaces.CallBackServer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,17 +29,20 @@ public class AuthContainerController implements Initializable {
     private BorderPane mainBorderPane;
 
     private void loadLoginPane() {
-        try {
-            // Load the FXML file for the login pane
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Login.fxml"));
-            BorderPane loginPane = loader.load();
+        // Load the login page from the FXML file
+        System.out.println("hoooooo");
+              BorderPane loginPane = PaneLoaderFactory.loginPageLoader().getKey();
+                // Set the login pane as the center of the BorderPane
+              mainBorderPane.setCenter(loginPane);
 
-            // Set the login pane as the center of the BorderPane
-            mainBorderPane.setCenter(loginPane);
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception appropriately
-        }
+    public void handleLogout() {
+
+        System.out.println("Before loading login pane");
+        loadLoginPane();
+        System.out.println("After loading login pane");
+
     }
 
     public void switchToPane(Pane signupPane) {
