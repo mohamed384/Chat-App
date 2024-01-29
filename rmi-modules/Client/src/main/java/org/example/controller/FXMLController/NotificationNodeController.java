@@ -7,8 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.example.Utils.UserToken;
+import org.example.interfaces.UserContact;
+import org.example.interfaces.UserSendNotification;
 
 import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class NotificationNodeController implements Initializable {
@@ -23,6 +28,13 @@ public class NotificationNodeController implements Initializable {
     public Button acceptBtn;
     public Button rejectBtn;
     NotificationController notificationController;
+    UserSendNotification remoteNotificationObject;
+    UserContact remoteContactObject ;
+    public  NotificationNodeController() {
+        remoteNotificationObject = UserNotificationController();
+        remoteContactObject=  UserContactController();
+    }
+
 
     public void setNotificationController(NotificationController notificationController) {
         this.notificationController = notificationController;
@@ -48,14 +60,49 @@ public class NotificationNodeController implements Initializable {
 
     public void acceptClicked() {
         notificationController.removeNotification(userNumber.getText());
-
-
+        acceptFriendRequest();
     }
 
     public void rejectClicked() {
         notificationController.removeNotification(userNumber.getText());
+        try {
+            remoteNotificationObject.deleteNotification(UserToken.getInstance().getUser().getPhoneNumber(),userNumber.getText());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
+    private UserSendNotification UserNotificationController() {
+        UserSendNotification remoteObject = null;
+        try {
+            remoteObject = (UserSendNotification) Naming.lookup("rmi://localhost:1099/UserSendNotificationStub");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return remoteObject;
+    }
 
+    private UserContact UserContactController() {
+        UserContact remoteObject = null;
+        try {
+            remoteObject = (UserContact) Naming.lookup("rmi://localhost:1099/UserContactStub");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return remoteObject;
+    }
+
+    void acceptFriendRequest() {
+
+        String senderId = userNumber.getText();
+        String receiverId = UserToken.getInstance().getUser().getPhoneNumber();
+        if (remoteNotificationObject != null && receiverId != null && senderId != null) {
+            try {
+                remoteContactObject.acceptInvite(receiverId, senderId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

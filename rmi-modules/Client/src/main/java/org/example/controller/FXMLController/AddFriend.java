@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.interfaces.UserAuthentication;
+import org.example.interfaces.UserContact;
 import org.example.interfaces.UserSendNotification;
 
 import java.io.ByteArrayInputStream;
@@ -41,9 +42,6 @@ public class AddFriend {
     UserDTO userDTO = null;
 
 
-
-
-
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
         try {
@@ -58,6 +56,16 @@ public class AddFriend {
         UserSendNotification remoteObject = null;
         try {
             remoteObject = (UserSendNotification) Naming.lookup("rmi://localhost:1099/UserSendNotificationStub");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return remoteObject;
+    }
+
+    private UserContact UserContactController() {
+        UserContact remoteObject = null;
+        try {
+            remoteObject = (UserContact) Naming.lookup("rmi://localhost:1099/UserContactStub");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,31 +95,38 @@ public class AddFriend {
     }
 
 
-
-
     @FXML
     void sendAddRequest(ActionEvent event) {
         UserSendNotification remoteObject = UserNotificationController();
+        UserContact remoteObject2 = UserContactController();
+
         String senderId = UserToken.getInstance().getUser().getPhoneNumber();
         String receiverId = userDTO.getPhoneNumber();
         System.out.println("Sender ID: " + senderId);
         System.out.println("Receiver ID: " + receiverId);
         if (remoteObject != null && receiverId != null && senderId != null) {
             try {
-                boolean isNotificationSent = remoteObject.sendNotification(senderId, receiverId);
-                if (isNotificationSent) {
-                    requestImage.setImage(new Image("/images/remove.png"));
-                    System.out.println("Notification sent successfully.");
+                boolean exists = remoteObject.notificationExists(receiverId, senderId);
+                if (exists) {
+                    System.out.println("From AddFriend: ana h3ml acceptInvite aho");
+                    remoteObject2.acceptInvite(senderId, receiverId);
+
+
                 } else {
-                    System.out.println("Failed to send notification.");
+                    boolean isNotificationSent = remoteObject.sendNotification(senderId, receiverId);
+                    if (isNotificationSent) {
+                        requestImage.setImage(new Image("/images/remove.png"));
+                        System.out.println("From AddFriend: Ml2tsh notification fa hb3t wa7da.");
+                    } else {
+                        System.out.println("Failed to send notification.");
+                    }
                 }
+
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
         }
     }
-
-
 
 
 //    @Override

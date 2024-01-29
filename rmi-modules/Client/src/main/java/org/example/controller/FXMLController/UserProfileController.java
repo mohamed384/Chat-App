@@ -2,6 +2,7 @@ package org.example.controller.FXMLController;
 
 
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -18,7 +19,11 @@ import org.example.Utils.LoadImage;
 import org.example.Utils.UserToken;
 import org.example.service.UserProfileService;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -112,25 +117,16 @@ public class UserProfileController implements Initializable {
 
     }
 
-    private byte[] convertImageToByteArray(Image image) {
-        int width = (int) image.getWidth();
-        int height = (int) image.getHeight();
-        byte[] imageBytes = new byte[width * height * 4];
-
-        PixelReader pixelReader = image.getPixelReader();
-        int pixelIndex = 0;
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Color color = pixelReader.getColor(x, y);
-                imageBytes[pixelIndex++] = (byte) (color.getRed() * 255);     // Red
-                imageBytes[pixelIndex++] = (byte) (color.getGreen() * 255);   // Green
-                imageBytes[pixelIndex++] = (byte) (color.getBlue() * 255);    // Blue
-                imageBytes[pixelIndex++] = (byte) (color.getOpacity() * 255); // Alpha
-            }
+    public byte[] convertImageToByteArray(Image image) {
+        try {
+            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", baos);
+            return baos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-
-        return imageBytes;
     }
 
 }

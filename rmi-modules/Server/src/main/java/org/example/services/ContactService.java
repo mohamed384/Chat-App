@@ -30,5 +30,8 @@ public class ContactService {
         }
         return contactDTOList;
     }
+    public boolean acceptInvite(String senderId, String receiverId) {
+        return contactDAO.acceptInvite(senderId, receiverId);
+    }
 
 }
