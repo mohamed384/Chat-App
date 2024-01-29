@@ -45,9 +45,9 @@ public class UserDAOImpl implements DAO<User> {
                     preparedStatement.setString(2, user.getDisplayName());
 
                     preparedStatement.setString(3, user.getEmailAddress());
-                    Blob picture = ImageConvertor.bytesToBlob(user.getPicture());
+                   // Blob picture = ImageConvertor.bytesToBlob(user.getPicture());
 
-                    preparedStatement.setBlob(4, picture);
+                    preparedStatement.setBytes(4, user.getPicture());
                     preparedStatement.setString(5, PasswordHashing.hashPassword(user.getPasswordHash()));
 
                     preparedStatement.setString(6, user.getGender());

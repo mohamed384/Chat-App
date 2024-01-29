@@ -91,9 +91,10 @@ public class UserAuthService {
             user = remoteObject.login(phone, password);
 
             if (user != null) {
-                switchToMessagePage(actionEvent);
                 UserToken userToken = UserToken.getInstance();
                 userToken.setUser(user);
+                switchToMessagePage(actionEvent);
+
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Login Failed");
@@ -179,7 +180,6 @@ public class UserAuthService {
             if(!remoteObject.signup(user1)) return false;
             UserToken userToken = UserToken.getInstance();
             userToken.setUser(user1);
-            System.out.println("from User Auth"+ user1.getPicture());
             System.out.println("signup from client auth service is successfully done");
 
             switchToMessagePage(actionEvent);
