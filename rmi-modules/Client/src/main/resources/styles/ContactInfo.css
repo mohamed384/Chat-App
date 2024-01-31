@@ -1,0 +1,22 @@
+.message-btn {
+     -fx-background-color:linear-gradient(to top right ,#9b75d0  , #6639a6);
+     -fx-border-width: 0;
+     -fx-background-radius: 10px;
+     -fx-cursor: hand;
+     -fx-padding: 5px;
+}
+.message-btn:hover {
+    -fx-background-color:#361b72;
+    -fx-transition-duration: 0.3s;
+}
+.delete-btn {
+    -fx-background-color:linear-gradient(to top right ,#CE1212   , #A92121 );
+    -fx-border-width: 0;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-padding: 5px;
+}
+.delete-btn:hover {
+    -fx-background-color: #7A1515;
+    -fx-transition-duration: 0.3s;
+}
