@@ -40,10 +40,15 @@ public class ContactController extends UnicastRemoteObject implements UserContac
         return contactService.getAllContactsByUserId(sender);
     }
 
+    public boolean contactExists(String userPhone, String friendPhone) throws RemoteException {
+        return contactService.contactExists(userPhone,friendPhone);
+    }
+
     @Override
     public boolean acceptInvite(String senderId, String receiverId) throws RemoteException{
         return contactService.acceptInvite(senderId, receiverId);
     }
+
 
 
 }

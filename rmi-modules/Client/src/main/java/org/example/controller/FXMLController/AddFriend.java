@@ -2,6 +2,7 @@ package org.example.controller.FXMLController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -88,9 +89,15 @@ public class AddFriend {
         if (userDTO != null) {
             searchResult.setVisible(true);
             SearchName.setText(userDTO.getDisplayName());
-            // profileImg.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
             searchImage.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
             searchNumber.setText(userDTO.getPhoneNumber());
+        }
+        if(UserToken.getInstance().getUser().getPhoneNumber().equals(userDTO.getPhoneNumber())){
+            requestButton.setDisable(true);
+            System.out.println("requestButton is disabled");
+        }else{
+            requestButton.setDisable(false);
+
         }
     }
 
@@ -106,9 +113,20 @@ public class AddFriend {
         System.out.println("Receiver ID: " + receiverId);
         if (remoteObject != null && receiverId != null && senderId != null) {
             try {
+                if(remoteObject2.contactExists(senderId,receiverId)){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(userDTO.getDisplayName() + " is already a contact");
+                    alert.setTitle("Contact Exist");
+                    alert.showAndWait();
+//                    alert.setContentText("Are you sure you want to close Cypher?");
+                    //Alert
+                    return;
+                }
                 boolean exists = remoteObject.notificationExists(receiverId, senderId);
+
                 if (exists) {
                     System.out.println("From AddFriend: ana h3ml acceptInvite aho");
+                    requestImage.setImage(new Image("/images/remove.png"));
                     remoteObject2.acceptInvite(senderId, receiverId);
 
 
@@ -118,6 +136,12 @@ public class AddFriend {
                         requestImage.setImage(new Image("/images/remove.png"));
                         System.out.println("From AddFriend: Ml2tsh notification fa hb3t wa7da.");
                     } else {
+                        remoteObject.deleteNotification(receiverId,senderId);
+                        requestImage.setImage(new Image("/images/add-friend.png"));
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setHeaderText("Friend request deleted");
+                        alert.setTitle("Alert");
+                        alert.showAndWait();
                         System.out.println("Failed to send notification.");
                     }
                 }

@@ -2,6 +2,7 @@ package org.example;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -55,7 +56,10 @@ public class Client extends Application {
 
         stage.setScene(startScreenScene);
         stage.show();
-
+        stage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
             // Create a pause transition of 2 seconds
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
 
@@ -69,6 +73,7 @@ public class Client extends Application {
 
                     // Set the scene of the primary stage to the main screen
                     stage.setScene(mainScreenScene);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

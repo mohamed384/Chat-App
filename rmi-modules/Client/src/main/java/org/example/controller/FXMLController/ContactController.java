@@ -1,7 +1,6 @@
 package org.example.controller.FXMLController;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,19 +11,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.example.DTOs.UserDTO;
 import org.example.models.Enums.UserStatus;
 import org.example.service.ContactService;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ContactController implements Initializable {
+
 
     @FXML
     private TreeView<UserDTO> contactsTreeView;
@@ -32,7 +31,8 @@ public class ContactController implements Initializable {
     private final ContactService contactService;
     private final ObservableList<UserDTO> offlineContacts = FXCollections.observableArrayList();
     private final ObservableList<UserDTO> onlineContacts = FXCollections.observableArrayList();
-
+//    ObjectProperty<UserDTO> friendItem;
+//    ContactMainController contactMainController;
     public ContactController() {
         this.contactService = new ContactService();
     }
@@ -42,23 +42,13 @@ public class ContactController implements Initializable {
 
     @FXML
     public void onOnlineButtonClick(ActionEvent event) {
-
-
     }
-
+//    public void bindUserDTOProperty(ObjectProperty<UserDTO> userDTOProperty) {
+//        this.friendItem = userDTOProperty;
+//    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateContactsTree();
-
-//        // Add ListChangeListener to onlineContacts
-//        onlineContacts.addListener((ListChangeListener.Change<? extends UserDTO> c) -> {
-//            populateContactsTree();
-//        });
-//
-//        // Add ListChangeListener to offlineContacts
-//        offlineContacts.addListener((ListChangeListener.Change<? extends UserDTO> c) -> {
-//            populateContactsTree();
-//        });
     }
 
     private void populateContactsTree() {
@@ -66,7 +56,6 @@ public class ContactController implements Initializable {
         TreeItem<UserDTO> root = new TreeItem<>(new UserDTO("", "Contacts", "", "", "", "", "", null, "", null, null, null));
         TreeItem<UserDTO> onlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Online", "", "", "", "", "", null, "", null, null, null));
         TreeItem<UserDTO> offlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Offline", "", "", "", "", "", null, "", null, null, null));
-
         contactsTreeView.setRoot(root);
         contactsTreeView.getRoot().getChildren().addAll(onlineContactsTreeItem, offlineContactsTreeItem);
 
@@ -89,8 +78,8 @@ public class ContactController implements Initializable {
                         setText(getTreeItem().getValue().getDisplayName());
                     }else {
                         try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/contact.fxml"));
-                            HBox contactCell = loader.load();
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ContactNode.fxml"));
+                            VBox contactCell = loader.load();
 
                             ContactAddFriendController controller = loader.getController();
                             controller.setUserName(item.getDisplayName());
