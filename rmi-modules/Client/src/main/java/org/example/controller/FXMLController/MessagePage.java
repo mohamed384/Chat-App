@@ -29,8 +29,8 @@ public class MessagePage {
     @FXML
     private BorderPane contactListview;
 
-    @FXML
-    private HiddenSidesPane hiddenSidesPane;
+    //@FXML
+    //private HiddenSidesPane hiddenSidesPane;
 
     @FXML
     private ListView<?> listView;
@@ -53,6 +53,7 @@ public class MessagePage {
     @FXML
     private VBox vboxMessage;
 
+    Boolean botBoolean = false;
     CallBackClient callBackClient;
 
     CallBackServer callBackServer;
@@ -65,6 +66,7 @@ public class MessagePage {
         this.callBackServer = callBackServer;
     }
 
+    /*
     public void showProfile(MouseEvent mouseEvent) {
         if (hiddenSidesPane.getPinnedSide() == null) {
             hiddenSidesPane.setPinnedSide(Side.RIGHT);
@@ -74,7 +76,10 @@ public class MessagePage {
         }
     }
 
+     */
+
     public void startBot(ActionEvent event) {
+        botBoolean = true;
     }
 
     public void sendEmoji(ActionEvent event) {
@@ -94,16 +99,6 @@ public class MessagePage {
         text.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; -fx-text-fill: white;");
         textArea.setText("");
 
-         /*
-        TextArea text = new TextArea();
-        text.setWrapText(true);
-        text.setMaxWidth(Double.MAX_VALUE);
-        text.setMaxHeight(Double.MAX_VALUE);
-        text.setText(textArea.getText());
-        text.setEditable(false); // Make the TextArea non-editable
-        text.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; -fx-text-fill: black;"); // Change text color to black
-        textArea.setText("");
-        */
 
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
@@ -164,6 +159,13 @@ public class MessagePage {
             scrollPane.setVvalue(1.0);
         });
 
+        if(botBoolean){
+            try {
+               callBackServer.chatBot( Result, "01005036123" ,"01095192555");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
         /*
         vboxMessage.getChildren().add(hBox);
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
@@ -171,5 +173,6 @@ public class MessagePage {
     }
 
 
-
+    public void showProfile(MouseEvent mouseEvent) {
+    }
 }

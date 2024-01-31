@@ -63,8 +63,8 @@ public class MainController {
        try {
             callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
 
+           System.out.println(callBackServer);
             callBackClient = new CallBackClientImp(PaneLoaderFactory.messagePageLoader().getValue());
-
 
             String number = UserToken.getInstance().getUser().getPhoneNumber();
             System.out.println(number);
@@ -94,7 +94,7 @@ public class MainController {
     public void goToMessage(ActionEvent event) {
 
 
-        HiddenSidesPane pane = PaneLoaderFactory.messagePageLoader().getKey();
+        BorderPane pane = PaneLoaderFactory.messagePageLoader().getKey();
         MessagePage messagePage = PaneLoaderFactory.messagePageLoader().getValue();
         messagePage.setCallBackClient(callBackClient);
         messagePage.setCallBackServer(callBackServer);

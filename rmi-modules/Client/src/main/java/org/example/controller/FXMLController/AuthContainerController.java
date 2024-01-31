@@ -30,18 +30,10 @@ public class AuthContainerController implements Initializable {
 
     private void loadLoginPane() {
         // Load the login page from the FXML file
-        System.out.println("hoooooo");
+
               BorderPane loginPane = PaneLoaderFactory.loginPageLoader().getKey();
                 // Set the login pane as the center of the BorderPane
               mainBorderPane.setCenter(loginPane);
-
-    }
-
-    public void handleLogout() {
-
-        System.out.println("Before loading login pane");
-        loadLoginPane();
-        System.out.println("After loading login pane");
 
     }
 
