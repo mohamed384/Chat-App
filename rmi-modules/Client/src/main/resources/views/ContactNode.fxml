@@ -12,58 +12,54 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="contact" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="81.0" prefWidth="235.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.controller.FXMLController.ContactAddFriendController">
-   <HBox alignment="CENTER_LEFT" prefHeight="81.0" prefWidth="235.0" style="-fx-cursor: hand;"
-         stylesheets="@../styles/contacts.css">
-      <StackPane prefHeight="82.0" prefWidth="89.0">
+<VBox fx:id="contact" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="81.0" prefWidth="177.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.ContactAddFriendController">
+   <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="206.0" style="-fx-cursor: hand;" stylesheets="@../styles/contacts.css">
+      <StackPane prefHeight="79.0" prefWidth="46.0">
          <ImageView fx:id="userImg" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
             <clip>
-               <Circle centerX="25" centerY="25" radius="25"/>
+               <Circle centerX="25" centerY="25" radius="25" />
             </clip>
-            <Image url="@../images/profile.jpg"/>
+            <Image url="@../images/profile.jpg" />
          </ImageView>
-         <ImageView fx:id="status" fitHeight="21.0" fitWidth="19.0" onMouseClicked="#SendAddFriend"
-                    pickOnBounds="true" preserveRatio="true">
+         <ImageView fx:id="status" fitHeight="21.0" fitWidth="19.0" onMouseClicked="#SendAddFriend" pickOnBounds="true" preserveRatio="true">
             <cursor>
-               <Cursor fx:constant="HAND"/>
+               <Cursor fx:constant="HAND" />
             </cursor>
             <StackPane.margin>
-               <Insets left="40.0" top="40.0"/>
+               <Insets left="40.0" top="40.0" />
             </StackPane.margin>
-            <Image url="@../images/online.png"/>
+            <Image url="@../images/online.png" />
          </ImageView>
       </StackPane>
       <VBox prefHeight="77.0" prefWidth="112.0">
          <children>
             <Label fx:id="userName" text="Nada Emam" textFill="#041014">
                <font>
-                  <Font name="System Bold" size="14.0"/>
+                  <Font name="System Bold" size="14.0" />
                </font>
                <VBox.margin>
-                  <Insets bottom="5.0" left="15.0" right="10.0" top="23.0"/>
+                  <Insets bottom="5.0" left="15.0" right="10.0" top="23.0" />
                </VBox.margin>
                <cursor>
-                  <Cursor fx:constant="TEXT"/>
+                  <Cursor fx:constant="TEXT" />
                </cursor>
             </Label>
             <Label fx:id="userNumber" text="010000000056" textFill="#040f1280">
                <font>
-                  <Font size="14.0"/>
+                  <Font size="14.0" />
                </font>
                <VBox.margin>
-                  <Insets left="15.0"/>
+                  <Insets left="15.0" />
                </VBox.margin>
                <cursor>
-                  <Cursor fx:constant="TEXT"/>
+                  <Cursor fx:constant="TEXT" />
                </cursor>
             </Label>
          </children>
          <HBox.margin>
-            <Insets bottom="5.0"/>
+            <Insets bottom="5.0" />
          </HBox.margin>
       </VBox>
    </HBox>
-   <Line endX="135.0" startX="-100.0" stroke="#c1c1c1" strokeWidth="2.0"/>
+   <Line endX="75.0" startX="-100.0" stroke="#c1c1c1" strokeWidth="2.0" />
 </VBox>
