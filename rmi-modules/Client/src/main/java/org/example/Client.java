@@ -17,6 +17,8 @@ public class Client extends Application {
 
     public static void main(String[] args) {
         launch();
+        System.exit(0);
+
 
         /*
        try {

@@ -13,14 +13,14 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.CheckListView?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="453.0" styleClass="parent" stylesheets="@../styles/register.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="388.0" styleClass="parent" stylesheets="@../styles/register.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.GroupController">
    <children>
       <HBox alignment="CENTER" prefHeight="99.0" prefWidth="450.0" stylesheets="@../styles/MainPage.css">
          <VBox.margin>
             <Insets bottom="5.0" top="10.0" />
          </VBox.margin>
          <children>
-            <ImageView fitHeight="98.0" fitWidth="123.0" onMouseClicked="#upLoadImage" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="groupImage" fitHeight="98.0" fitWidth="123.0" onMouseClicked="#upLoadImage" pickOnBounds="true" preserveRatio="true">
 
                <clip>
                   <Circle fx:id="imageProfileClip" centerX="50" centerY="50" radius="50" />
@@ -29,10 +29,14 @@
                <image>
                   <Image url="@../images/profile.jpg" />
                </image>
-            </ImageView>
-            <TextField prefHeight="38.0" prefWidth="200.0" promptText="Group Name">
+
                <HBox.margin>
-                  <Insets left="15.0" />
+                  <Insets left="5.0" right="10.0" />
+               </HBox.margin>
+            </ImageView>
+            <TextField fx:id="groupName" prefHeight="52.0" prefWidth="204.0" promptText="Group Name">
+               <HBox.margin>
+                  <Insets left="15.0" right="5.0" />
                </HBox.margin>
                <font>
                   <Font name="System Bold" size="12.0" />
@@ -46,7 +50,7 @@
       </Pane>
       <ScrollPane prefHeight="259.0" prefWidth="442.0">
          <content>
-            <CheckListView fx:id="contactList" prefHeight="256.0" prefWidth="450.0" />
+            <CheckListView fx:id="contactList" prefHeight="255.0" prefWidth="386.0" />
          </content>
       </ScrollPane>
       <Button mnemonicParsing="false" onAction="#createGroup" prefHeight="45.0" prefWidth="102.0" styleClass="light-color" stylesheets="@../styles/MainPage.css" text="Create ">
