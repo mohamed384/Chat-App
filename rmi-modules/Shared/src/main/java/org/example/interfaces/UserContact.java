@@ -13,5 +13,6 @@ public interface UserContact extends Remote  {
     boolean removeContact(String sender, String receiver) throws RemoteException;
 
     List<UserDTO> getAllContactsByUserPhoneNumber(String sender) throws RemoteException;
+    boolean contactExists(String userPhone, String friendPhone) throws RemoteException;
     boolean acceptInvite(String senderId, String receiverId) throws RemoteException;
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="900.0" prefHeight="604.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.MainController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="900.0" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.MainController">
    <left>
       <VBox alignment="CENTER" prefHeight="600.0" prefWidth="53.0" styleClass="dark-purper" stylesheets="@../styles/MainPage.css" BorderPane.alignment="CENTER">
          <children>
@@ -68,7 +68,7 @@
       </VBox>
    </left>
    <center>
-      <VBox alignment="CENTER" prefHeight="610.0" prefWidth="740.0" styleClass="light-color" stylesheets="@../styles/MainPage.css" BorderPane.alignment="TOP_CENTER">
+      <VBox alignment="CENTER" prefHeight="623.0" prefWidth="840.0" styleClass="light-color" stylesheets="@../styles/MainPage.css" BorderPane.alignment="CENTER">
          <children>
             <Label text="Welcome">
                <font>
@@ -90,7 +90,7 @@
             </ImageView>
          </children>
          <BorderPane.margin>
-            <Insets bottom="10.0" />
+            <Insets />
          </BorderPane.margin>
       </VBox>
    </center>

@@ -34,4 +34,7 @@ public class ContactService {
         return contactDAO.acceptInvite(senderId, receiverId);
     }
 
+    public boolean contactExists(String userPhone, String friendPhone) {
+      return   contactDAO.contactExists(userPhone,friendPhone);
+    }
 }

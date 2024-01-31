@@ -7,13 +7,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.io.ByteArrayInputStream;
 
 public class ContactAddFriendController {
 
     @FXML
-    private HBox contact;
+    private VBox contact;
 
     @FXML
     private ImageView status;

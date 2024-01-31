@@ -24,15 +24,15 @@ public class PaneLoaderFactory {
     }
 
 
-    public static Pair<BorderPane, SearchController> ContactPageLoader(){
-        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/ContactList.fxml"));
+    public static Pair<BorderPane, ContactMainController> ContactPageLoader(){
+        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/ContactMain.fxml"));
         BorderPane pane = null;
         try {
             pane = (BorderPane) loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        SearchController controller = loader.getController();
+        ContactMainController controller = loader.getController();
         return new Pair<>(pane, controller);
     }
 

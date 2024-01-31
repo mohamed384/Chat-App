@@ -140,4 +140,17 @@ public class ContactDAOImpl extends HandleContactAndNotification implements Cont
     }
 
 
+    public boolean contactExists(String userPhone, String friendPhone) {
+        String query = "SELECT * FROM UserContacts WHERE UserID = ? AND FriendID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, userPhone);
+            pstmt.setString(2, friendPhone);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
