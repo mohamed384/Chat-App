@@ -24,7 +24,7 @@ import java.rmi.RemoteException;
 import java.sql.Connection;
 
 
-public class Server {
+public class Server  extends  Application{
 
     public static void main(String[] args) {
 
@@ -61,14 +61,15 @@ public class Server {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        launch(args);
+
+        System.exit(0);
+
     }
 
-    //launch(args);
-
-    //System.exit(0);
 
 
-
+@Override
     public void start(Stage primaryStage) throws Exception {
 
         // Load the FXML file for the start screen

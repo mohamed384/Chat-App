@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="506.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" prefHeight="506.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllerFx.StatisticController">
    <children>
       <Label prefHeight="70.0" prefWidth="247.0" text="  Statistics">
          <font>
@@ -26,36 +26,36 @@
       <Pane prefHeight="7.0" prefWidth="600.0" styleClass="parent" stylesheets="@../styles/mainStyle.css" />
       <TabPane prefHeight="385.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
-            <Tab text="User State">
+            <Tab fx:id="userStateTap" text="User State">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <PieChart layoutX="50.0" layoutY="12.0" prefHeight="314.0" prefWidth="500.0" />
+                        <PieChart fx:id="userStateChart" layoutX="50.0" layoutY="12.0" prefHeight="314.0" prefWidth="500.0" AnchorPane.bottomAnchor="30.400000000000034" AnchorPane.leftAnchor="49.60000000000002" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="12.0" />
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Country">
+            <Tab fx:id="countryTap" text="Country">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="350.0" prefWidth="600.0">
                      <children>
-                        <LineChart layoutX="61.0" layoutY="20.0" prefHeight="315.0" prefWidth="478.0">
-                           <xAxis>
-                              <CategoryAxis side="BOTTOM" />
-                           </xAxis>
-                           <yAxis>
-                              <NumberAxis side="LEFT" />
-                           </yAxis>
+                        <LineChart fx:id="countryChart" layoutX="50.0" layoutY="6.0" prefHeight="325.0" prefWidth="500.0" AnchorPane.bottomAnchor="25.19999999999999" AnchorPane.leftAnchor="49.60000000000002" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="6.399999999999977">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
                         </LineChart>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Gender">
+            <Tab fx:id="genderTap" text="Gender">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <PieChart layoutX="50.0" layoutY="17.0" prefHeight="321.0" prefWidth="500.0" />
+                        <PieChart fx:id="genderChat" layoutX="50.0" layoutY="17.0" prefHeight="321.0" prefWidth="500.0" AnchorPane.bottomAnchor="18.399999999999977" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="49.60000000000002" AnchorPane.topAnchor="17.0" />
                      </children>
                   </AnchorPane>
                </content>

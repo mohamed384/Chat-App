@@ -11,11 +11,11 @@ import java.io.IOException;
 
 public class PaneLoaderFactory {
 
-    public static Pair<HiddenSidesPane, MessagePage> messagePageLoader(){
+    public static Pair<BorderPane, MessagePage> messagePageLoader(){
         FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/MessagePage.fxml"));
-        HiddenSidesPane pane = null;
+        BorderPane pane = null;
         try {
-            pane = (HiddenSidesPane) loader.load();
+            pane = (BorderPane) loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -104,5 +104,7 @@ public class PaneLoaderFactory {
         AuthContainerController controller = loader.getController();
         return new Pair<>(pane, controller);
     }
+
+
 
 }
