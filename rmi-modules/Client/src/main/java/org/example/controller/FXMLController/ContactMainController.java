@@ -65,23 +65,23 @@ public class ContactMainController implements Initializable {
     }
 
 
-    public void messageBtn(MouseEvent event) {
-        try {
-            ChatDTO existChat = chatRMI.getPrivateChat(UserToken.getInstance().getUser().getPhoneNumber()
-                    , phoneLabel.getText()) ;
-            if(existChat == null){
-                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),0,
-                        UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
-            }
-            BorderPane borderPane= PaneLoaderFactory.messagePageLoader().getKey();
-            PaneLoaderFactory.messagePageLoader().getValue().setData(UserToken.getInstance().getUser().getDisplayName(),
-                   selectedItem.getPicture());
-            BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
-            mainBorder.setCenter(borderPane);
-
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
+//    public void messageBtn(MouseEvent event) {
+//        try {
+//            ChatDTO existChat = chatRMI.getPrivateChat(UserToken.getInstance().getUser().getPhoneNumber()
+//                    , phoneLabel.getText()) ;
+//            if(existChat == null){
+//                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),0,
+//                        UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
+//            }
+//            BorderPane borderPane= PaneLoaderFactory.messagePageLoader().getKey();
+//            PaneLoaderFactory.messagePageLoader().getValue().setData(UserToken.getInstance().getUser().getDisplayName(),
+//                   selectedItem.getPicture());
+//            BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
+//            mainBorder.setCenter(borderPane);
+//
+//        } catch (RemoteException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
 }
