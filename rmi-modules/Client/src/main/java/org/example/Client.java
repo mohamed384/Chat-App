@@ -21,27 +21,7 @@ public class Client extends Application {
     public static void main(String[] args) {
         launch();
 
-        /*
-       try {
-            UserAuthentication remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/rmiObject");
-            boolean x=false;
 
-
-            User user = new User("1234567890", "John Doe", "johndoe@example.com",
-                    "passwordHash", "Male", "USA",
-                    new Date(),  "nada",UserStatus.AVAILABLE, "");
-            System.out.println( x = remoteObject.signup(user));
-
-            User user1 = new User("1234567891", "John Doed", "nada@example.com",
-                    "passwordHash", "Male", "USA",
-                    new Date(),  "nada",UserStatus.AVAILABLE,"D:\\ITI\\download.png");
-            System.out.println( x = remoteObject.signup(user1));
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
 
