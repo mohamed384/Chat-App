@@ -1,15 +1,15 @@
 package org.example.controller.FXMLController;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -18,14 +18,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.HiddenSidesPane;
+import org.example.DTOs.NotificationDto;
+import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.ResourceBundle;
 
-public class MessagePage {
+public class MessagePage implements Initializable {
     @FXML
     private BorderPane contactListview;
 
@@ -33,7 +38,7 @@ public class MessagePage {
     private HiddenSidesPane hiddenSidesPane;
 
     @FXML
-    private ListView<?> listView;
+    private ListView<UserDTO> listView;
 
     @FXML
     private ImageView profileImagw;
@@ -56,6 +61,8 @@ public class MessagePage {
     CallBackClient callBackClient;
 
     CallBackServer callBackServer;
+
+    ObservableList<UserDTO> observableList;
 
     public void setCallBackClient(CallBackClient callBackClient) {
         this.callBackClient = callBackClient;
@@ -122,15 +129,15 @@ public class MessagePage {
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
 
         try {
-            callBackServer.sendMsg( message ,"01095192555" ,"01005036123");
+            callBackServer.sendMsg(message, "01095192555", "01005036123");
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
 
 
-    public  void receiveMessage(String Result){
-        if(Result.equals("")){
+    public void receiveMessage(String Result) {
+        if (Result.equals("")) {
             return;
         }
         Label text = new Label();
@@ -146,10 +153,10 @@ public class MessagePage {
         imageView.setFitHeight(20);
         HBox hBox = new HBox(10);
 
-        hBox.setMinSize(text.getWidth() , text.getHeight());
+        hBox.setMinSize(text.getWidth(), text.getHeight());
         hBox.setPadding(new Insets(5));
         HBox.setMargin(imageView, new Insets(0, 5, 0, 0));
-        hBox.getChildren().add( text);
+        hBox.getChildren().add(text);
         hBox.getChildren().add(imageView);
         hBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -171,5 +178,32 @@ public class MessagePage {
     }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
+        listView.setCellFactory(param -> new ListCell<UserDTO>() {
+            @Override
+            protected void updateItem(UserDTO item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageNode.fxml"));
+                        HBox notificationItem = loader.load();
+                        MessageNode controller = loader.getController();
+                        controller.setUserName(item.getDisplayName());
+                        controller.setMessageController(MessagePage.this); // Pass the reference
+                        Image image = new Image("/images/profile.jpg");
+                        controller.setUserImg(image);
+                        setGraphic(notificationItem);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
 }

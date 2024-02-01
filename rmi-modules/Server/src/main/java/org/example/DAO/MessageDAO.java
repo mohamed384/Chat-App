@@ -11,7 +11,7 @@ public class MessageDAO implements DAO<Message> {
 
     @Override
     public boolean save(Message message, Connection connection) {
-        return DAO.super.save(message, connection);
+        return false;
     }
 
     @Override

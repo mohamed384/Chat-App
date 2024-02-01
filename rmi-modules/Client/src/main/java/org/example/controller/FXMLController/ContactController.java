@@ -144,4 +144,6 @@ public class ContactController implements Initializable {
     }
 
 
+    public void creatGroup(ActionEvent actionEvent) {
+    }
 }

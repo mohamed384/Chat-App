@@ -1,100 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="contactListview" prefHeight="600.0" prefWidth="847.0"
-            xmlns="http://javafx.com/javafx/21"
-            fx:controller="org.example.controller.FXMLController.MessagePage">
+<BorderPane fx:id="contactListview" prefHeight="600.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.MessagePage">
 
     <left>
-        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="610.0"
-                    prefWidth="187.0" BorderPane.alignment="CENTER">
-            <ListView fx:id="listView" prefHeight="600.0" prefWidth="182.0"/>
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="610.0" prefWidth="187.0" BorderPane.alignment="CENTER">
+            <ListView fx:id="listView" prefHeight="600.0" prefWidth="182.0" />
         </ScrollPane>
     </left>
 
     <center>
-        <VBox prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainPage.css"
-              BorderPane.alignment="TOP_CENTER">
+        <VBox prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainPage.css" BorderPane.alignment="TOP_CENTER">
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="light-color">
-                <ImageView fx:id="profileImagw" fitHeight="67.0" fitWidth="63.0" onMouseClicked="#showProfile"
-                           pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                <ImageView fx:id="profileImagw" fitHeight="67.0" fitWidth="63.0" onMouseClicked="#showProfile" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                     <HBox.margin>
-                        <Insets left="10.0"/>
+                        <Insets left="10.0" />
                     </HBox.margin>
-                    <Image url="@../images/user.png"/>
+                    <Image url="@../images/user.png" />
                 </ImageView>
                 <Label fx:id="reciver" text="Eslam Ahmed" HBox.hgrow="ALWAYS">
                     <HBox.margin>
-                        <Insets left="20.0" right="10.0"/>
+                        <Insets left="20.0" right="10.0" />
                     </HBox.margin>
                     <font>
-                        <Font name="System Bold" size="14.0"/>
+                        <Font name="System Bold" size="14.0" />
                     </font>
                 </Label>
-                <Pane prefHeight="100.0" prefWidth="337.0" HBox.hgrow="ALWAYS"/>
+                <Pane prefHeight="100.0" prefWidth="337.0" HBox.hgrow="ALWAYS" />
                 <Button mnemonicParsing="false" onAction="#startBot" styleClass="transparent">
                     <graphic>
                         <ImageView fitHeight="39.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../images/robot.png"/>
+                            <Image url="@../images/robot.png" />
                         </ImageView>
                     </graphic>
                     <HBox.margin>
-                        <Insets left="20.0" right="20.0"/>
+                        <Insets left="20.0" right="20.0" />
                     </HBox.margin>
                 </Button>
             </HBox>
-            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hvalue="1.0"
-                        maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity"
-                        prefHeight="337.0" prefWidth="406.0" style="-fx-background-color: white;" vvalue="1.0"
-                        VBox.vgrow="ALWAYS">
-                <VBox fx:id="vboxMessage" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                      prefHeight="398.0" prefWidth="731.0" spacing="10" style="-fx-padding: 10;"/>
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hvalue="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="337.0" prefWidth="406.0" style="-fx-background-color: white;" vvalue="1.0" VBox.vgrow="ALWAYS">
+                <VBox fx:id="vboxMessage" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="398.0" prefWidth="731.0" spacing="10" style="-fx-padding: 10;" />
             </ScrollPane>
-            <HBox alignment="CENTER_LEFT" prefHeight="118.0" prefWidth="660.0" styleClass="light-color">
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="660.0" styleClass="light-color">
                 <Button mnemonicParsing="false" onAction="#sendEmoji" styleClass="transparent">
                     <graphic>
-                        <ImageView fitHeight="27.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../images/happy.png"/>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../images/happy.png" />
                         </ImageView>
                     </graphic>
                     <HBox.margin>
-                        <Insets left="5.0" right="5.0"/>
+                        <Insets left="5.0" right="5.0" />
                     </HBox.margin>
                 </Button>
                 <Button mnemonicParsing="false" onAction="#sendAttachment" styleClass="transparent">
                     <graphic>
-                        <ImageView fitHeight="29.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../images/attach-file.png"/>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../images/attach-file.png" />
                         </ImageView>
                     </graphic>
                     <HBox.margin>
-                        <Insets left="5.0" right="5.0"/>
+                        <Insets left="5.0" right="5.0" />
                     </HBox.margin>
                 </Button>
-                <TextArea fx:id="textArea" prefHeight="107.0" prefWidth="477.0" HBox.hgrow="ALWAYS">
+                <TextArea fx:id="textArea" prefHeight="95.0" prefWidth="492.0" HBox.hgrow="ALWAYS">
                     <padding>
-                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0"/>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                     </padding>
                 </TextArea>
-                <Button mnemonicParsing="false" onAction="#sendMessage" prefHeight="39.0" prefWidth="49.0"
-                        styleClass="transparent">
+                <Button mnemonicParsing="false" onAction="#sendMessage" prefHeight="39.0" prefWidth="49.0" styleClass="transparent">
                     <graphic>
-                        <ImageView fitHeight="31.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
-                            <Image url="@../images/send-message.png"/>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../images/send-message.png" />
                         </ImageView>
                     </graphic>
                     <HBox.margin>
-                        <Insets left="5.0" right="5.0"/>
+                        <Insets left="5.0" right="5.0" />
                     </HBox.margin>
                 </Button>
             </HBox>
