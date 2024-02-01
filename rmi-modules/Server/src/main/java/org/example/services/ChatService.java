@@ -13,14 +13,10 @@ public class ChatService {
         this.chatDAO = new ChatDAOImpl();
     }
 
-    public boolean createChat(String name, byte[] img, int adminId) {
-
-//        if (chatDAO.getChat(chat.getChatID()) != null) {
-//            return false;
-//        }
-         return chatDAO.create(name, img, adminId);
+    public boolean createChat(String name, byte[] img, int adminId,String sender,String receiver) {
+         return chatDAO.create(name, img, adminId, sender, receiver);
     }
-    public ChatDTO getChat(int chatId){
-        return chatMapper.toDTO(chatDAO.getChat(chatId));
+    public ChatDTO getPrivateChat(String sender, String receiver){
+        return chatMapper.toDTO(chatDAO.getPrivateChat(sender, receiver));
     }
 }

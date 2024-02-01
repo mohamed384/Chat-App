@@ -8,17 +8,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.callBackImp.CallBackServerImp;
+import org.example.controller.ChatController;
 import org.example.controller.ContactController;
 import org.example.controller.UserController;
 import org.example.controller.UserNotificationController;
-import org.example.interfaces.CallBackServer;
-import org.example.interfaces.UserAuthentication;
-import org.example.interfaces.UserContact;
-import org.example.interfaces.UserSendNotification;
+import org.example.interfaces.*;
 import org.example.utils.DBConnection;
-import org.example.utils.StubContext;
+import org.example.Utils.StubContext;
 
-import java.awt.desktop.AppEvent;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.Connection;
@@ -28,28 +25,32 @@ public class Server  extends  Application{
 
     public static void main(String[] args) {
 
-        StubContext context = new StubContext();
+
 
         try {
             // Hena 3mlna el stubs bta3tna
             UserAuthentication userAuthenticationStub = new UserController();
             UserSendNotification userSendNotificationStub = new UserNotificationController();
             UserContact contactControllerStub = new ContactController();
+            ChatRMI ChatControllerStub = new ChatController();
             CallBackServer callBackServer = new CallBackServerImp();
 
+
             // Hena 3mlna add lel stubs bta3tna
-            context.addStub("UserAuthenticationStub", userAuthenticationStub);
-            context.addStub("UserSendNotificationStub", userSendNotificationStub);
-            context.addStub("UserContactStub", contactControllerStub);
-            context.addStub("CallBackServer", callBackServer);
+//            StubContext.addStub("UserAuthenticationStub", userAuthenticationStub);
+//            StubContext.addStub("UserSendNotificationStub", userSendNotificationStub);
+//            StubContext.addStub("UserContactStub", contactControllerStub);
+//            StubContext.addStub("CallBackServer", callBackServer);
 
             // Hena 3mlna create lel registry w 3mlna rebind lel stubs bta3tna
             java.rmi.registry.LocateRegistry.createRegistry(1099);
+            StubContext.addStub("ChatControllerStub", ChatControllerStub);
+
             java.rmi.Naming.rebind("UserAuthenticationStub", userAuthenticationStub);
             java.rmi.Naming.rebind("UserSendNotificationStub", userSendNotificationStub);
             java.rmi.Naming.rebind("UserContactStub", contactControllerStub);
+            java.rmi.Naming.rebind("ChatControllerStub", ChatControllerStub);
             java.rmi.Naming.rebind("CallBackServerStub", callBackServer);
-
 
             // Hena 3mlna connect lel database
             Connection connection = DBConnection.getConnection();
