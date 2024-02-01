@@ -59,6 +59,18 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
     }
 
+    public void sendAnnouncement(String title,  String msg) {
+        for (String phoneNumber : clients.keySet()) {
+            try {
+                clients.get(phoneNumber).announce(title, msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 
     @Override
     public  void logoutAll() {
