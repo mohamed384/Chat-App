@@ -87,7 +87,7 @@ public class MainController {
     }
 
     @FXML
-    private void statisticalShow(ActionEvent actionEvent) {
+    private void statisticalShow(javafx.event.Event actionEvent) {
 
         try {
             // Load the new pane from an FXML file

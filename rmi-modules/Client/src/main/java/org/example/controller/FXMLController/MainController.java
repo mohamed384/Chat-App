@@ -63,6 +63,7 @@ public class MainController {
        try {
             callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
 
+           System.out.println(callBackServer);
             callBackClient = new CallBackClientImp(PaneLoaderFactory.messagePageLoader().getValue());
 
 

@@ -11,12 +11,11 @@ import java.io.IOException;
 
 public class PaneLoaderFactory {
 
-    ////////////////// change it back to HiddenSidesPane//////////////////
-    public static Pair<BorderPane, MessagePage> messagePageLoader(){
+    public static Pair<HiddenSidesPane, MessagePage> messagePageLoader(){
         FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/MessagePage.fxml"));
-        BorderPane pane = null;
+        HiddenSidesPane pane = null;
         try {
-            pane = (BorderPane) loader.load();
+            pane = (HiddenSidesPane) loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

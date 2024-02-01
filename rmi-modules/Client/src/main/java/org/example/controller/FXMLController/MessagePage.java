@@ -9,7 +9,10 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -58,6 +61,7 @@ public class MessagePage implements Initializable {
     @FXML
     private VBox vboxMessage;
 
+    Boolean botBoolean = false;
     CallBackClient callBackClient;
 
     CallBackServer callBackServer;
@@ -81,7 +85,10 @@ public class MessagePage implements Initializable {
         }
     }
 
+
+
     public void startBot(ActionEvent event) {
+        botBoolean = true;
     }
 
     public void sendEmoji(ActionEvent event) {
@@ -136,8 +143,8 @@ public class MessagePage implements Initializable {
     }
 
 
-    public void receiveMessage(String Result) {
-        if (Result.equals("")) {
+    public  void receiveMessage(String Result){
+        if(Result.equals("")){
             return;
         }
         Label text = new Label();
@@ -153,10 +160,10 @@ public class MessagePage implements Initializable {
         imageView.setFitHeight(20);
         HBox hBox = new HBox(10);
 
-        hBox.setMinSize(text.getWidth(), text.getHeight());
+        hBox.setMinSize(text.getWidth() , text.getHeight());
         hBox.setPadding(new Insets(5));
         HBox.setMargin(imageView, new Insets(0, 5, 0, 0));
-        hBox.getChildren().add(text);
+        hBox.getChildren().add( text);
         hBox.getChildren().add(imageView);
         hBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -171,6 +178,13 @@ public class MessagePage implements Initializable {
             scrollPane.setVvalue(1.0);
         });
 
+        if(botBoolean){
+            try {
+               callBackServer.chatBot( Result, "01005036123" ,"01095192555");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
         /*
         vboxMessage.getChildren().add(hBox);
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
@@ -205,5 +219,7 @@ public class MessagePage implements Initializable {
                 }
             }
         });
+    }
+    public void showProfile(MouseEvent mouseEvent) {
     }
 }
