@@ -2,27 +2,20 @@ package org.example.controllerFx;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 import org.example.DAO.CountryDAOImpl;
 import org.example.DAO.GenderDAOImpl;
 import org.example.DAO.UserStateDAOImpl;
 import org.example.callBackImp.CallBackServerImp;
-
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 public class StatisticController {
 

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.controller.FXMLController.UtilsFX.StageUtils;
 
 
 import java.io.IOException;
@@ -79,6 +80,7 @@ public class Client extends Application {
                 }
             });
 
+        StageUtils.setMainStage(stage);
             // Start the pause
                 pause.play();
         }

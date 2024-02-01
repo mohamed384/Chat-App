@@ -23,7 +23,12 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     @Override
     public boolean login(String phoneNumber, CallBackClient callBackClient) {
             System.out.println("login: "+phoneNumber);
-            clients.put(phoneNumber, callBackClient);
+        try {
+            callBackClient.notification("Welcome to CyberChat App");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        clients.put(phoneNumber, callBackClient);
 
         return true;
     }
@@ -39,44 +44,38 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     @Override
     public void sendMsg(String msg, String senderPhoneNumber, String receiverPhoneNumber) {
 
-        System.out.println("sendMsg: "+msg);
-        System.out.println("sender: "+senderPhoneNumber);
+        System.out.println("sendMsg: "+ msg);
+        System.out.println("sender: "+ senderPhoneNumber);
         System.out.println("receiver: " +receiverPhoneNumber);
 
         CallBackClient callBackClient = clients.get(receiverPhoneNumber);
 
         try {
+            callBackClient.notification( "You have a new message from "+senderPhoneNumber);
             callBackClient.receiveMsg(msg, senderPhoneNumber);
-          //  callBackClient.notification("You have a new message from "+senderPhoneNumber);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
 
     @Override
-    public void chatBot( String message ,  String senderPhoneNumber , String receiverPhoneNumber){
+    public  void logoutAll() {
 
-        String msg = null;
-        try {
-            msg = ChatBot.chatBotMessege(message);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        for (String phoneNumber : clients.keySet()) {
+            try {
+
+                clients.get(phoneNumber).serverShoutdownMessage();
+                logout(phoneNumber, clients.get(phoneNumber));
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
-        System.out.println("sendMsg: "+message);
-        System.out.println("sender: "+senderPhoneNumber);
-        System.out.println("receiver: " +receiverPhoneNumber);
-
-
-        CallBackClient callBackClient = clients.get(receiverPhoneNumber);
-
-        try {
-            callBackClient.receiveMsg(msg, "ChatBot");
-            //  callBackClient.notification("You have a new message from "+senderPhoneNumber);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
     }
+
+
 }
+
