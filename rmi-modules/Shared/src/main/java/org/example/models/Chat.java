@@ -7,11 +7,10 @@ public class Chat {
     private String chatName;
     private byte[] chatImage;
     private int adminID;
-    private Timestamp creationDate;
-    private Timestamp lastModified;
 
-    public Chat(int chatID, String chatName, byte[] chatImage, int adminID, Timestamp creationDate, Timestamp lastModified) {
-        this.chatID = chatID;
+
+    public Chat(String chatName, byte[] chatImage, int adminID) {
+
         this.chatName = chatName;
         this.chatImage = chatImage;
         this.adminID = adminID;

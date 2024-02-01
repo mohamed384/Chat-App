@@ -95,7 +95,7 @@ public class MainController {
     public void goToMessage(ActionEvent event) {
 
         ///
-        BorderPane pane = PaneLoaderFactory.messagePageLoader().getKey();
+        HiddenSidesPane pane = PaneLoaderFactory.messagePageLoader().getKey();
         MessagePage messagePage = PaneLoaderFactory.messagePageLoader().getValue();
         messagePage.setCallBackClient(callBackClient);
         messagePage.setCallBackServer(callBackServer);

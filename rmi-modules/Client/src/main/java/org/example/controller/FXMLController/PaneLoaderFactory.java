@@ -12,7 +12,7 @@ import java.io.IOException;
 public class PaneLoaderFactory {
 
     public static Pair<HiddenSidesPane, MessagePage> messagePageLoader(){
-        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/MessagePage.fxml"));
+        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/Message.fxml"));
         HiddenSidesPane pane = null;
         try {
             pane = (HiddenSidesPane) loader.load();

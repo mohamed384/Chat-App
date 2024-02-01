@@ -2,7 +2,7 @@ package org.example.callBackImp;
 
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
-import org.example.utils.ChatBot;
+//import org.example.utils.ChatBot;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;

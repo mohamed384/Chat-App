@@ -1,6 +1,7 @@
 package org.example.controller.FXMLController;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,10 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -26,11 +24,19 @@ import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
+import org.example.interfaces.UserSendNotification;
+import org.example.models.Enums.UserMode;
+import org.example.models.Enums.UserStatus;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MessagePage implements Initializable {
@@ -178,24 +184,52 @@ public class MessagePage implements Initializable {
             scrollPane.setVvalue(1.0);
         });
 
-        if(botBoolean){
-            try {
-               callBackServer.chatBot( Result, "01005036123" ,"01095192555");
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        if(botBoolean){
+//            try {
+//               callBackServer.chatBot( Result, "01005036123" ,"01095192555");
+//            } catch (RemoteException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         /*
         vboxMessage.getChildren().add(hBox);
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
         */
     }
 
+//    private UserSendNotification UserNotificationController() {
+//        UserSendNotification remoteObject = null;
+//        try {
+//            remoteObject = (UserSendNotification) Naming.lookup("rmi://localhost:1099/UserSendNotificationStub");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return remoteObject;
+//    }
+    String phoneNumber = "1234567890";
+    String displayName = "Test User";
+    String email = "testuser@example.com";
+    String passwordHash = "hashedpassword";
+    String confirmPassword = "hashedpassword";
+    String gender = "Male";
+    String country = "Test Country";
+    Date dateOfBirth = new Date();
+    String bio = "This is a test user.";
+    UserStatus status = UserStatus.Online;
+    UserMode userMode = UserMode.Available;
+    byte[] picture = new byte[0]; // Empty picture for the test
 
+    UserDTO user = new UserDTO(phoneNumber, displayName, email, passwordHash, confirmPassword, gender, country, dateOfBirth, bio, status, userMode, picture);
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
+//        UserSendNotification userSendNotification = UserNotificationController();
+//
+//        List<NotificationDto> notificationList =  userSendNotification.receiveNotification(UserToken.getInstance().getUser().getPhoneNumber());
+        List<UserDTO> userDTOList= new ArrayList<>();
+        userDTOList.add(user);
+        userDTOList.add(user);
+        observableList = FXCollections.observableArrayList(userDTOList);
+        listView.setItems(observableList);
         listView.setCellFactory(param -> new ListCell<UserDTO>() {
             @Override
             protected void updateItem(UserDTO item, boolean empty) {
@@ -220,6 +254,5 @@ public class MessagePage implements Initializable {
             }
         });
     }
-    public void showProfile(MouseEvent mouseEvent) {
-    }
+
 }
