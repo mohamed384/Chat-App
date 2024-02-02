@@ -109,7 +109,6 @@ public class ChatDAOImpl implements ChatDAO {
                 "WHERE (CP1.ParticipantUserID = ? OR CP1.ParticipantUserID = ?) " +
                 "  AND (CP2.ParticipantUserID = ? OR CP2.ParticipantUserID = ?) " +
                 "  AND C.AdminID IS NULL";
-
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, sender);

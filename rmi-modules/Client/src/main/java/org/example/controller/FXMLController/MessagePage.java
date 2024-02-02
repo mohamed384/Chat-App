@@ -138,7 +138,7 @@ public class MessagePage implements Initializable {
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
 
         try {
-            callBackServer.sendMsg(message, "01095192555", "01005036123");
+            callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), "01005036123");
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }

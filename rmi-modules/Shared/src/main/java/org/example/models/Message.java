@@ -1,22 +1,17 @@
 package org.example.models;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 public class Message {
     private int messageID;
-    private int senderID;
-    private int receiverID;
+    private String senderID;
+    private int chatID;
     private String messageContent;
-    private Timestamp messageTimestamp;
     private boolean isAttachment;
+    public Message(){}
 
-    public Message(int messageID, int senderID, int receiverID, String messageContent, Timestamp messageTimestamp, boolean isAttachment) {
-        this.messageID = messageID;
+    public Message(String senderID, int receiverID, String messageContent, boolean isAttachment) {
         this.senderID = senderID;
-        this.receiverID = receiverID;
+        this.chatID = receiverID;
         this.messageContent = messageContent;
-        this.messageTimestamp = messageTimestamp;
         this.isAttachment = isAttachment;
     }
 
@@ -28,20 +23,20 @@ public class Message {
         this.messageID = messageID;
     }
 
-    public int getSenderID() {
+    public String getSenderID() {
         return senderID;
     }
 
-    public void setSenderID(int senderID) {
+    public void setSenderID(String senderID) {
         this.senderID = senderID;
     }
 
-    public int getReceiverID() {
-        return receiverID;
+    public int getChatID() {
+        return chatID;
     }
 
-    public void setReceiverID(int receiverID) {
-        this.receiverID = receiverID;
+    public void setChatID(int chatID) {
+        this.chatID = chatID;
     }
 
     public String getMessageContent() {
@@ -50,14 +45,6 @@ public class Message {
 
     public void setMessageContent(String messageContent) {
         this.messageContent = messageContent;
-    }
-
-    public Timestamp getMessageTimestamp() {
-        return messageTimestamp;
-    }
-
-    public void setMessageTimestamp(Timestamp messageTimestamp) {
-        this.messageTimestamp = messageTimestamp;
     }
 
     public boolean isAttachment() {

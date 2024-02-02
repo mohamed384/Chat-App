@@ -3,24 +3,26 @@ package org.example.callBackImp;
 import org.example.DTOs.UserDTO;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
-//import org.example.utils.ChatBot;
-
+import org.example.models.Message;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CallBackServerImp extends UnicastRemoteObject implements CallBackServer , Serializable {
 
-      static Map<String, CallBackClient> clients = new HashMap<String, CallBackClient>();
+    static Map<String, CallBackClient> clients = new HashMap<>();
+    private final MessageDAOImpl messageDAO;
+    private final ChatDAOImpl chatDAO;
 
     public static int getClients() {
         return clients.size();
     }
 
     public CallBackServerImp() throws RemoteException {
+        messageDAO  = new MessageDAOImpl();
+        chatDAO = new ChatDAOImpl();
     }
     @Override
     public boolean login(String phoneNumber, CallBackClient callBackClient) {
@@ -55,6 +57,23 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         try {
             callBackClient.notification( "You have a new message from "+senderPhoneNumber);
             callBackClient.receiveMsg(msg, senderPhoneNumber);
+            /// add message in db
+
+            // Create a new Message
+            Message message = new Message();
+            message.setSenderID(senderPhoneNumber);
+            message.setMessageContent(msg);
+            message.setAttachment(false); // Set this based on whether the message is an attachment
+
+            // Get the ChatID
+
+            int chatID = chatDAO.getPrivateChat(senderPhoneNumber, receiverPhoneNumber).getChatID();
+            message.setChatID(chatID);
+
+            // Save the message to the database
+             messageDAO.create(message);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
