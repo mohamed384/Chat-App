@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 public class ContactController implements Initializable {
 
 
+
     @FXML
     public TreeView<UserDTO> contactsTreeView;
 

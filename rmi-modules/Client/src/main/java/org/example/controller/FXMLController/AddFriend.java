@@ -56,6 +56,11 @@ public class AddFriend {
         return remoteObject;
     }
 
+    public void setCallBackServer(CallBackServer callBackServer){
+        this.callBackServer = callBackServer;
+    }
+
+
     private UserSendNotification UserNotificationController() {
         UserSendNotification remoteObject = null;
         try {
