@@ -77,7 +77,7 @@ public class ContactMainController  implements Initializable {
         this.location = location;
         contactService= new ContactService();
         contacts = FXCollections.observableArrayList();
-        System.out.println("annaaa contact main controller" + this);
+        //System.out.println("annaaa contact main controller" + this);
         PaneLoaderFactory.getInstance().setContactMainController(this);
         populateContactsTree();
         handleSelection();
@@ -103,7 +103,7 @@ public class ContactMainController  implements Initializable {
 
 
     public void updateContactList(){
-        System.out.println("Updating contact list in contact main controller");
+        //System.out.println("Updating contact list in contact main controller");
         contacts.clear();
         getAllContacts();
         TreeItem<UserDTO> root = contactsTreeView.getRoot();
@@ -267,8 +267,7 @@ public class ContactMainController  implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            PaneLoaderFactory.getInstance().getMessagePage().setData(nameLabel.getText(),
-                    selectedItem.getPicture());
+            PaneLoaderFactory.getInstance().getMessagePage().setData(selectedItem);
             BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
             mainBorder.setCenter(borderPane);
 

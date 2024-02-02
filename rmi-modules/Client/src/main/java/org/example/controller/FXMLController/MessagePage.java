@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import org.controlsfx.control.HiddenSidesPane;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
+import org.example.controller.FXMLController.UtilsFX.ChatListManager;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 
@@ -194,22 +195,18 @@ public class MessagePage implements Initializable {
     }
 
 
-    public void setData(String name, byte[] image) {
-        System.out.println("from messagePage "+name);
-        System.out.println("from messagePage "+ image);
-        observableList.add(new UserDTO(name, image));
-        System.out.println(observableList);
+    public void setData(UserDTO userDTO) {
+        //System.out.println("from messagePage " +userDTO.getDisplayName());
+        //System.out.println("from messagePage "+ userDTO.getPicture());
+        ChatListManager.getInstance().addContact(userDTO);
         listView.refresh();
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        observableList = FXCollections.observableArrayList();
-
         PaneLoaderFactory.getInstance().setMessagePage(this);
         location = url;
-
-        System.out.println("Observable List "+ observableList);
-        listView.setItems(observableList);
+        //System.out.println("Observable List "+ observableList);
+        listView.setItems(ChatListManager.getInstance().getContacts());
         listView.setCellFactory(param -> new ListCell<UserDTO>() {
             @Override
             protected void updateItem(UserDTO item, boolean empty) {
