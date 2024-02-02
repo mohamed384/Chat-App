@@ -1,7 +1,9 @@
 package org.example.controller.FXMLController;
 
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,28 +18,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.HiddenSidesPane;
-import org.example.DTOs.NotificationDto;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
-import org.example.interfaces.UserSendNotification;
-import org.example.models.Enums.UserMode;
-import org.example.models.Enums.UserStatus;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MessagePage implements Initializable {
     @FXML
@@ -72,7 +64,6 @@ public class MessagePage implements Initializable {
 
     CallBackServer callBackServer;
 
-    ObservableList<UserDTO> observableList;
 
     public void setCallBackClient(CallBackClient callBackClient) {
         this.callBackClient = callBackClient;
@@ -196,39 +187,18 @@ public class MessagePage implements Initializable {
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
         */
     }
+    ObservableList<UserDTO> observableList = FXCollections.observableArrayList();;
 
-//    private UserSendNotification UserNotificationController() {
-//        UserSendNotification remoteObject = null;
-//        try {
-//            remoteObject = (UserSendNotification) Naming.lookup("rmi://localhost:1099/UserSendNotificationStub");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return remoteObject;
-//    }
-    String phoneNumber = "1234567890";
-    String displayName = "Test User";
-    String email = "testuser@example.com";
-    String passwordHash = "hashedpassword";
-    String confirmPassword = "hashedpassword";
-    String gender = "Male";
-    String country = "Test Country";
-    Date dateOfBirth = new Date();
-    String bio = "This is a test user.";
-    UserStatus status = UserStatus.Online;
-    UserMode userMode = UserMode.Available;
-    byte[] picture = new byte[0]; // Empty picture for the test
-
-    UserDTO user = new UserDTO(phoneNumber, displayName, email, passwordHash, confirmPassword, gender, country, dateOfBirth, bio, status, userMode, picture);
+    public void setData(String name, byte[] image) {
+        System.out.println("from messagePage "+name);
+        System.out.println("from messagePage "+ image);
+       observableList.add(new UserDTO(name, image));
+        System.out.println(observableList);
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        UserSendNotification userSendNotification = UserNotificationController();
-//
-//        List<NotificationDto> notificationList =  userSendNotification.receiveNotification(UserToken.getInstance().getUser().getPhoneNumber());
-        List<UserDTO> userDTOList= new ArrayList<>();
-        userDTOList.add(user);
-        userDTOList.add(user);
-        observableList = FXCollections.observableArrayList(userDTOList);
+
+        System.out.println("Observable List "+ observableList);
         listView.setItems(observableList);
         listView.setCellFactory(param -> new ListCell<UserDTO>() {
             @Override
@@ -254,5 +224,6 @@ public class MessagePage implements Initializable {
             }
         });
     }
+
 
 }

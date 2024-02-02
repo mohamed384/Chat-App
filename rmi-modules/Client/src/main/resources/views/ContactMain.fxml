@@ -104,7 +104,7 @@
                <VBox.margin>
                   <Insets top="30.0" />
                </VBox.margin>
-               <Image url = "@../images/profile.jpg" />
+               <Image url="@../../../../../../../../portfolio-html-site-master/images/portfolio2.jpg" />
             </ImageView>
             <Label fx:id="nameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="263.0" text="Medo" textAlignment="CENTER">
                <font>
@@ -132,7 +132,7 @@
                </ImageView>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <Button  mnemonicParsing="false" prefHeight="26.0" prefWidth="167.0" styleClass="message-btn" text="Message" textFill="WHITE">
+               <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="167.0" styleClass="message-btn" text="Message" textFill="WHITE">
                   <HBox.margin>
                      <Insets right="10.0" />
                   </HBox.margin>

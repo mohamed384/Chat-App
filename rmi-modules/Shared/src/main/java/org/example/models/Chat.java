@@ -7,9 +7,6 @@ public class Chat {
     private String chatName;
     private byte[] chatImage;
     private int adminID;
-    private Timestamp creationDate;
-    private Timestamp lastModified;
-
 
 
     public Chat(String chatName, byte[] chatImage, int adminID) {
@@ -17,8 +14,6 @@ public class Chat {
         this.chatName = chatName;
         this.chatImage = chatImage;
         this.adminID = adminID;
-      this.creationDate = creationDate;
-      this.lastModified = lastModified;
     }
 
     public int getChatID() {
@@ -53,19 +48,5 @@ public class Chat {
         this.adminID = adminID;
     }
 
-    public Timestamp getCreationDate() {
-        return creationDate;
-    }
 
-    public void setCreationDate(Timestamp creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Timestamp getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Timestamp lastModified) {
-        this.lastModified = lastModified;
-    }
 }

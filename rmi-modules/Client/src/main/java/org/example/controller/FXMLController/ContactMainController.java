@@ -1,15 +1,9 @@
 package org.example.controller.FXMLController;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
@@ -17,29 +11,24 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
+import org.controlsfx.control.HiddenSidesPane;
+import org.example.DTOs.ChatDTO;
 import org.example.DTOs.UserDTO;
-import org.example.interfaces.CallBackClient;
-import org.example.interfaces.CallBackServer;
-import org.example.interfaces.UserContact;
-import org.example.models.Enums.UserStatus;
-import org.example.service.ContactService;
+import org.example.Utils.StubContext;
+import org.example.Utils.UserToken;
+import org.example.controller.FXMLController.UtilsFX.StageUtils;
+import org.example.interfaces.ChatRMI;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.net.http.HttpResponse;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ContactMainController  implements Initializable {
 
-    @FXML
     public BorderPane searchList;
     @FXML
     private ImageView contactImage;
@@ -51,7 +40,14 @@ public class ContactMainController  implements Initializable {
     private Label phoneLabel;
     @FXML
     private Label emailLabel;
+    ChatRMI chatRMI;
+    UserDTO selectedItem;
 
+    public ContactMainController() {
+        this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
+
+        System.out.println(chatRMI);
+    }
 
     @FXML
     public TreeView<UserDTO> contactsTreeView;
@@ -78,7 +74,7 @@ public class ContactMainController  implements Initializable {
     }
     public void handleSelection(){
         contactsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null && newValue.getValue() != null && !newValue.getValue().getDisplayName().equals("Contacts") && !newValue.getValue().getDisplayName().equals("Online") && !newValue.getValue().getDisplayName().equals("Offline")) {
+            if (newValue != null && newValue.getValue() != null) {
                 UserDTO selectedItem = newValue.getValue();
                 if (selectedItem != null) {
                     contactImage.setImage(new Image(new ByteArrayInputStream(selectedItem.getPicture())));
@@ -89,7 +85,6 @@ public class ContactMainController  implements Initializable {
                 }
             }
         });
-
     }
 
     public void updateContactList(){
@@ -239,5 +234,23 @@ public class ContactMainController  implements Initializable {
 
 
 
-
+//    public void messageBtn(MouseEvent event) {
+//        try {
+//            ChatDTO existChat = chatRMI.getPrivateChat(UserToken.getInstance().getUser().getPhoneNumber()
+//                    , phoneLabel.getText()) ;
+//            if(existChat == null){
+//                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),0,
+//                        UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
+//            }
+//            BorderPane borderPane= PaneLoaderFactory.messagePageLoader().getKey();
+//            PaneLoaderFactory.messagePageLoader().getValue().setData(UserToken.getInstance().getUser().getDisplayName(),
+//                   selectedItem.getPicture());
+//            BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
+//            mainBorder.setCenter(borderPane);
+//
+//        } catch (RemoteException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
 }

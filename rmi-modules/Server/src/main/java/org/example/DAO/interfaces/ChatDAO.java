@@ -10,8 +10,8 @@ import java.sql.Connection;
 import java.util.List;
 
 public interface ChatDAO extends DAO<Chat> {
-    boolean create(String name, byte[] img,int adminId);
-    boolean save(String name, byte[] img,int adminId, Connection connection);
+    boolean create(String name, byte[] img,int adminId,String sender, String receiver);
+    int save(String name, byte[] img, int adminId, Connection connection);
     default void delete(Chat t){};
    default boolean create(Chat t){return false;}
 }

@@ -67,6 +67,11 @@ import java.util.Date;
 
         }
 
+        public UserDTO(String displayName, byte[] picture) {
+            this.displayName = displayName;
+            this.picture = picture;
+        }
+
         @Override
         public String toString() {
             return "UserDTO{" +

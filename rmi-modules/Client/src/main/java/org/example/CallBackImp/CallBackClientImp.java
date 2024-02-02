@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
@@ -19,6 +20,9 @@ import org.controlsfx.control.Notifications;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.*;
+import org.example.controller.FXMLController.AuthContainerController;
+import org.example.controller.FXMLController.MessagePage;
+import org.example.controller.FXMLController.PaneLoaderFactory;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackClient;
 
@@ -40,7 +44,6 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     MessagePage messagePage;
-
 
     public CallBackClientImp(MessagePage   messagePage) throws RemoteException {
 
@@ -128,8 +131,22 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
         });
     }
 
+
+    @Override
+    public void announce(String title, String msg) throws Exception {
+        Platform.runLater(()->{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(msg);
+            alert.showAndWait();
+        });
+    }
+
+
+
     private  void login( ) {
         GridPane pane  = PaneLoaderFactory.authContainerPane().getKey();
+        AuthContainerController authContainerController = PaneLoaderFactory.authContainerPane().getValue();
 
         pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
