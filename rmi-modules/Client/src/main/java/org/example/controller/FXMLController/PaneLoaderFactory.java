@@ -1,6 +1,7 @@
 package org.example.controller.FXMLController;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -10,12 +11,25 @@ import org.controlsfx.control.HiddenSidesPane;
 import java.io.IOException;
 
 public class PaneLoaderFactory {
+    public static ContactMainController contactMainController;
 
-    public static Pair<HiddenSidesPane, MessagePage> messagePageLoader(){
-        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/Message.fxml"));
-        HiddenSidesPane pane = null;
+    private static PaneLoaderFactory instance;
+
+    private PaneLoaderFactory(){
+    }
+
+    public static PaneLoaderFactory getInstance(){
+        if(instance==null){
+            instance = new PaneLoaderFactory();
+        }
+        return instance;
+    }
+
+    public static Pair<BorderPane, MessagePage> messagePageLoader(){
+        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/MessagePage.fxml"));
+        BorderPane pane = null;
         try {
-            pane = (HiddenSidesPane) loader.load();
+            pane = (BorderPane) loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -23,12 +37,18 @@ public class PaneLoaderFactory {
         return new Pair<>(pane, controller);
     }
 
+    public void setContactMainController(ContactMainController contactMainControllerCopy) {
+        contactMainController = contactMainControllerCopy;
+    }
+    public ContactMainController getContactMainController() {
+       return contactMainController;
+    }
 
     public static Pair<BorderPane, ContactMainController> ContactPageLoader(){
         FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/ContactMain.fxml"));
         BorderPane pane = null;
         try {
-            pane = (BorderPane) loader.load();
+            pane =  loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

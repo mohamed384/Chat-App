@@ -16,16 +16,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
-import org.example.controller.FXMLController.AuthContainerController;
-import org.example.controller.FXMLController.MainController;
-import org.example.controller.FXMLController.MessagePage;
-import org.example.controller.FXMLController.PaneLoaderFactory;
+import org.example.controller.FXMLController.*;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackClient;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,14 +33,23 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     UserToken userToken = UserToken.getInstance();
     AuthContainerController authContainerController = AuthContainerController.getInstance();
 
+    ContactMainController contactMainController;
+
+
+
 
 
     MessagePage messagePage;
+
 
     public CallBackClientImp(MessagePage   messagePage) throws RemoteException {
 
         this.messagePage = messagePage;
 
+    }
+
+    public void setContactMainController(ContactMainController contactMainController) {
+        this.contactMainController = contactMainController;
     }
 
 
@@ -76,6 +84,15 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void updateContactList() throws Exception {
+        System.out.println("updateContactList in call back client imp : ");
+        Platform.runLater(() -> {
+            contactMainController.updateContactList();
+        });
+
     }
 
     @Override

@@ -16,42 +16,35 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.example.DTOs.UserDTO;
+import org.example.interfaces.CallBackServer;
 import org.example.models.Enums.UserStatus;
 import org.example.service.ContactService;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ContactController implements Initializable {
 
 
     @FXML
-    private TreeView<UserDTO> contactsTreeView;
+    public TreeView<UserDTO> contactsTreeView;
 
     private final ContactService contactService;
-    private final ObservableList<UserDTO> offlineContacts = FXCollections.observableArrayList();
-    private final ObservableList<UserDTO> onlineContacts = FXCollections.observableArrayList();
-//    ObjectProperty<UserDTO> friendItem;
-//    ContactMainController contactMainController;
+    private ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
+
+
     public ContactController() {
         this.contactService = new ContactService();
     }
-    @FXML
-    public void onOfflineButtonClick(ActionEvent event) {
-    }
 
-    @FXML
-    public void onOnlineButtonClick(ActionEvent event) {
-    }
-//    public void bindUserDTOProperty(ObjectProperty<UserDTO> userDTOProperty) {
-//        this.friendItem = userDTOProperty;
-//    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateContactsTree();
     }
 
     private void populateContactsTree() {
+        getAllContacts();
 
         TreeItem<UserDTO> root = new TreeItem<>(new UserDTO("", "Contacts", "", "", "", "", "", null, "", null, null, null));
         TreeItem<UserDTO> onlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Online", "", "", "", "", "", null, "", null, null, null));
@@ -97,11 +90,7 @@ public class ContactController implements Initializable {
         });
     }
 
-    private ObservableList<UserDTO> getContactsByStatus(UserStatus status) {
-        ObservableList<UserDTO> contacts = FXCollections.observableArrayList(contactService.getAllContacts());
-        contacts.removeIf(contact -> contact.getUserStatus() != status);
-        return contacts;
-    }
+
 
     private void populateContacts(TreeItem<UserDTO> treeItem, ObservableList<UserDTO> contacts) {
         for (UserDTO contact : contacts) {
@@ -109,13 +98,15 @@ public class ContactController implements Initializable {
         }
     }
 
+    public void getAllContacts(){
+        contacts =  FXCollections.observableArrayList(contactService.getAllContacts());
+    }
+
     private ObservableList<UserDTO> getOfflineContacts() {
-        ObservableList<UserDTO> contacts = FXCollections.observableArrayList(contactService.getAllContacts());
         contacts.removeIf(contact -> contact.getUserStatus() != UserStatus.Offline);
         return contacts;
     }
     private ObservableList<UserDTO> getOnlineContacts() {
-        ObservableList<UserDTO> contacts = FXCollections.observableArrayList(contactService.getAllContacts());
         contacts.removeIf(contact -> contact.getUserStatus() != UserStatus.Online);
         return contacts;
     }
@@ -123,12 +114,15 @@ public class ContactController implements Initializable {
     @FXML
     public void onAddContactClick(ActionEvent event) {
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddFriend.fxml"));
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("/views/AddFriend.fxml"));
+            root = loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+       // AddFriend controller = loader.getController();
+        //controller.setCallBackServer(callBackServer);
 
         Scene secondScene = new Scene(root, 550, 300);
 
@@ -142,6 +136,7 @@ public class ContactController implements Initializable {
 
 
     }
+
 
 
     public void creatGroup(ActionEvent actionEvent) {

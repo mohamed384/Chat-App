@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import org.example.DTOs.NotificationDto;
 import org.example.Utils.UserToken;
+import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserSendNotification;
 import java.io.IOException;
 import java.net.URL;
@@ -25,7 +26,8 @@ public class NotificationController implements Initializable {
     @FXML
     private ListView<NotificationDto> notificationListView;
 
-ObservableList<NotificationDto>  observableList;
+    ObservableList<NotificationDto>  observableList;
+
 
     private UserSendNotification UserNotificationController() {
         UserSendNotification remoteObject = null;
@@ -37,6 +39,15 @@ ObservableList<NotificationDto>  observableList;
         return remoteObject;
     }
 
+    private CallBackServer CallBackServerController(){
+        CallBackServer remoteObject = null;
+        try {
+            remoteObject = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return remoteObject;
+    }
 
     public  void removeNotification(String phoneNumber) {
         int index=-1;
@@ -53,8 +64,9 @@ ObservableList<NotificationDto>  observableList;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UserSendNotification userSendNotification = UserNotificationController();
+     //   CallBackServer callBackServer = CallBackServerController();
         try {
-           List<NotificationDto> notificationList =  userSendNotification.receiveNotification(UserToken.getInstance().getUser().getPhoneNumber());
+             List<NotificationDto> notificationList =  userSendNotification.receiveNotification(UserToken.getInstance().getUser().getPhoneNumber());
              observableList = FXCollections.observableArrayList(notificationList);
              notificationListView.setItems(observableList);
         } catch (RemoteException e) {
@@ -73,6 +85,7 @@ ObservableList<NotificationDto>  observableList;
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/NotificationNode.fxml"));
                         HBox notificationItem = loader.load();
                         NotificationNodeController controller = loader.getController();
+
 //                        controller.setNotificationController(notificationController);
                         controller.setUserName(item.getName());
                         controller.setNotificationController(NotificationController.this); // Pass the reference

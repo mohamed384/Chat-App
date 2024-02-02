@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.example.Utils.UserToken;
+import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserContact;
 import org.example.interfaces.UserSendNotification;
 
@@ -30,6 +31,8 @@ public class NotificationNodeController implements Initializable {
     NotificationController notificationController;
     UserSendNotification remoteNotificationObject;
     UserContact remoteContactObject ;
+
+
     public  NotificationNodeController() {
         remoteNotificationObject = UserNotificationController();
         remoteContactObject=  UserContactController();
@@ -92,14 +95,27 @@ public class NotificationNodeController implements Initializable {
         }
         return remoteObject;
     }
+    private CallBackServer CallBackServerController() {
+        CallBackServer remoteObject = null;
+        try {
+            remoteObject = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return remoteObject;
+    }
 
     void acceptFriendRequest() {
-
+        UserContact remoteContactObject = UserContactController();
+        CallBackServer callBackServer = CallBackServerController();
         String senderId = userNumber.getText();
         String receiverId = UserToken.getInstance().getUser().getPhoneNumber();
         if (remoteNotificationObject != null && receiverId != null && senderId != null) {
             try {
                 remoteContactObject.acceptInvite(receiverId, senderId);
+                System.out.println("acceptFriendRequest: in NotificationNodeController");
+                callBackServer.updateContactList(senderId);
+                callBackServer.updateContactList(receiverId);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

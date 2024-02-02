@@ -1,5 +1,6 @@
 package org.example.callBackImp;
 
+import org.example.DTOs.UserDTO;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 //import org.example.utils.ChatBot;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CallBackServerImp extends UnicastRemoteObject implements CallBackServer , Serializable {
@@ -73,6 +75,17 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    @Override
+    public void updateContactList(String phoneNumber) throws RemoteException {
+        CallBackClient callBackClient = clients.get(phoneNumber);
+        try {
+            System.out.println("updateContactList: in CallBackServerImp");
+            callBackClient.updateContactList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

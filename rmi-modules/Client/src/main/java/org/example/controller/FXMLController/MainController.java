@@ -54,7 +54,8 @@ public class MainController {
     private BorderPane borderPane;
 
     CallBackServer callBackServer;
-    CallBackClient callBackClient;
+    CallBackClientImp callBackClient;
+
 
 
 
@@ -95,7 +96,7 @@ public class MainController {
     public void goToMessage(ActionEvent event) {
 
         ///
-        HiddenSidesPane pane = PaneLoaderFactory.messagePageLoader().getKey();
+        BorderPane pane = PaneLoaderFactory.messagePageLoader().getKey();
         MessagePage messagePage = PaneLoaderFactory.messagePageLoader().getValue();
         messagePage.setCallBackClient(callBackClient);
         messagePage.setCallBackServer(callBackServer);
@@ -110,10 +111,19 @@ public class MainController {
 
     }
 
+    public void getContactMainController(ContactMainController contactMainController) {
+        callBackClient.setContactMainController(contactMainController);
+    }
+
     @FXML
     public void goToContact(ActionEvent event) {
 
             BorderPane pane = PaneLoaderFactory.ContactPageLoader().getKey();
+          //  ContactMainController controller = PaneLoaderFactory.ContactPageLoader().getValue();
+            callBackClient.setContactMainController(PaneLoaderFactory.getInstance().getContactMainController());
+
+           // callBackClient.setContactMainController(controller);
+
             pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
             borderPane.setCenter(null);
@@ -125,6 +135,8 @@ public class MainController {
     public void goToNotification(ActionEvent event) {
 
             BorderPane pane = PaneLoaderFactory.notificationPageLoader().getKey();
+            //NotificationController controller = PaneLoaderFactory.notificationPageLoader().getValue();
+            //controller.setCallBackServer(callBackServer);
             pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
             borderPane.setCenter(null);

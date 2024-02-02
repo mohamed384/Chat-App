@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
+import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
 import org.example.interfaces.UserContact;
 import org.example.interfaces.UserSendNotification;
@@ -42,6 +43,8 @@ public class AddFriend {
     private Label searchNumber;
     UserDTO userDTO = null;
 
+    private  CallBackServer callBackServer;
+
 
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
@@ -72,6 +75,16 @@ public class AddFriend {
         }
         return remoteObject;
     }
+
+//    private CallBackServer CallBackServerController() {
+//        CallBackServer remoteObject = null;
+//        try {
+//            remoteObject = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return remoteObject;
+//    }
 
     @FXML
     void searchOnUser(ActionEvent event) {
@@ -107,6 +120,7 @@ public class AddFriend {
         UserSendNotification remoteObject = UserNotificationController();
         UserContact remoteObject2 = UserContactController();
 
+
         String senderId = UserToken.getInstance().getUser().getPhoneNumber();
         String receiverId = userDTO.getPhoneNumber();
         System.out.println("Sender ID: " + senderId);
@@ -128,6 +142,7 @@ public class AddFriend {
                     System.out.println("From AddFriend: ana h3ml acceptInvite aho");
                     requestImage.setImage(new Image("/images/remove.png"));
                     remoteObject2.acceptInvite(senderId, receiverId);
+
 
 
                 } else {

@@ -1,6 +1,7 @@
 package org.example.DAO;
 
 import org.example.DAO.interfaces.ContactDAO;
+import org.example.interfaces.CallBackServer;
 import org.example.models.Contact;
 import org.example.models.Enums.UserStatus;
 import org.example.models.User;
@@ -48,6 +49,7 @@ public class ContactDAOImpl extends HandleContactAndNotification implements Cont
                 return true;
             }
         }
+
         return false;
 
     }
