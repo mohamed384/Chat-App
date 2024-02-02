@@ -92,6 +92,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     @Override
     public void updateContactList() throws Exception {
         System.out.println("updateContactList in call back client imp : ");
+
         Platform.runLater(() -> {
             contactMainController.updateContactList();
         });

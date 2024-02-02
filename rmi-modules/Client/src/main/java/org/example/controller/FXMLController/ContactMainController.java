@@ -1,9 +1,13 @@
 package org.example.controller.FXMLController;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
@@ -13,7 +17,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.controlsfx.control.HiddenSidesPane;
 import org.example.DTOs.ChatDTO;
 import org.example.DTOs.UserDTO;
@@ -21,10 +28,13 @@ import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.ChatRMI;
+import org.example.models.Enums.UserStatus;
+import org.example.service.ContactService;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class ContactMainController  implements Initializable {
@@ -43,10 +53,12 @@ public class ContactMainController  implements Initializable {
     ChatRMI chatRMI;
     UserDTO selectedItem;
 
+    URL location;
+
     public ContactMainController() {
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
 
-        System.out.println(chatRMI);
+       // System.out.println(chatRMI);
     }
 
     @FXML
@@ -62,6 +74,7 @@ public class ContactMainController  implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.location = location;
         contactService= new ContactService();
         contacts = FXCollections.observableArrayList();
         System.out.println("annaaa contact main controller" + this);
@@ -69,13 +82,13 @@ public class ContactMainController  implements Initializable {
         populateContactsTree();
         handleSelection();
 
-
-
     }
+
+
     public void handleSelection(){
         contactsTreeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null && newValue.getValue() != null) {
-                UserDTO selectedItem = newValue.getValue();
+            if (newValue != null && newValue.getValue() != null && !newValue.getValue().getDisplayName().equals("Contacts") && !newValue.getValue().getDisplayName().equals("Online") && !newValue.getValue().getDisplayName().equals("Offline")) {
+                selectedItem = newValue.getValue();
                 if (selectedItem != null) {
                     contactImage.setImage(new Image(new ByteArrayInputStream(selectedItem.getPicture())));
                     nameLabel.setText(selectedItem.getDisplayName());
@@ -85,7 +98,9 @@ public class ContactMainController  implements Initializable {
                 }
             }
         });
+
     }
+
 
     public void updateContactList(){
         System.out.println("Updating contact list in contact main controller");
@@ -234,23 +249,33 @@ public class ContactMainController  implements Initializable {
 
 
 
-//    public void messageBtn(MouseEvent event) {
-//        try {
-//            ChatDTO existChat = chatRMI.getPrivateChat(UserToken.getInstance().getUser().getPhoneNumber()
-//                    , phoneLabel.getText()) ;
-//            if(existChat == null){
-//                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),0,
-//                        UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
-//            }
-//            BorderPane borderPane= PaneLoaderFactory.messagePageLoader().getKey();
-//            PaneLoaderFactory.messagePageLoader().getValue().setData(UserToken.getInstance().getUser().getDisplayName(),
-//                   selectedItem.getPicture());
-//            BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
-//            mainBorder.setCenter(borderPane);
-//
-//        } catch (RemoteException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
+    public void messageBtn(MouseEvent event) {
+        try {
+            ChatDTO existChat = chatRMI.getPrivateChat(UserToken.getInstance().getUser().getPhoneNumber()
+                    , phoneLabel.getText()) ;
+            if(existChat == null){
+                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),0,
+                        UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
+            }
+
+            FXMLLoader loader = new FXMLLoader();
+            BorderPane borderPane = null;
+            try {
+                loader.setLocation(PaneLoaderFactory.getInstance().getMessagePage().getFxmlUrl());
+                borderPane = loader.load();
+                // Now you can use 'root' as the root of your scene
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            PaneLoaderFactory.getInstance().getMessagePage().setData(nameLabel.getText(),
+                    selectedItem.getPicture());
+            BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
+            mainBorder.setCenter(borderPane);
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }

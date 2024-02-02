@@ -63,7 +63,9 @@ public class MessagePage implements Initializable {
     CallBackClient callBackClient;
 
     CallBackServer callBackServer;
+    ObservableList<UserDTO> observableList;
 
+    URL location;
 
     public void setCallBackClient(CallBackClient callBackClient) {
         this.callBackClient = callBackClient;
@@ -80,6 +82,9 @@ public class MessagePage implements Initializable {
         } else {
             hiddenSidesPane.setPinnedSide(null);
         }
+    }
+    public URL getFxmlUrl() {
+        return location;
     }
 
 
@@ -187,16 +192,21 @@ public class MessagePage implements Initializable {
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
         */
     }
-    ObservableList<UserDTO> observableList = FXCollections.observableArrayList();;
+
 
     public void setData(String name, byte[] image) {
         System.out.println("from messagePage "+name);
         System.out.println("from messagePage "+ image);
-       observableList.add(new UserDTO(name, image));
+        observableList.add(new UserDTO(name, image));
         System.out.println(observableList);
+        listView.refresh();
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        observableList = FXCollections.observableArrayList();
+
+        PaneLoaderFactory.getInstance().setMessagePage(this);
+        location = url;
 
         System.out.println("Observable List "+ observableList);
         listView.setItems(observableList);
@@ -214,7 +224,8 @@ public class MessagePage implements Initializable {
                         MessageNode controller = loader.getController();
                         controller.setUserName(item.getDisplayName());
                         controller.setMessageController(MessagePage.this); // Pass the reference
-                        Image image = new Image("/images/profile.jpg");
+                     //   Image image = new Image("/images/profile.jpg");
+                        Image image = new Image(new ByteArrayInputStream(item.getPicture()));
                         controller.setUserImg(image);
                         setGraphic(notificationItem);
                     } catch (IOException e) {

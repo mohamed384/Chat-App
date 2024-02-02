@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class PaneLoaderFactory {
     public static ContactMainController contactMainController;
+    public static MessagePage messagePage;
 
     private static PaneLoaderFactory instance;
 
@@ -23,6 +24,18 @@ public class PaneLoaderFactory {
             instance = new PaneLoaderFactory();
         }
         return instance;
+    }
+    public void setContactMainController(ContactMainController contactMainControllerCopy) {
+        contactMainController = contactMainControllerCopy;
+    }
+    public ContactMainController getContactMainController() {
+        return contactMainController;
+    }
+    public void setMessagePage(MessagePage messagePageCopy) {
+        messagePage = messagePageCopy;
+    }
+    public MessagePage getMessagePage() {
+       return messagePage;
     }
 
     public static Pair<BorderPane, MessagePage> messagePageLoader(){
@@ -37,12 +50,7 @@ public class PaneLoaderFactory {
         return new Pair<>(pane, controller);
     }
 
-    public void setContactMainController(ContactMainController contactMainControllerCopy) {
-        contactMainController = contactMainControllerCopy;
-    }
-    public ContactMainController getContactMainController() {
-       return contactMainController;
-    }
+
 
     public static Pair<BorderPane, ContactMainController> ContactPageLoader(){
         FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/ContactMain.fxml"));

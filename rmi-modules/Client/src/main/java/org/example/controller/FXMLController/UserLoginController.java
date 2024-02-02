@@ -47,5 +47,8 @@ public class UserLoginController {
 
 
     }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber.setText(phoneNumber);
+    }
 
 }

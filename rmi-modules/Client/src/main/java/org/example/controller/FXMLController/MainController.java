@@ -121,6 +121,7 @@ public class MainController {
             BorderPane pane = PaneLoaderFactory.ContactPageLoader().getKey();
           //  ContactMainController controller = PaneLoaderFactory.ContactPageLoader().getValue();
             callBackClient.setContactMainController(PaneLoaderFactory.getInstance().getContactMainController());
+           // System.out.println(PaneLoaderFactory.getInstance().getContactMainController());
 
            // callBackClient.setContactMainController(controller);
 
