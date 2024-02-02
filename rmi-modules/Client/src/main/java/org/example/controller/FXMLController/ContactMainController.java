@@ -74,7 +74,6 @@ public class ContactMainController  implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.location = location;
         contactService= new ContactService();
         contacts = FXCollections.observableArrayList();
         //System.out.println("annaaa contact main controller" + this);

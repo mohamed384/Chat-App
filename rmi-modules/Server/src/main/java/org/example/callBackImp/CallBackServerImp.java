@@ -50,12 +50,12 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
         System.out.println("sendMsg: "+ msg);
         System.out.println("sender: "+ senderPhoneNumber);
-        System.out.println("receiver: " +receiverPhoneNumber);
+        System.out.println("clients: " + clients);
 
         CallBackClient callBackClient = clients.get(receiverPhoneNumber);
 
         try {
-            callBackClient.notification( "You have a new message from "+senderPhoneNumber);
+          //  callBackClient.notification( "You have a new message from "+senderPhoneNumber);
             callBackClient.receiveMsg(msg, senderPhoneNumber);
             /// add message in db
 

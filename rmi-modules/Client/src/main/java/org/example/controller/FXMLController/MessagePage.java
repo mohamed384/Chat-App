@@ -28,7 +28,10 @@ import org.example.interfaces.CallBackServer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -111,16 +114,6 @@ public class MessagePage implements Initializable {
         text.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; -fx-text-fill: white;");
         textArea.setText("");
 
-         /*
-        TextArea text = new TextArea();
-        text.setWrapText(true);
-        text.setMaxWidth(Double.MAX_VALUE);
-        text.setMaxHeight(Double.MAX_VALUE);
-        text.setText(textArea.getText());
-        text.setEditable(false); // Make the TextArea non-editable
-        text.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; -fx-text-fill: black;"); // Change text color to black
-        textArea.setText("");
-        */
 
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
@@ -130,26 +123,29 @@ public class MessagePage implements Initializable {
         HBox hBox = new HBox(10); // Add spacing between the image and the text
         hBox.getChildren().addAll(imageView, text);
 
-        VBox messageBubble = new VBox();
-        messageBubble.setMaxHeight(Double.MAX_VALUE); // Set maximum height to a very large value
-        messageBubble.getChildren().add(hBox);
-        messageBubble.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 5px; -fx-padding: 10px;");
+        //VBox messageBubble = new VBox();
+      //  messageBubble.setMaxHeight(Double.MAX_VALUE); // Set maximum height to a very large value
+       // messageBubble.getChildren().add(hBox);
+        vboxMessage.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 5px; -fx-padding: 10px;");
 
-        vboxMessage.getChildren().add(messageBubble);
+        vboxMessage.getChildren().add(hBox);
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
 
-        try {
-            callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), "01005036123");
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        Platform.runLater(() -> {
+            try {
+                callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+
+                System.out.println("callBackServer from message page" + callBackServer);
+                callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), selectedUser.getPhoneNumber());
+            } catch (RemoteException | MalformedURLException | NotBoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
+    UserDTO selectedUser ;
 
     public  void receiveMessage(String Result){
-        if(Result.equals("")){
-            return;
-        }
         Label text = new Label();
         text.setWrapText(true); // Enable text wrapping
         text.setMaxWidth(1000);
@@ -171,13 +167,13 @@ public class MessagePage implements Initializable {
         hBox.setAlignment(Pos.CENTER_RIGHT);
 
 
-        VBox messageBubble = new VBox();
-        messageBubble.getChildren().add(hBox);
-        messageBubble.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 5px; -fx-padding: 10px;");
+       // VBox messageBubble = new VBox();
+      //  vboxMessage.getChildren().add(hBox);
+        vboxMessage.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 5px; -fx-padding: 10px;");
 
+        vboxMessage.getChildren().add(hBox);
 
         Platform.runLater(() -> {
-            vboxMessage.getChildren().add(hBox);
             scrollPane.setVvalue(1.0);
         });
 
@@ -188,10 +184,10 @@ public class MessagePage implements Initializable {
 //                throw new RuntimeException(e);
 //            }
 //        }
-        /*
+
         vboxMessage.getChildren().add(hBox);
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
-        */
+
     }
 
 
@@ -199,6 +195,10 @@ public class MessagePage implements Initializable {
         //System.out.println("from messagePage " +userDTO.getDisplayName());
         //System.out.println("from messagePage "+ userDTO.getPicture());
         ChatListManager.getInstance().addContact(userDTO);
+        if(userDTO != null){
+            selectedUser = userDTO;
+        }
+
         listView.refresh();
     }
     @Override
@@ -207,6 +207,19 @@ public class MessagePage implements Initializable {
         location = url;
         //System.out.println("Observable List "+ observableList);
         listView.setItems(ChatListManager.getInstance().getContacts());
+        if(!ChatListManager.getInstance().getContacts().isEmpty())
+             selectedUser = ChatListManager.getInstance().getContacts().get(0);
+        if(listView.getSelectionModel().getSelectedItem()!=null){
+            selectedUser = listView.getSelectionModel().getSelectedItem();
+        }
+
+
+        if(selectedUser !=null){
+            System.out.println("iam the selected user" + selectedUser.getDisplayName());
+            profileImagw.setImage(new Image(new ByteArrayInputStream(selectedUser.getPicture())));
+            reciver.setText(selectedUser.getDisplayName());
+        }
+
         listView.setCellFactory(param -> new ListCell<UserDTO>() {
             @Override
             protected void updateItem(UserDTO item, boolean empty) {
@@ -219,11 +232,11 @@ public class MessagePage implements Initializable {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageNode.fxml"));
                         HBox notificationItem = loader.load();
                         MessageNode controller = loader.getController();
-                        controller.setUserName(item.getDisplayName());
+                        controller.setUserName(selectedUser.getDisplayName());
                         controller.setMessageController(MessagePage.this); // Pass the reference
                      //   Image image = new Image("/images/profile.jpg");
-                        Image image = new Image(new ByteArrayInputStream(item.getPicture()));
-                        controller.setUserImg(image);
+                        Image image = new Image(new ByteArrayInputStream(selectedUser.getPicture()));
+//                        controller.setUserImg(image);
                         setGraphic(notificationItem);
                     } catch (IOException e) {
                         e.printStackTrace();
