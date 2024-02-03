@@ -44,8 +44,10 @@ public class AddFriend {
     UserDTO userDTO = null;
 
     private  CallBackServer callBackServer;
-
-
+    UserContact remoteObject2;
+    public AddFriend(){
+        remoteObject2 = UserContactController();
+    }
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
         try {
@@ -92,7 +94,7 @@ public class AddFriend {
 //    }
 
     @FXML
-    void searchOnUser(ActionEvent event) {
+    void searchOnUser(ActionEvent event) throws RemoteException {
 
         UserAuthentication remoteObject = UserAuthRemoteObject();
         if (remoteObject != null) {
@@ -104,26 +106,47 @@ public class AddFriend {
                 e.printStackTrace();
             }
         }
+        String senderId = UserToken.getInstance().getUser().getPhoneNumber();
+        String receiverId = userDTO.getPhoneNumber();
+        if(remoteObject2.contactExists(senderId,receiverId)){
+
+            requestButton.setDisable(true);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(userDTO.getDisplayName() + " is already a contact");
+            alert.setTitle("Contact Exist");
+            alert.showAndWait();
+//                    alert.setContentText("Are you sure you want to close Cypher?");
+            //Alert
+            return;
+        }
         if (userDTO != null) {
             searchResult.setVisible(true);
             SearchName.setText(userDTO.getDisplayName());
             searchImage.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
             searchNumber.setText(userDTO.getPhoneNumber());
-        }
-        if(UserToken.getInstance().getUser().getPhoneNumber().equals(userDTO.getPhoneNumber())){
-            requestButton.setDisable(true);
-            System.out.println("requestButton is disabled");
+            if(UserToken.getInstance().getUser().getPhoneNumber().equals(userDTO.getPhoneNumber())){
+                requestButton.setDisable(true);
+                System.out.println("requestButton is disabled");
+            }else{
+                requestButton.setDisable(false);
+
+            }
         }else{
-            requestButton.setDisable(false);
+            searchResult.setVisible(true);
+            SearchName.setText("User not found");
+            searchImage.setVisible(false);
+            searchNumber.setVisible(false);
+            requestButton.setVisible(false);
 
         }
+
     }
 
 
     @FXML
     void sendAddRequest(ActionEvent event) {
         UserSendNotification remoteObject = UserNotificationController();
-        UserContact remoteObject2 = UserContactController();
+
 
 
         String senderId = UserToken.getInstance().getUser().getPhoneNumber();
@@ -132,15 +155,6 @@ public class AddFriend {
         System.out.println("Receiver ID: " + receiverId);
         if (remoteObject != null && receiverId != null && senderId != null) {
             try {
-                if(remoteObject2.contactExists(senderId,receiverId)){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText(userDTO.getDisplayName() + " is already a contact");
-                    alert.setTitle("Contact Exist");
-                    alert.showAndWait();
-//                    alert.setContentText("Are you sure you want to close Cypher?");
-                    //Alert
-                    return;
-                }
                 boolean exists = remoteObject.notificationExists(receiverId, senderId);
 
                 if (exists) {

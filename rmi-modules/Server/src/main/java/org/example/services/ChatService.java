@@ -5,6 +5,9 @@ import org.example.DTOs.ChatDTO;
 import org.example.models.Chat;
 import org.example.models.Mapper.ChatMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatService {
     private final ChatDAOImpl chatDAO;
     private final ChatMapper chatMapper = ChatMapper.INSTANCE;
@@ -19,4 +22,16 @@ public class ChatService {
     public ChatDTO getPrivateChat(String sender, String receiver){
         return chatMapper.toDTO(chatDAO.getPrivateChat(sender, receiver));
     }
+    public List<ChatDTO> getAllChatsForUser(String phoneNumber){
+        List<Chat> chats= chatDAO.getAllChatsForUser(phoneNumber);
+        List<ChatDTO> chatDTOS = new ArrayList<>();
+
+        System.out.println("chats size" + chats.size());
+        for(Chat c : chats){
+            chatDTOS.add( chatMapper.toDTO(c));
+        }
+
+        return  chatDTOS;
+    }
+
 }

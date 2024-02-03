@@ -2,14 +2,17 @@ package org.example.controller.FXMLController.UtilsFX;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.example.DTOs.ChatDTO;
 import org.example.DTOs.UserDTO;
+
+import java.util.List;
 
 public class ChatListManager {
     private static ChatListManager instance;
-    private ObservableList<UserDTO> contacts;
+    private ObservableList<ChatDTO> chats;
 
     private ChatListManager() {
-        contacts = FXCollections.observableArrayList();
+        chats = FXCollections.observableArrayList();
     }
 
     public static ChatListManager getInstance() {
@@ -19,16 +22,24 @@ public class ChatListManager {
         return instance;
     }
 
-    public void addContact(UserDTO contact) {
-        for(UserDTO user : contacts){
-            if( user.getPhoneNumber().equals(contact.getPhoneNumber())){
-                return;
-            }
-        }
-        contacts.add(contact);
+    public void addChat(ChatDTO chat) {
+
+        chats.add(chat);
     }
-    public ObservableList<UserDTO> getContacts() {
-        return contacts;
+
+    public void addAllChats(List<ChatDTO> chatDTOS) {
+        for( ChatDTO c : chatDTOS){
+            System.out.println(c.getChatName());
+        }
+        chats.addAll(chatDTOS);
+    }
+
+
+
+
+
+    public ObservableList<ChatDTO> getAllChats() {
+        return chats;
     }
 
 }

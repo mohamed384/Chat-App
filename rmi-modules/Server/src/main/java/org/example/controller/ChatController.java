@@ -7,6 +7,7 @@ import org.example.services.ChatService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 public class ChatController extends UnicastRemoteObject implements ChatRMI {
     private final ChatService chatService;
@@ -23,6 +24,11 @@ public class ChatController extends UnicastRemoteObject implements ChatRMI {
     @Override
     public ChatDTO getPrivateChat(String sender, String receiver) throws RemoteException {
         return chatService.getPrivateChat(sender, receiver);
-
     }
+
+    @Override
+    public List<ChatDTO> getAllChatsForUser(String phoneNumber) throws RemoteException {
+        return chatService.getAllChatsForUser(phoneNumber);
+    }
+
 }

@@ -1,9 +1,7 @@
 package org.example.controller.FXMLController;
 
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,11 +18,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.HiddenSidesPane;
-import org.example.DTOs.UserDTO;
+import org.example.DTOs.ChatDTO;
+import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
-import org.example.controller.FXMLController.UtilsFX.ChatListManager;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
+import org.example.interfaces.ChatRMI;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -43,10 +42,10 @@ public class MessagePage implements Initializable {
     private HiddenSidesPane hiddenSidesPane;
 
     @FXML
-    private ListView<UserDTO> listView;
+    private ListView<ChatDTO> listView;
 
     @FXML
-    private ImageView profileImagw;
+    private ImageView profileImage;
 
     @FXML
     private Label reciver;
@@ -67,10 +66,13 @@ public class MessagePage implements Initializable {
     CallBackClient callBackClient;
 
     CallBackServer callBackServer;
-    ObservableList<UserDTO> observableList;
 
     URL location;
+    ChatRMI chatRMI;
+    public MessagePage(){
+        this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
 
+    }
     public void setCallBackClient(CallBackClient callBackClient) {
         this.callBackClient = callBackClient;
     }
@@ -102,6 +104,7 @@ public class MessagePage implements Initializable {
 
     public void sendAttachment(ActionEvent event) {
     }
+//    UserDTO selectedUser ;
 
     public void sendMessage(ActionEvent event) {
 
@@ -135,15 +138,14 @@ public class MessagePage implements Initializable {
             try {
                 callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
 
-                System.out.println("callBackServer from message page" + callBackServer);
-                callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), selectedUser.getPhoneNumber());
+//                System.out.println("callBackServer from message page" + callBackServer);
+//                callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), selectedUser.getPhoneNumber());
             } catch (RemoteException | MalformedURLException | NotBoundException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
-    UserDTO selectedUser ;
 
     public  void receiveMessage(String Result){
         Label text = new Label();
@@ -191,38 +193,44 @@ public class MessagePage implements Initializable {
     }
 
 
-    public void setData(UserDTO userDTO) {
-        //System.out.println("from messagePage " +userDTO.getDisplayName());
-        //System.out.println("from messagePage "+ userDTO.getPicture());
-        ChatListManager.getInstance().addContact(userDTO);
-        if(userDTO != null){
-            selectedUser = userDTO;
-        }
 
-        listView.refresh();
-    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         PaneLoaderFactory.getInstance().setMessagePage(this);
         location = url;
-        //System.out.println("Observable List "+ observableList);
-        listView.setItems(ChatListManager.getInstance().getContacts());
-        if(!ChatListManager.getInstance().getContacts().isEmpty())
-             selectedUser = ChatListManager.getInstance().getContacts().get(0);
-        if(listView.getSelectionModel().getSelectedItem()!=null){
-            selectedUser = listView.getSelectionModel().getSelectedItem();
+
+        try {
+            listView.refresh();
+            List<ChatDTO>  chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
+            ObservableList<ChatDTO> chats = FXCollections.observableArrayList(chatDTOList);
+            System.out.println("chats size" + chats.size());
+            listView.setItems(chats);
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
+        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            profileImage.setImage(new Image(new ByteArrayInputStream(newValue.getReceiverImage())));
+            reciver.setText(newValue.getReceiverName());
+            // Add your action here
+        });
+//        if(!ChatListManager.getInstance().getContacts().isEmpty())
+//             selectedUser = ChatListManager.getInstance().getContacts().get(0);
+//        if(listView.getSelectionModel().getSelectedItem()!=null){
+//            selectedUser = listView.getSelectionModel().getSelectedItem();
+//        }
 
 
-        if(selectedUser !=null){
-            System.out.println("iam the selected user" + selectedUser.getDisplayName());
-            profileImagw.setImage(new Image(new ByteArrayInputStream(selectedUser.getPicture())));
-            reciver.setText(selectedUser.getDisplayName());
-        }
+//        if(selectedUser !=null){
+//            System.out.println("iam the selected user" + selectedUser.getDisplayName());
+//            profileImagw.setImage(new Image(new ByteArrayInputStream(selectedUser.getPicture())));
+//            reciver.setText(selectedUser.getDisplayName());
+//        }
 
-        listView.setCellFactory(param -> new ListCell<UserDTO>() {
+        listView.setCellFactory(param -> new ListCell<ChatDTO>() {
             @Override
-            protected void updateItem(UserDTO item, boolean empty) {
+            protected void updateItem(ChatDTO item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
@@ -232,11 +240,14 @@ public class MessagePage implements Initializable {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageNode.fxml"));
                         HBox notificationItem = loader.load();
                         MessageNode controller = loader.getController();
-                        controller.setUserName(selectedUser.getDisplayName());
+                        controller.setUserName(item.getReceiverName());
+                        Image image = new Image(new ByteArrayInputStream(item.getReceiverImage()));
+                        controller.setUserImg(image);
+
+//                        System.out.println("name from cell" + selectedUser.getDisplayName());
                         controller.setMessageController(MessagePage.this); // Pass the reference
-                     //   Image image = new Image("/images/profile.jpg");
-                        Image image = new Image(new ByteArrayInputStream(selectedUser.getPicture()));
-//                        controller.setUserImg(image);
+//                     //   Image image = new Image("/images/profile.jpg");
+//                        Image image = new Image(new ByteArrayInputStream(selectedUser.getPicture()));
                         setGraphic(notificationItem);
                     } catch (IOException e) {
                         e.printStackTrace();

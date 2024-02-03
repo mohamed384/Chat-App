@@ -49,7 +49,7 @@ public class Server  extends  Application{
             java.rmi.Naming.rebind("UserAuthenticationStub", userAuthenticationStub);
             java.rmi.Naming.rebind("UserSendNotificationStub", userSendNotificationStub);
             java.rmi.Naming.rebind("UserContactStub", contactControllerStub);
-            java.rmi.Naming.rebind("ChatControllerStub", ChatControllerStub);
+                java.rmi.Naming.rebind("ChatControllerStub", ChatControllerStub);
             java.rmi.Naming.rebind("CallBackServerStub", callBackServer);
 
             // Hena 3mlna connect lel database

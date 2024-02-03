@@ -26,6 +26,7 @@ import org.example.DTOs.ChatDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
+import org.example.controller.FXMLController.UtilsFX.ChatListManager;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.ChatRMI;
 import org.example.models.Enums.UserStatus;
@@ -252,7 +253,9 @@ public class ContactMainController  implements Initializable {
         try {
             ChatDTO existChat = chatRMI.getPrivateChat(UserToken.getInstance().getUser().getPhoneNumber()
                     , phoneLabel.getText()) ;
+
             if(existChat == null){
+                System.out.println("walahy mal2it chat");
                 chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),0,
                         UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
             }
@@ -266,7 +269,7 @@ public class ContactMainController  implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            PaneLoaderFactory.getInstance().getMessagePage().setData(selectedItem);
+//            ChatListManager.getInstance().addContact(selectedItem);
             BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
             mainBorder.setCenter(borderPane);
 

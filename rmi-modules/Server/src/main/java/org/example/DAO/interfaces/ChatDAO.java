@@ -14,4 +14,6 @@ public interface ChatDAO extends DAO<Chat> {
     int save(String name, byte[] img, int adminId, Connection connection);
     default void delete(Chat t){};
    default boolean create(Chat t){return false;}
+     Chat getPrivateChat(String sender, String receiver);
+     List<Chat> getAllChatsForUser(String phoneNumber);
 }

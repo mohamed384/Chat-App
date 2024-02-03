@@ -8,8 +8,36 @@ public class Chat {
     private byte[] chatImage;
     private int adminID;
 
+    public String getReceiverName() {
+        return ReceiverName;
+    }
 
-    public Chat(String chatName, byte[] chatImage, int adminID) {
+    public void setReceiverName(String receiverName) {
+        ReceiverName = receiverName;
+    }
+
+    private String ReceiverName;
+
+    public byte[] getReceiverImage() {
+        return receiverImage;
+    }
+
+    public void setReceiverImage(byte[] receiverImage) {
+        this.receiverImage = receiverImage;
+    }
+
+    private byte[] receiverImage;
+
+    public Chat (){}
+    public Chat(String chatName, byte[] chatImage,String ReceiverName,byte[] receiverImage, int adminID) {
+
+        this.chatName = chatName;
+        this.chatImage = chatImage;
+        this.adminID = adminID;
+        this.ReceiverName=ReceiverName;
+        this.receiverImage=receiverImage;
+    }
+    public Chat(String chatName, byte[] chatImage,int adminID) {
 
         this.chatName = chatName;
         this.chatImage = chatImage;
