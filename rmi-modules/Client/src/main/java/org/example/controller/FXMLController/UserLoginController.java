@@ -37,6 +37,11 @@ public class UserLoginController {
     }
 
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber.setText(phoneNumber);
+    }
+
+
     @FXML
     protected void onBtnDontHaveAccountClicked() throws IOException {
        // AuthContainerController authContainerController = AuthContainerController.getInstance();
@@ -46,9 +51,6 @@ public class UserLoginController {
         authContainerController.switchToPane(signupPane);
 
 
-    }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber.setText(phoneNumber);
     }
 
 }

@@ -13,6 +13,10 @@ public interface ChatRMI extends Remote {
     public ChatDTO getPrivateChat(String sender, String receiver) throws RemoteException;
 
     public List<ChatDTO> getAllChatsForUser(String phoneNumber) throws RemoteException;
+
+    public String getReceiverPhoneNumber(String senderPhoneNumber, int chatID) throws RemoteException;
+
+
 }
 
 

@@ -31,4 +31,9 @@ public class ChatController extends UnicastRemoteObject implements ChatRMI {
         return chatService.getAllChatsForUser(phoneNumber);
     }
 
+    @Override
+    public String getReceiverPhoneNumber(String senderPhoneNumber, int chatID) throws RemoteException {
+        return chatService.getReceiverPhoneNumber(senderPhoneNumber, chatID);
+    }
+
 }

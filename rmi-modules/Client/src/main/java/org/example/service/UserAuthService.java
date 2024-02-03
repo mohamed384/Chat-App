@@ -12,10 +12,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.CheckFiledValidation;
 import org.example.Utils.Enum.ValidationTypes;
 import org.example.Utils.UserToken;
+import org.example.controller.FXMLController.MessagePage;
+import org.example.interfaces.CallBackClient;
+import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
@@ -32,6 +36,11 @@ import java.util.Date;
 
 public class UserAuthService {
 
+    CallBackServer callBackServer;
+    CallBackClientImp callBackClient;
+    public UserAuthService() {
+
+    }
 
     public byte[] convertImageToByteArray(Image image) {
         try {
@@ -91,6 +100,7 @@ public class UserAuthService {
                 UserToken userToken = UserToken.getInstance();
                 userToken.setUser(user);
                 switchToMessagePage(actionEvent);
+
 
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

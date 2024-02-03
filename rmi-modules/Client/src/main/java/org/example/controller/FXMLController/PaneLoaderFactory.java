@@ -1,10 +1,7 @@
 package org.example.controller.FXMLController;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.util.Pair;
 import org.controlsfx.control.HiddenSidesPane;
 
@@ -15,6 +12,8 @@ public class PaneLoaderFactory {
     public static MessagePage messagePage;
 
     private static PaneLoaderFactory instance;
+
+    private static Message22Controller message22Controller;
 
     private PaneLoaderFactory(){
     }
@@ -28,6 +27,13 @@ public class PaneLoaderFactory {
     public void setContactMainController(ContactMainController contactMainControllerCopy) {
         contactMainController = contactMainControllerCopy;
     }
+    public void setMessage22Controller(Message22Controller message22){
+        message22Controller = message22;
+    }
+    public Message22Controller getMessage22Controller(){
+        return message22Controller;
+    }
+
     public ContactMainController getContactMainController() {
         return contactMainController;
     }
@@ -130,6 +136,18 @@ public class PaneLoaderFactory {
             throw new RuntimeException(e);
         }
         AuthContainerController controller = loader.getController();
+        return new Pair<>(pane, controller);
+    }
+
+    public static Pair<BorderPane,Message22Controller > getmessage22Pane(){
+        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/Message22.fxml"));
+        BorderPane pane = null;
+        try {
+            pane = (BorderPane) loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Message22Controller controller = loader.getController();
         return new Pair<>(pane, controller);
     }
 

@@ -41,15 +41,22 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
 
+    Message22Controller message22Controller;
 
 
-    MessagePage messagePage;
-
-    public CallBackClientImp(MessagePage   messagePage) throws RemoteException {
-
-        this.messagePage = messagePage;
+    public CallBackClientImp() throws RemoteException{
 
     }
+    public   void setMessage22Controller(Message22Controller message22Controller) {
+        this.message22Controller = message22Controller;
+    }
+
+
+//    public CallBackClientImp(MessagePage   messagePage) throws RemoteException {
+//
+//            this.messagePage = messagePage;
+//
+//    }
 
     public void setContactMainController(ContactMainController contactMainController) {
         this.contactMainController = contactMainController;
@@ -61,8 +68,8 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     public void receiveMsg(String msg, String senderPhoneNumber ) throws Exception {
         System.out.println("receiveMsg: "+msg);
         System.out.println("sender: "+senderPhoneNumber);
-
-         messagePage.receiveMessage(msg);
+        System.out.println("this is callback client receive msg"+ message22Controller +" this is the callallback client " +this);
+        message22Controller.receiveMessage(msg);
 
     }
 

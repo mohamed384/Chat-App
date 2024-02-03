@@ -1,29 +1,32 @@
-package org.example.models;
+package org.example.DTOs;
 
 import java.sql.Timestamp;
 
-public class Message {
+public class MessageDTO {
     private int messageID;
     private String senderID;
     private int chatID;
     private String messageContent;
     private boolean isAttachment;
+
     private Timestamp timestamp;
+//    public MessageDTO(){}
 
-    public Message(){}
-
-    public Message(String senderID, int receiverID, String messageContent, boolean isAttachment) {
-        this.senderID = senderID;
-        this.chatID = receiverID;
-        this.messageContent = messageContent;
-        this.isAttachment = isAttachment;
-    }
-
-    public Message( String messageContent,String senderID, int chatID, Timestamp timestamp) {
+    public MessageDTO( String messageContent,String senderID, int chatID, Timestamp timestamp) {
         this.senderID = senderID;
         this.chatID = chatID;
         this.messageContent = messageContent;
         this.timestamp = timestamp;
+    }
+
+    public MessageDTO(int messageID, String content, String senderPhoneNumber, int chatID) {
+        this.messageID = messageID;
+        this.messageContent = content;
+        this.senderID = senderPhoneNumber;
+
+    }
+    public MessageDTO(){
+
     }
 
     public int getMessageID() {

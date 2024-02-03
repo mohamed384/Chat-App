@@ -65,8 +65,7 @@ public class MainController {
             callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
 
            System.out.println(callBackServer);
-            callBackClient = new CallBackClientImp(PaneLoaderFactory.messagePageLoader().getValue());
-
+           callBackClient = new CallBackClientImp();
 
             String number = UserToken.getInstance().getUser().getPhoneNumber();
             System.out.println(number);
@@ -97,9 +96,14 @@ public class MainController {
 
         ///
         BorderPane pane = PaneLoaderFactory.messagePageLoader().getKey();
-        MessagePage messagePage = PaneLoaderFactory.messagePageLoader().getValue();
-        messagePage.setCallBackClient(callBackClient);
-        messagePage.setCallBackServer(callBackServer);
+        MessagePage page = PaneLoaderFactory.getInstance().getMessagePage();
+        page.setCallBackClient(callBackClient);
+
+
+       // MessagePage messagePage = PaneLoaderFactory.messagePageLoader().getValue();
+        //messagePage.setCallBackClient(callBackClient);
+        //messagePage.setCallBackServer(callBackServer);
+       //callBackClient.setMessagePage(PaneLoaderFactory.getInstance().getMessagePage());
 
         pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);

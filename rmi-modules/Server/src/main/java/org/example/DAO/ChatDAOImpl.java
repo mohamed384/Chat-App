@@ -140,4 +140,57 @@ public class ChatDAOImpl implements ChatDAO {
 
         return chats;
     }
+
+
+//    @Override
+//    public String getReceiverPhoneNumber(String senderPhoneNumber) {
+//        String query = "SELECT U.PhoneNumber " +
+//                "FROM ChatParticipants CP " +
+//                "JOIN Users U ON CP.ParticipantUserID = U.PhoneNumber " +
+//                "WHERE CP.ChatID IN (SELECT ChatID FROM ChatParticipants WHERE ParticipantUserID = ?) " +
+//                "AND U.PhoneNumber != ?";
+//
+//        try (Connection connection = DBConnection.getConnection();
+//             PreparedStatement pstmt = connection.prepareStatement(query)) {
+//            pstmt.setString(1, senderPhoneNumber);
+//            pstmt.setString(2, senderPhoneNumber);
+//
+//            ResultSet rs = pstmt.executeQuery();
+//
+//            if (rs.next()) {
+//                return rs.getString("PhoneNumber");
+//            } else {
+//                return null;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+    @Override
+    public String getReceiverPhoneNumber(String senderPhoneNumber, int chatId) {
+        String query = "SELECT U.PhoneNumber " +
+                "FROM ChatParticipants CP " +
+                "JOIN Users U ON CP.ParticipantUserID = U.PhoneNumber " +
+                "WHERE CP.ChatID = ? " +
+                "AND U.PhoneNumber != ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, chatId);
+            pstmt.setString(2, senderPhoneNumber);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("PhoneNumber");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

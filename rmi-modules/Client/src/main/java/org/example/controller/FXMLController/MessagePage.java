@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.HiddenSidesPane;
+import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.ChatDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
@@ -63,23 +65,30 @@ public class MessagePage implements Initializable {
     private VBox vboxMessage;
 
     Boolean botBoolean = false;
-    CallBackClient callBackClient;
+    CallBackClientImp callBackClient;
 
-    CallBackServer callBackServer;
 
     URL location;
     ChatRMI chatRMI;
+
+
+    CallBackClientImp callBackClientImp;
     public MessagePage(){
+
+        try {
+            this.callBackClient = new CallBackClientImp();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
 
     }
-    public void setCallBackClient(CallBackClient callBackClient) {
-        this.callBackClient = callBackClient;
-    }
 
-    public void setCallBackServer(CallBackServer callBackServer) {
-        this.callBackServer = callBackServer;
-    }
+//    public void setCallBackClient(CallBackClient callBackClient) {
+//        this.callBackClient = callBackClient;
+//    }
+
+
 
     public void showProfile(MouseEvent mouseEvent) {
         if (hiddenSidesPane.getPinnedSide() == null) {
@@ -88,9 +97,6 @@ public class MessagePage implements Initializable {
         } else {
             hiddenSidesPane.setPinnedSide(null);
         }
-    }
-    public URL getFxmlUrl() {
-        return location;
     }
 
 
@@ -105,92 +111,13 @@ public class MessagePage implements Initializable {
     public void sendAttachment(ActionEvent event) {
     }
 //    UserDTO selectedUser ;
-
-    public void sendMessage(ActionEvent event) {
-
-        Label text = new Label();
-        text.setWrapText(true);
-        text.setMaxWidth(Double.MAX_VALUE);
-        text.setMaxHeight(Double.MAX_VALUE);
-        text.setText(textArea.getText());
-        String message = textArea.getText();
-        text.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; -fx-text-fill: white;");
-        textArea.setText("");
-
-
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
-
-        HBox hBox = new HBox(10); // Add spacing between the image and the text
-        hBox.getChildren().addAll(imageView, text);
-
-        //VBox messageBubble = new VBox();
-      //  messageBubble.setMaxHeight(Double.MAX_VALUE); // Set maximum height to a very large value
-       // messageBubble.getChildren().add(hBox);
-        vboxMessage.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 5px; -fx-padding: 10px;");
-
-        vboxMessage.getChildren().add(hBox);
-        Platform.runLater(() -> scrollPane.setVvalue(1.0));
-
-        Platform.runLater(() -> {
-            try {
-                callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
-
-//                System.out.println("callBackServer from message page" + callBackServer);
-//                callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), selectedUser.getPhoneNumber());
-            } catch (RemoteException | MalformedURLException | NotBoundException e) {
-                throw new RuntimeException(e);
-            }
-        });
+    void setCallBackClient(CallBackClientImp callBackClient) {
+        this.callBackClient = callBackClient;
     }
 
 
-    public  void receiveMessage(String Result){
-        Label text = new Label();
-        text.setWrapText(true); // Enable text wrapping
-        text.setMaxWidth(1000);
-        text.setText(Result);
-        text.setStyle("-fx-background-color: #b79bc2; -fx-background-radius: 5px; -fx-padding: 10px; -fx-text-fill: white;");
 
 
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
-        HBox hBox = new HBox(10);
-
-        hBox.setMinSize(text.getWidth() , text.getHeight());
-        hBox.setPadding(new Insets(5));
-        HBox.setMargin(imageView, new Insets(0, 5, 0, 0));
-        hBox.getChildren().add( text);
-        hBox.getChildren().add(imageView);
-        hBox.setAlignment(Pos.CENTER_RIGHT);
-
-
-       // VBox messageBubble = new VBox();
-      //  vboxMessage.getChildren().add(hBox);
-        vboxMessage.setStyle("-fx-background-color: #f0f0f0; -fx-background-radius: 5px; -fx-padding: 10px;");
-
-        vboxMessage.getChildren().add(hBox);
-
-        Platform.runLater(() -> {
-            scrollPane.setVvalue(1.0);
-        });
-
-//        if(botBoolean){
-//            try {
-//               callBackServer.chatBot( Result, "01005036123" ,"01095192555");
-//            } catch (RemoteException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-
-        vboxMessage.getChildren().add(hBox);
-        Platform.runLater(() -> scrollPane.setVvalue(1.0));
-
-    }
 
 
 
@@ -198,6 +125,7 @@ public class MessagePage implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         PaneLoaderFactory.getInstance().setMessagePage(this);
+        System.out.println("this is message page in initialize" + this);
         location = url;
 
         try {
@@ -210,11 +138,50 @@ public class MessagePage implements Initializable {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            profileImage.setImage(new Image(new ByteArrayInputStream(newValue.getReceiverImage())));
-            reciver.setText(newValue.getReceiverName());
+//            profileImage.setImage(new Image(new ByteArrayInputStream(newValue.getReceiverImage())));
+//            reciver.setText(newValue.getReceiverName());
+            Parent borderPane = null;
+            if(newValue != null){
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/message22.fxml"));
+                    borderPane = loader.load();
+
+                    // If you have a controller for your FXML file and you want to use it
+
+                    // Call any method from the controller if needed
+                    // controller.someMethod();
+
+                    // Now you can add 'root' to any container
+                    // For example, if you have a BorderPane named 'borderPane'
+                   // borderPane.setCenter(root);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
+            message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
+            callBackClient.setMessage22Controller(PaneLoaderFactory.getInstance().getMessage22Controller());
+            //contactListview.setCenter(PaneLoaderFactory.getmessage22Pane().getKey());
+
+//            FXMLLoader loader = new FXMLLoader();
+//            BorderPane borderPane = null;
+//            try {
+//                loader.setLocation(message22Controller.getFxmlUrl());
+//                borderPane = loader.load();
+//                // Now you can use 'root' as the root of your scene
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+            contactListview.setCenter(borderPane);
+
+
             // Add your action here
         });
+
+
 //        if(!ChatListManager.getInstance().getContacts().isEmpty())
 //             selectedUser = ChatListManager.getInstance().getContacts().get(0);
 //        if(listView.getSelectionModel().getSelectedItem()!=null){
@@ -243,6 +210,7 @@ public class MessagePage implements Initializable {
                         controller.setUserName(item.getReceiverName());
                         Image image = new Image(new ByteArrayInputStream(item.getReceiverImage()));
                         controller.setUserImg(image);
+
 
 //                        System.out.println("name from cell" + selectedUser.getDisplayName());
                         controller.setMessageController(MessagePage.this); // Pass the reference

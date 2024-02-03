@@ -34,6 +34,10 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         }
         clients.put(phoneNumber, callBackClient);
 
+        for (String key : clients.keySet()) {
+            System.out.println(key);
+        }
+
         return true;
     }
 
@@ -54,6 +58,8 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
         CallBackClient callBackClient = clients.get(receiverPhoneNumber);
 
+
+
         try {
           //  callBackClient.notification( "You have a new message from "+senderPhoneNumber);
             callBackClient.receiveMsg(msg, senderPhoneNumber);
@@ -68,7 +74,9 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
             // Get the ChatID
 
             int chatID = chatDAO.getPrivateChat(senderPhoneNumber, receiverPhoneNumber).getChatID();
+            System.out.println("ChatID: " + chatID);
             message.setChatID(chatID);
+
 
             // Save the message to the database
              messageDAO.create(message);

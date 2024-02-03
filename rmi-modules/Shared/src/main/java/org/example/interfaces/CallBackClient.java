@@ -14,5 +14,4 @@ public interface CallBackClient extends Remote {
 
     public void updateContactList() throws Exception;
 
-
 }

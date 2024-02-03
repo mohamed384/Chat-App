@@ -34,4 +34,8 @@ public class ChatService {
         return  chatDTOS;
     }
 
+    public String getReceiverPhoneNumber(String senderPhoneNumber, int chatID){
+        return chatDAO.getReceiverPhoneNumber(senderPhoneNumber,chatID);
+    }
+
 }

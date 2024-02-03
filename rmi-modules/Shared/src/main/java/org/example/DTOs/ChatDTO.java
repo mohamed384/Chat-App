@@ -7,12 +7,13 @@ public class ChatDTO implements Serializable {
         private int chatID;
         private String chatName;
         private byte[] chatImage;
+        private String ReceiverName;
 
-    private String ReceiverName;
 
-    private int adminID;
-    private byte[] receiverImage;
-    public String getReceiverName() {
+        private int adminID;
+        private byte[] receiverImage;
+
+        public String getReceiverName() {
         return ReceiverName;
     }
 

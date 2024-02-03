@@ -16,4 +16,5 @@ public interface ChatDAO extends DAO<Chat> {
    default boolean create(Chat t){return false;}
      Chat getPrivateChat(String sender, String receiver);
      List<Chat> getAllChatsForUser(String phoneNumber);
+     String getReceiverPhoneNumber(String senderPhoneNumber, int chatID);
 }

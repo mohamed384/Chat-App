@@ -260,15 +260,12 @@ public class ContactMainController  implements Initializable {
                         UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
             }
 
-            FXMLLoader loader = new FXMLLoader();
+            FXMLLoader loader ;
             BorderPane borderPane = null;
-            try {
-                loader.setLocation(PaneLoaderFactory.getInstance().getMessagePage().getFxmlUrl());
-                borderPane = loader.load();
-                // Now you can use 'root' as the root of your scene
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+
+                borderPane = PaneLoaderFactory.messagePageLoader().getKey();
+
 //            ChatListManager.getInstance().addContact(selectedItem);
             BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
             mainBorder.setCenter(borderPane);

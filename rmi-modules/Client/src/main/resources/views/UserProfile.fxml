@@ -39,7 +39,7 @@
             </Button>
             <ImageView fx:id="profileImg" cache="true" cacheHint="SCALE" fitHeight="200.0" fitWidth="250.0" onMouseClicked="#imgClicked" pickOnBounds="true" styleClass="profile-image" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                 <clip>
-                    <Circle centerX="125" centerY="95" radius="85" />
+                    <Circle centerX="125" centerY="95" radius="95" />
                 </clip>
             </ImageView>
          <Label fx:id="emailValidLabel" prefHeight="18.0" prefWidth="250.0" styleClass="valid-label" text="Please enter valid email" GridPane.columnIndex="1" GridPane.rowIndex="2">

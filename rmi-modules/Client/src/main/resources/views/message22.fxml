@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane fx:id="message22" prefHeight="600.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="org.example.controller.FXMLController.Message22Controller">
+<center>
+<VBox prefHeight="600.0" prefWidth="665.0" stylesheets="@../styles/MainPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="light-color">
+         <children>
+            <ImageView fx:id="profileImage" fitHeight="67.0" fitWidth="63.0" onMouseClicked="#showProfile" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+               <image>
+                  <Image url="@../images/user.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="receiver" text="Eslam Ahmed" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="20.0" right="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <Pane prefHeight="100.0" prefWidth="337.0" HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#startBot" styleClass="transparent">
+               <graphic>
+                  <ImageView fitHeight="39.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/robot.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hvalue="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" vvalue="1.0" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox fx:id="vboxMessage" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="398.0" prefWidth="731.0" spacing="10" style="-fx-padding: 10;" />
+         </content>
+      </ScrollPane>
+      <HBox alignment="CENTER" prefHeight="133.0" prefWidth="660.0" styleClass="light-color">
+         <children>
+            <Button fx:id="editTxt" mnemonicParsing="false" prefHeight="28.0" prefWidth="44.0" styleClass="transparent">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/document-editor.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="sendEmoji" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" styleClass="transparent">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/happy.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#sendAttachment" prefHeight="32.0" prefWidth="30.0" styleClass="transparent">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/attach-file.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+            <TextArea fx:id="textArea" prefHeight="134.0" prefWidth="479.0" />
+            <Button mnemonicParsing="false" onAction="#sendMessage" prefHeight="39.0" prefWidth="49.0" styleClass="transparent">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/send-message.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>
+
+</center>
+</BorderPane>
