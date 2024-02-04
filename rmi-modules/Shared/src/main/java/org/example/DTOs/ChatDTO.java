@@ -8,10 +8,17 @@ public class ChatDTO implements Serializable {
         private String chatName;
         private byte[] chatImage;
         private String ReceiverName;
+        private String adminID;
 
+    public String getAdminID() {
+        return adminID;
+    }
 
-        private int adminID;
-        private byte[] receiverImage;
+    public void setAdminID(String adminID) {
+        this.adminID = adminID;
+    }
+
+    private byte[] receiverImage;
 
         public String getReceiverName() {
         return ReceiverName;
@@ -34,7 +41,6 @@ public class ChatDTO implements Serializable {
 
             this.chatName = chatName;
             this.chatImage = chatImage;
-            this.adminID = adminID;
             this.ReceiverName = ReceiverName;
             this.receiverImage = receiverImage;
         }
@@ -63,13 +69,7 @@ public class ChatDTO implements Serializable {
             this.chatImage = chatImage;
         }
 
-        public int getAdminID() {
-            return adminID;
-        }
 
-        public void setAdminID(int adminID) {
-            this.adminID = adminID;
-        }
 }
 
 

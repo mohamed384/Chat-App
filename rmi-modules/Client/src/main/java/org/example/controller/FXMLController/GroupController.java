@@ -14,10 +14,17 @@ import javafx.stage.Stage;
 import org.controlsfx.control.CheckListView;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.LoadImage;
+import org.example.Utils.StubContext;
+import org.example.Utils.UserToken;
+import org.example.interfaces.GroupChatRMI;
 import org.example.service.ContactService;
 import java.net.URL;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class GroupController implements Initializable {
     public TextField groupName;
@@ -34,9 +41,12 @@ public class GroupController implements Initializable {
     Circle imageProfileClip;
     String groupNameString;
     private final ContactService contactService;
+    GroupChatRMI groupChatRMIController;
 
-
-    public GroupController(){this.contactService = new ContactService();}
+    public GroupController(){
+        this.contactService = new ContactService();
+        groupChatRMIController = (GroupChatRMI)StubContext.getStub("GroupChatControllerStub");
+    }
 
     @FXML
     public void createGroup() {
@@ -67,6 +77,17 @@ public class GroupController implements Initializable {
             Stage stage = (Stage) createGroupBtn.getScene().getWindow();
             stage.close();
             //backend logic here
+            List<UserDTO> dtos = observableList;
+            List<String> phoneList = new ArrayList<>(dtos.stream()
+                    .map(UserDTO::getPhoneNumber)
+                    .toList());
+            phoneList.add(UserToken.getInstance().getUser().getPhoneNumber());
+            try {
+                groupChatRMIController.createGroupChat(groupNameString,LoadImage.convertImageToByteArray(groupImage.getImage()),
+                        UserToken.getInstance().getUser().getPhoneNumber(),phoneList);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
        
         

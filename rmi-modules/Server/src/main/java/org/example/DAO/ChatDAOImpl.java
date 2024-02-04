@@ -12,15 +12,16 @@ import java.util.List;
 public class ChatDAOImpl implements ChatDAO {
     ChatParticipantDAOImpl chatParticipantDAO;
 
-    public ChatDAOImpl(){
+    public ChatDAOImpl() {
         chatParticipantDAO = new ChatParticipantDAOImpl();
     }
+
     @Override
-    public boolean create(String name, byte[] img, int adminId,String sender, String receiver) {
+    public boolean create(String name, byte[] img,String sender, String receiver) {
         boolean isSaved = false;
         System.out.println("createCHAT DAOOO ana fel daoo");
         try (Connection connection = DBConnection.getConnection()) {
-            int chatId = save(name, img, adminId, connection);
+            int chatId = save(name, img,connection);
             if (chatId != -1) {
                 chatParticipantDAO.create(new ChatParticipant(chatId, sender));
                 chatParticipantDAO.create(new ChatParticipant(chatId, receiver));
@@ -32,17 +33,11 @@ public class ChatDAOImpl implements ChatDAO {
         return isSaved;
     }
 
-    public int save(String name, byte[] img, int adminId, Connection connection) {
-        String query = "INSERT INTO Chat (ChatName, ChatImage, AdminID) VALUES (?, ?, ?)";
+    public int save(String name, byte[] img, Connection connection) {
+        String query = "INSERT INTO Chat (ChatName, ChatImage) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, name);
             pstmt.setBytes(2, img);
-            if(adminId!=0){
-                pstmt.setInt(3, adminId);
-            }else{
-                pstmt.setObject(3, null);
-            }
-
             pstmt.executeUpdate();
 
             try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
@@ -74,7 +69,6 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
 
-
     @Override
     public Chat getPrivateChat(String sender, String receiver) {
         String sql = "SELECT C.* FROM Chat C " +
@@ -91,8 +85,7 @@ public class ChatDAOImpl implements ChatDAO {
 
             if (rs.next()) {
                 Chat chat = new Chat(rs.getString("ChatName"),
-                        rs.getBytes("ChatImage"),
-                        rs.getInt("AdminID"));
+                        rs.getBytes("ChatImage"));
                 chat.setChatID(rs.getInt("ChatID"));
 
                 return chat;
@@ -128,8 +121,7 @@ public class ChatDAOImpl implements ChatDAO {
                 Chat chat = new Chat(rs.getString("ChatName"),
                         rs.getBytes("ChatImage"),
                         rs.getString("DisplayName"),
-                        rs.getBytes("ProfilePicture"),
-                        rs.getInt("AdminID"));
+                        rs.getBytes("ProfilePicture"));
                 chat.setChatID(rs.getInt("ChatID"));
 
                 chats.add(chat);
@@ -142,7 +134,7 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
 
-//    @Override
+    //    @Override
 //    public String getReceiverPhoneNumber(String senderPhoneNumber) {
 //        String query = "SELECT U.PhoneNumber " +
 //                "FROM ChatParticipants CP " +
@@ -191,6 +183,7 @@ public class ChatDAOImpl implements ChatDAO {
             e.printStackTrace();
             return null;
         }
+
     }
 
 }

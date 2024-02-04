@@ -182,7 +182,7 @@ public class UserProfileController implements Initializable {
                 profileImg.setImage(image);
                 updateBtn.setDisable(false);
                 isUpdateBtnEnabled = true;
-                UserToken.getInstance().getUser().setPicture(convertImageToByteArray(image));
+                UserToken.getInstance().getUser().setPicture(LoadImage.convertImageToByteArray(image));
 
             });
 
@@ -190,17 +190,7 @@ public class UserProfileController implements Initializable {
 
     }
 
-    public byte[] convertImageToByteArray(Image image) {
-        try {
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", baos);
-            return baos.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
 
 
 }

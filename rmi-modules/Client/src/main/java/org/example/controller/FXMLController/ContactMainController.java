@@ -232,7 +232,7 @@ public class ContactMainController  implements Initializable {
 
             if(existChat == null){
                 System.out.println("walahy mal2it chat");
-                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),0,
+                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),
                         UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
             }
 

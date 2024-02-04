@@ -43,11 +43,13 @@ public class AddFriend {
     private Label searchNumber;
     UserDTO userDTO = null;
 
-    private  CallBackServer callBackServer;
+    private CallBackServer callBackServer;
     UserContact remoteObject2;
-    public AddFriend(){
+
+    public AddFriend() {
         remoteObject2 = UserContactController();
     }
+
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
         try {
@@ -58,7 +60,7 @@ public class AddFriend {
         return remoteObject;
     }
 
-    public void setCallBackServer(CallBackServer callBackServer){
+    public void setCallBackServer(CallBackServer callBackServer) {
         this.callBackServer = callBackServer;
     }
 
@@ -101,6 +103,27 @@ public class AddFriend {
             String phoneNumber = friendNumberTxt.getText();
             try {
                 userDTO = remoteObject.getUser(phoneNumber);
+                if (userDTO != null) {
+                    searchResult.setVisible(true);
+                    SearchName.setText(userDTO.getDisplayName());
+                    searchImage.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
+                    searchNumber.setText(userDTO.getPhoneNumber());
+                    if (UserToken.getInstance().getUser().getPhoneNumber().equals(userDTO.getPhoneNumber())) {
+                        requestButton.setDisable(true);
+                        System.out.println("requestButton is disabled");
+                    } else {
+                        requestButton.setDisable(false);
+
+                    }
+                } else {
+                    searchResult.setVisible(true);
+                    SearchName.setText("User not found");
+                    searchImage.setVisible(false);
+                    searchNumber.setVisible(false);
+                    requestButton.setVisible(false);
+                    return;
+
+                }
 
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -108,7 +131,7 @@ public class AddFriend {
         }
         String senderId = UserToken.getInstance().getUser().getPhoneNumber();
         String receiverId = userDTO.getPhoneNumber();
-        if(remoteObject2.contactExists(senderId,receiverId)){
+        if (remoteObject2.contactExists(senderId, receiverId)) {
 
             requestButton.setDisable(true);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -119,26 +142,7 @@ public class AddFriend {
             //Alert
             return;
         }
-        if (userDTO != null) {
-            searchResult.setVisible(true);
-            SearchName.setText(userDTO.getDisplayName());
-            searchImage.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
-            searchNumber.setText(userDTO.getPhoneNumber());
-            if(UserToken.getInstance().getUser().getPhoneNumber().equals(userDTO.getPhoneNumber())){
-                requestButton.setDisable(true);
-                System.out.println("requestButton is disabled");
-            }else{
-                requestButton.setDisable(false);
 
-            }
-        }else{
-            searchResult.setVisible(true);
-            SearchName.setText("User not found");
-            searchImage.setVisible(false);
-            searchNumber.setVisible(false);
-            requestButton.setVisible(false);
-
-        }
 
     }
 
@@ -146,7 +150,6 @@ public class AddFriend {
     @FXML
     void sendAddRequest(ActionEvent event) {
         UserSendNotification remoteObject = UserNotificationController();
-
 
 
         String senderId = UserToken.getInstance().getUser().getPhoneNumber();
@@ -163,14 +166,13 @@ public class AddFriend {
                     remoteObject2.acceptInvite(senderId, receiverId);
 
 
-
                 } else {
                     boolean isNotificationSent = remoteObject.sendNotification(senderId, receiverId);
                     if (isNotificationSent) {
                         requestImage.setImage(new Image("/images/remove.png"));
                         System.out.println("From AddFriend: Ml2tsh notification fa hb3t wa7da.");
                     } else {
-                        remoteObject.deleteNotification(receiverId,senderId);
+                        remoteObject.deleteNotification(receiverId, senderId);
                         requestImage.setImage(new Image("/images/add-friend.png"));
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setHeaderText("Friend request deleted");

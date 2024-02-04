@@ -26,6 +26,7 @@ import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.ChatRMI;
+import org.example.interfaces.GroupChatRMI;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -77,6 +78,7 @@ public class MessagePage implements Initializable {
     @FXML
     Label boxLabelName;
 
+    GroupChatRMI groupChatRMIController;
 
     CallBackClientImp callBackClientImp;
     public MessagePage(){
@@ -87,6 +89,8 @@ public class MessagePage implements Initializable {
             throw new RuntimeException(e);
         }
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
+        groupChatRMIController = (GroupChatRMI)StubContext.getStub("GroupChatControllerStub");
+
 
     }
 
@@ -136,7 +140,10 @@ public class MessagePage implements Initializable {
         try {
             listView.refresh();
             List<ChatDTO>  chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
-            ObservableList<ChatDTO> chats = FXCollections.observableArrayList(chatDTOList);
+            List<ChatDTO>  groupChatDTOS= groupChatRMIController.getAllGroupChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
+            List<ChatDTO> combinedList = new ArrayList<>(chatDTOList);
+            combinedList.addAll(groupChatDTOS);
+            ObservableList<ChatDTO> chats = FXCollections.observableArrayList(combinedList);
             System.out.println("chats size" + chats.size());
             listView.setItems(chats);
 
@@ -145,8 +152,6 @@ public class MessagePage implements Initializable {
         }
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-//            profileImage.setImage(new Image(new ByteArrayInputStream(newValue.getReceiverImage())));
-//            reciver.setText(newValue.getReceiverName());
             Parent borderPane = null;
             if(newValue != null){
                 try {
@@ -166,8 +171,14 @@ public class MessagePage implements Initializable {
                 }
 
             }
+
             Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
+            if(!Objects.equals(newValue.getAdminID(), "")){
+                message22Controller.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
+
+            }else{
             message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
+            }
             callBackClient.setMessage22Controller(PaneLoaderFactory.getInstance().getMessage22Controller());
             //contactListview.setCenter(PaneLoaderFactory.getmessage22Pane().getKey());
 
@@ -212,9 +223,16 @@ public class MessagePage implements Initializable {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageNode.fxml"));
                         HBox notificationItem = loader.load();
                         MessageNode controller = loader.getController();
-                        controller.setUserName(item.getReceiverName());
-                        Image image = new Image(new ByteArrayInputStream(item.getReceiverImage()));
-                        controller.setUserImg(image);
+                        if(!Objects.equals(item.getAdminID(), "")){
+                            controller.setUserName(item.getChatName());
+                            Image image = new Image(new ByteArrayInputStream(item.getChatImage()));
+                            controller.setUserImg(image);
+                        }else{
+                            controller.setUserName(item.getReceiverName());
+                            Image image = new Image(new ByteArrayInputStream(item.getReceiverImage()));
+                            controller.setUserImg(image);
+                        }
+
 
 
 //                        System.out.println("name from cell" + selectedUser.getDisplayName());

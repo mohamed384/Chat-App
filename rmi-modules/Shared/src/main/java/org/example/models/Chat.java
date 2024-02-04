@@ -6,7 +6,15 @@ public class Chat {
     private int chatID;
     private String chatName;
     private byte[] chatImage;
-    private int adminID;
+    private String adminID;
+
+    public String getAdminID() {
+        return adminID;
+    }
+
+    public void setAdminID(String adminID) {
+        this.adminID = adminID;
+    }
 
     public String getReceiverName() {
         return ReceiverName;
@@ -29,19 +37,17 @@ public class Chat {
     private byte[] receiverImage;
 
     public Chat (){}
-    public Chat(String chatName, byte[] chatImage,String ReceiverName,byte[] receiverImage, int adminID) {
+    public Chat(String chatName, byte[] chatImage,String ReceiverName,byte[] receiverImage) {
 
         this.chatName = chatName;
         this.chatImage = chatImage;
-        this.adminID = adminID;
         this.ReceiverName=ReceiverName;
         this.receiverImage=receiverImage;
     }
-    public Chat(String chatName, byte[] chatImage,int adminID) {
+    public Chat(String chatName, byte[] chatImage) {
 
         this.chatName = chatName;
         this.chatImage = chatImage;
-        this.adminID = adminID;
     }
 
     public int getChatID() {
@@ -68,13 +74,6 @@ public class Chat {
         this.chatImage = chatImage;
     }
 
-    public int getAdminID() {
-        return adminID;
-    }
-
-    public void setAdminID(int adminID) {
-        this.adminID = adminID;
-    }
 
 
 }

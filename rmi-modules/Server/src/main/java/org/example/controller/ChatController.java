@@ -17,8 +17,8 @@ public class ChatController extends UnicastRemoteObject implements ChatRMI {
     }
 
     @Override
-    public boolean createChat(String name, byte[] img, int adminId,String sender,String receiver) throws RemoteException {
-        return chatService.createChat(name, img, adminId,sender, receiver);
+    public boolean createChat(String name, byte[] img, String sender,String receiver) throws RemoteException {
+        return chatService.createChat(name, img, sender, receiver);
     }
 
     @Override
