@@ -5,6 +5,9 @@ import javafx.scene.control.TextField;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.CheckFiledValidation;
 import org.example.Utils.Enum.ValidationTypes;
+import org.example.Utils.StubContext;
+import org.example.Utils.UserToken;
+import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
 
 import java.rmi.Naming;
@@ -27,14 +30,7 @@ public class UserProfileService {
 
 
 
-        UserAuthentication remoteObject = UserAuthRemoteObject();
-        boolean isUpdate = false;
-        try {
-            isUpdate = remoteObject.updateUser(userDTO);
-        } catch (RemoteException e) {
-            System.out.println("Error while Updateing User Profile " + e.getMessage());
-        }
-        return isUpdate;
+        return updateUser(userDTO);
     }
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
@@ -45,4 +41,24 @@ public class UserProfileService {
         }
         return remoteObject;
     }
+    public boolean updateUser(UserDTO userDTO){
+        System.out.println("From Client UserProfileService: " + userDTO.getUserMode().toString());
+        UserAuthentication remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+        boolean isUpdate = false;
+        try {
+            isUpdate = remoteObject.updateUser(userDTO);
+        } catch (RemoteException e) {
+            System.out.println("Error while Updateing User Profile " + e.getMessage());
+        }
+        CallBackServer callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+        try {
+            callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        return isUpdate;
+
+
+    }
+
 }

@@ -5,10 +5,7 @@ import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -18,6 +15,8 @@ import javafx.scene.shape.Circle;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.LoadImage;
 import org.example.Utils.UserToken;
+import org.example.models.Enums.UserMode;
+import org.example.models.Enums.UserStatus;
 import org.example.service.UserProfileService;
 
 import javax.imageio.ImageIO;
@@ -29,6 +28,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UserProfileController implements Initializable {
+    @FXML
+    private ComboBox status;
     @FXML
     private Label emailValidLabel;
     @FXML
@@ -52,7 +53,28 @@ public class UserProfileController implements Initializable {
     public UserProfileController() {
         userProfileService = new UserProfileService();
     }
+    public static class StatusItem {
+        private String statusText;
+        private Image statusIcon;
 
+        public StatusItem(String statusText, String iconPath) {
+            this.statusText = statusText;
+            this.statusIcon = new Image(iconPath);
+        }
+
+        public String getStatusText() {
+            return statusText;
+        }
+
+        public Image getStatusIcon() {
+            return statusIcon;
+        }
+
+        @Override
+        public String toString() {
+            return statusText;
+        }
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -61,6 +83,7 @@ public class UserProfileController implements Initializable {
         emailField.setText(userDTO.getEmailAddress());
         bioField.setText(userDTO.getBio());
         profileImg.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
+        initialzeComboBox();
         btnUpdateAccordingField();
     }
 
@@ -75,7 +98,53 @@ public class UserProfileController implements Initializable {
         bioField.textProperty().addListener((observable, oldValue, newValue) -> {
             updateBtn.setDisable(oldValue.equals(newValue));
         });
+        status.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            updateBtn.setDisable(oldValue != null && oldValue.equals(newValue));
+        });
     }
+    private void initialzeComboBox(){
+        status.getItems().addAll(
+                new StatusItem("Available",getClass().getResource("/images/online.png").toExternalForm()),
+                new StatusItem("Busy",getClass().getResource("/images/busy.png").toExternalForm() ),
+                new StatusItem("Away", getClass().getResource("/images/idle.png").toExternalForm())
+        );
+        UserStatus userStatus = UserToken.getInstance().getUser().getUserStatus();
+        UserMode userMode = UserToken.getInstance().getUser().getUserMode();
+        if(userStatus == UserStatus.Online){
+            if(userMode == UserMode.Available)
+                status.setValue(status.getItems().get(0));
+            else if(userMode == UserMode.Busy)
+                status.setValue(status.getItems().get(1));
+            else if(userMode == UserMode.Away)
+                status.setValue(status.getItems().get(2));
+        }else{
+            status.setValue(status.getItems().get(1));
+        }
+        // status.setValue(status.getItems().get(0));
+        status.setCellFactory(param -> createStatusCell());
+        status.setButtonCell(createStatusCell());
+
+    }
+    private ListCell<StatusItem> createStatusCell() {
+        return new ListCell<StatusItem>() {
+            private final ImageView imageView = new ImageView();
+
+            @Override
+            protected void updateItem(StatusItem item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item.getStatusText());
+                    imageView.setImage(item.getStatusIcon());
+                    setGraphic(imageView);
+                }
+            }
+        };
+    }
+
 
     public void updateClick(MouseEvent e) {
 
@@ -86,6 +155,8 @@ public class UserProfileController implements Initializable {
         UserToken.getInstance().getUser().setDisplayName(nameField.getText());
         UserToken.getInstance().getUser().setEmailAddress(emailField.getText());
         UserToken.getInstance().getUser().setBio(bioField.getText());
+        UserToken.getInstance().getUser().setUserMode(status.getSelectionModel().getSelectedIndex() == 0 ? UserMode.Available :
+                status.getSelectionModel().getSelectedIndex() == 1 ? UserMode.Busy : UserMode.Away);
         if (userProfileService.updateUserDetails(UserToken.getInstance().getUser(),nameField,nameValidLabel,
                 emailValidLabel,emailField, bioValidLabel, bioField)) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -100,6 +171,7 @@ public class UserProfileController implements Initializable {
             alert.setContentText("Updated Failed please try again later");
             alert.showAndWait();
         }
+        //userProfileService.updateUser(UserToken.getInstance().getUser());
 
     }
 
@@ -129,5 +201,6 @@ public class UserProfileController implements Initializable {
             return null;
         }
     }
+
 
 }

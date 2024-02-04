@@ -71,6 +71,12 @@ public class MessagePage implements Initializable {
     URL location;
     ChatRMI chatRMI;
 
+    @FXML
+    ImageView boxImage;
+
+    @FXML
+    Label boxLabelName;
+
 
     CallBackClientImp callBackClientImp;
     public MessagePage(){
@@ -117,13 +123,12 @@ public class MessagePage implements Initializable {
 
 
 
-
-
-
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        boxImage.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
+        boxLabelName.setText(UserToken.getInstance().getUser().getDisplayName());
+
         PaneLoaderFactory.getInstance().setMessagePage(this);
         System.out.println("this is message page in initialize" + this);
         location = url;

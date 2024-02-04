@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.example.models.Enums.UserMode;
+import org.example.models.Enums.UserStatus;
 
 import java.io.ByteArrayInputStream;
 
@@ -53,6 +55,17 @@ public class ContactAddFriendController {
     }
     public void setUserImg(byte [] img){
         userImg.setImage(new Image(new ByteArrayInputStream(img)));
+    }
+    public void setStatus(UserMode userMode, UserStatus userStatus){
+        Image statusImage;
+        if(userStatus == UserStatus.Offline)
+            statusImage = new Image(getClass().getResource("/images/offline-2.png").toExternalForm());
+        else {
+            statusImage = userMode == UserMode.Available ? new Image(getClass().getResource("/images/online.png").toExternalForm()) :
+                    userMode == UserMode.Busy ? new Image(getClass().getResource("/images/busy.png").toExternalForm()):
+                            new Image(getClass().getResource("/images/idle.png").toExternalForm());
+        }
+        this.status.setImage(statusImage);
     }
 
 

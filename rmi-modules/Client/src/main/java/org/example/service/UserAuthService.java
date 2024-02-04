@@ -16,6 +16,7 @@ import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.CheckFiledValidation;
 import org.example.Utils.Enum.ValidationTypes;
+import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.MessagePage;
 import org.example.interfaces.CallBackClient;
@@ -39,6 +40,7 @@ public class UserAuthService {
     CallBackServer callBackServer;
     CallBackClientImp callBackClient;
     public UserAuthService() {
+        callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
 
     }
 
@@ -116,6 +118,11 @@ public class UserAuthService {
         } else {
             return null;
         }
+        UserToken.getInstance().getUser().setUserStatus(UserStatus.Online);
+        System.out.println("login from client auth service is successfully done" + UserToken.getInstance().getUser().getUserStatus());
+        //UserToken.getInstance().getUser().setUserMode(UserMode.Available);
+        remoteObject.updateUser(UserToken.getInstance().getUser());
+        callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
 //        PasswordLog.setText("");
 //        PhoneLog.setText("");
@@ -188,6 +195,8 @@ public class UserAuthService {
             UserToken userToken = UserToken.getInstance();
             userToken.setUser(user1);
             System.out.println("signup from client auth service is successfully done");
+            callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
+
 
             switchToMessagePage(actionEvent);
             return true;

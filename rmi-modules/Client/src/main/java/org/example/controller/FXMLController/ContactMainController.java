@@ -75,8 +75,9 @@ public class ContactMainController  implements Initializable {
         contacts = FXCollections.observableArrayList();
         //System.out.println("annaaa contact main controller" + this);
         PaneLoaderFactory.getInstance().setContactMainController(this);
-        populateContactsTree();
+        updateContactList();
         handleSelection();
+
 
     }
 
@@ -99,7 +100,6 @@ public class ContactMainController  implements Initializable {
 
 
     public void updateContactList(){
-        //System.out.println("Updating contact list in contact main controller");
         contacts.clear();
         getAllContacts();
         TreeItem<UserDTO> root = contactsTreeView.getRoot();
@@ -110,11 +110,14 @@ public class ContactMainController  implements Initializable {
             contactsTreeView.setRoot(root);
             onlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Online", "", "", "", "", "", null, "", null, null, null));
             offlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Offline", "", "", "", "", "", null, "", null, null, null));
+            contactsTreeView.getRoot().getChildren().addAll(onlineContactsTreeItem, offlineContactsTreeItem);
         }
         else{
             onlineContactsTreeItem  = root.getChildren().get(0);
             offlineContactsTreeItem = root.getChildren().get(1);
         }
+        onlineContactsTreeItem.setExpanded(true);
+        offlineContactsTreeItem.setExpanded(true);
 
         onlineContactsTreeItem.getChildren().clear();
         offlineContactsTreeItem.getChildren().clear();
@@ -125,28 +128,9 @@ public class ContactMainController  implements Initializable {
                 offlineContactsTreeItem.getChildren().add(new TreeItem<>(userDTO));
             }
         }
-
-       // contacts.add(new UserDTO("", "Contacts", "", "", "", "", "", null, "", UserStatus.Offline, null, null));
-
-        contactsTreeView.refresh();
-
-
+        updateTreeView();
     }
-    private void populateContactsTree() {
-        contacts.clear();
-        getAllContacts();
-        TreeItem<UserDTO> root = new TreeItem<>(new UserDTO("", "Contacts", "", "", "", "", "", null, "", null, null, null));
-        TreeItem<UserDTO> onlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Online", "", "", "", "", "", null, "", null, null, null));
-        TreeItem<UserDTO> offlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Offline", "", "", "", "", "", null, "", null, null, null));
-        contactsTreeView.setRoot(root);
-        contactsTreeView.getRoot().getChildren().addAll(onlineContactsTreeItem, offlineContactsTreeItem);
-
-        populateContacts(onlineContactsTreeItem,getOnlineContacts());
-        populateContacts(offlineContactsTreeItem, getOfflineContacts());
-
-        onlineContactsTreeItem.setExpanded(true);
-        offlineContactsTreeItem.setExpanded(true);
-
+    public void updateTreeView(){
         contactsTreeView.setCellFactory(param -> new TreeCell<UserDTO>() {
             @Override
             protected void updateItem(UserDTO item, boolean empty) {
@@ -169,7 +153,7 @@ public class ContactMainController  implements Initializable {
                             controller.setUserName(item.getDisplayName());
                             controller.setUserImg(item.getPicture());
                             controller.setUserNumber(item.getPhoneNumber());
-
+                            controller.setStatus(item.getUserMode(), item.getUserStatus());
                             // Set the loaded HBox as the graphic
                             setGraphic(contactCell);
                         } catch (IOException e) {
@@ -179,39 +163,17 @@ public class ContactMainController  implements Initializable {
                 }
             }
         });
-    }
+        contactsTreeView.refresh();
 
-
-
-    private void populateContacts(TreeItem<UserDTO> treeItem, ObservableList<UserDTO> contacts) {
-        for (UserDTO contact : contacts) {
-            treeItem.getChildren().add(new TreeItem<>(contact));
-        }
     }
 
     public void getAllContacts(){
         contacts.setAll(contactService.getAllContacts());
     }
 
-    private ObservableList<UserDTO> getOfflineContacts() {
-        ObservableList<UserDTO> offlineContacts = FXCollections.observableArrayList();
-        for (UserDTO contact : contacts) {
-            if (contact.getUserStatus() == UserStatus.Offline) {
-                offlineContacts.add(contact);
-            }
-        }
-        return offlineContacts;
-    }
 
-    private ObservableList<UserDTO> getOnlineContacts() {
-        ObservableList<UserDTO> onlineContacts = FXCollections.observableArrayList();
-        for (UserDTO contact : contacts) {
-            if (contact.getUserStatus() == UserStatus.Online) {
-                onlineContacts.add(contact);
-            }
-        }
-        return onlineContacts;
-    }
+
+
 
     @FXML
     public void onAddContactClick(ActionEvent event) {

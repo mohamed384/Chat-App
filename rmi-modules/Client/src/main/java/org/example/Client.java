@@ -80,6 +80,7 @@ public class Client extends Application {
                 }
             });
 
+        stage.setTitle("Cypher App");
         StageUtils.setMainStage(stage);
             // Start the pause
                 pause.play();

@@ -25,6 +25,7 @@ import org.example.controller.FXMLController.MessagePage;
 import org.example.controller.FXMLController.PaneLoaderFactory;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackClient;
+import org.example.models.Chat;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -65,11 +66,14 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     @Override
-    public void receiveMsg(String msg, String senderPhoneNumber ) throws Exception {
+    public void receiveMsg(String msg, int chatID  ,String sender , String reciver) throws Exception {
         System.out.println("receiveMsg: "+msg);
-        System.out.println("sender: "+senderPhoneNumber);
+      //  System.out.println("sender: "+senderPhoneNumber);
         System.out.println("this is callback client receive msg"+ message22Controller +" this is the callallback client " +this);
-        message22Controller.receiveMessage(msg);
+        boolean done = message22Controller.receiveMessage(msg , chatID );
+        if(!done){
+            this.notification("New Message from " + sender + ":" + msg);
+        }
 
     }
 
@@ -99,11 +103,10 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     @Override
     public void updateContactList() throws Exception {
         System.out.println("updateContactList in call back client imp : ");
-
         Platform.runLater(() -> {
-            contactMainController.updateContactList();
+            if (contactMainController != null)
+                contactMainController.updateContactList();
         });
-
     }
 
     @Override

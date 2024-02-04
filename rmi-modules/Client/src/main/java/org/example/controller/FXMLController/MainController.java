@@ -23,6 +23,7 @@ import javafx.util.Pair;
 import org.controlsfx.control.HiddenSidesPane;
 import org.controlsfx.control.Notifications;
 import org.example.CallBackImp.CallBackClientImp;
+import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
@@ -176,7 +177,10 @@ public class MainController {
 
             try {
                 String number = UserToken.getInstance().getUser().getPhoneNumber();
+                UserAuthentication remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+                remoteObject.logout(UserToken.getInstance().getUser());
                 callBackServer.logout( number, callBackClient);
+                callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
             } catch (RemoteException e) {
                 e.printStackTrace();

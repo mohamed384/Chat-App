@@ -61,6 +61,12 @@ public class Message22Controller implements Initializable {
         profileImage.setImage(new Image(new ByteArrayInputStream(receiverImage)));
         });
 
+        try {
+            receiverPhoneNumber  = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(),chatID);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println("this is message page in set data source" + this);
         System.out.println(receiverName + " message22" );
     }
@@ -139,13 +145,13 @@ public class Message22Controller implements Initializable {
                 }
             });
         }
-    public  void receiveMessage(String Result){
+    public  boolean receiveMessage(String Result , int chatID){
         System.out.println("this is message page in receive message" + this);
 
-        //System.out.println("this is receive message in message page");
-        if(Result.equals("")){
-            return;
+        if (chatID != this.chatID){
+            return false;
         }
+
         Label text = new Label();
         text.setWrapText(true); // Enable text wrapping
         text.setMaxWidth(1000);
@@ -176,6 +182,7 @@ public class Message22Controller implements Initializable {
             scrollPane.setVvalue(1.0);
         });
 
+        return true;
     }
 
 }

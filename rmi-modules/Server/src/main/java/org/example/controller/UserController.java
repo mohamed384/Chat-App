@@ -38,6 +38,11 @@ public class UserController extends UnicastRemoteObject implements UserAuthentic
     public boolean updateUser(UserDTO userDto) throws RemoteException {
         return userService.updateUser(userDto);
     }
+    @Override
+    public boolean logout(UserDTO userDTO) throws RemoteException {
+        return userService.logout(userDTO);
+    }
+
 
 
 }
