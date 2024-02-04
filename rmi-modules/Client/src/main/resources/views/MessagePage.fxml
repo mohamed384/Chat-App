@@ -3,59 +3,69 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.shape.Circle?>
-<BorderPane fx:id="contactListview" prefHeight="600.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.MessagePage">
-   <left>
-      <VBox prefHeight="600.0" prefWidth="182.0" BorderPane.alignment="CENTER">
-         <children>
-            <Pane prefHeight="30.0" prefWidth="182.0" style="-fx-background-color: #9b75d0;" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label layoutX="55.0" layoutY="17.0" prefHeight="36.0" prefWidth="73.0" text="Chats">
-                     <font>
-                        <Font name="System Bold" size="25.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-            <ListView fx:id="listView" prefHeight="427.0" prefWidth="182.0" VBox.vgrow="ALWAYS" />
-            <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="182.0">
-               <children>
-                  <ImageView fx:id="boxImage" fitHeight="53.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
-                      <clip>
-                          <Circle centerX="20" centerY="20" radius="25" />
-                      </clip>
+<BorderPane fx:id="contactListview" prefHeight="600.0" prefWidth="847.0" stylesheets="@../styles/chatList.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.MessagePage">
 
-                      <image>
-                        <Image url="@../images/user.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="15.0" right="10.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label fx:id="boxLabelName" prefHeight="25.0" prefWidth="86.0" text="Eslam Ahmed">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="5.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
+
+    <left>
+        <VBox prefHeight="600.0" prefWidth="200.0" style="-fx-border-color: #6639a6;" styleClass="color" BorderPane.alignment="CENTER">
+            <children>
+                <Pane prefHeight="100.0" prefWidth="182.0" style="-fx-border-color: #6639a6;">
+                    <children>
+                        <Label alignment="CENTER" layoutX="64.0" layoutY="32.0" prefHeight="36.0" prefWidth="73.0" text="Chats">
+                            <font>
+                                <Font name="System Bold" size="25.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </Pane>
+                <ListView fx:id="listView" prefHeight="427.0" prefWidth="182.0" VBox.vgrow="ALWAYS" />
+            <VBox style="-fx-border-color: #6639a6;">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-   </left>
+               <children>
+                      <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="182.0">
+                          <children>
+                              <!--                  <ImageView fx:id="boxImage" fitHeight="53.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">-->
+                              <!--                      <clip>-->
+                              <!--                          <Circle centerX="20" centerY="20" radius="25" />-->
+                              <!--                      </clip>-->
+      
+                                    <!--                      <image>-->
+                              <!--                        <Image url="@../images/user.png" />-->
+                              <!--                     </image>-->
+                              <!--                     <HBox.margin>-->
+                              <!--                        <Insets left="15.0" right="10.0" />-->
+                              <!--                     </HBox.margin>-->
+                              <!--                  </ImageView>-->
+                              <Circle fx:id="boxImage" centerX="20" centerY="20" radius="25">
+                                  <HBox.margin>
+                                      <Insets left="10.0" right="20.0" />
+                                  </HBox.margin>
+                              </Circle>
+      
+                                    <Label fx:id="boxLabelName" prefHeight="26.0" prefWidth="115.0" text="Eslam Ahmed" textFill="WHITE">
+                                  <font>
+                                      <Font name="System Bold" size="14.0" />
+                                  </font>
+                                  <HBox.margin>
+                                      <Insets right="5.0" />
+                                  </HBox.margin>
+                              </Label>
+                          </children>
+                      </HBox>
+               </children>
+            </VBox>
+            </children>
+        </VBox>
+    </left>
 
 
 </BorderPane>

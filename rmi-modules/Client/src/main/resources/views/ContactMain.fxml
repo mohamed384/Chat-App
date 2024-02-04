@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,16 +19,13 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.TreeView?>
-<?import javafx.scene.control.TextField?>
-<?import java.lang.String?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="847.0" stylesheets="@../styles/ContactInfo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.ContactMainController">
    <left>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <BorderPane VBox.vgrow="ALWAYS" fx:id="searchList" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" styleClass="BorderPane" stylesheets="@../styles/contacts.css" >
+            <BorderPane fx:id="searchList" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" style="-fx-border-color: #6639a6; -fx-border-radius: 0; -fx-border-width: 2;" styleClass="color" stylesheets="@../styles/contacts.css" VBox.vgrow="ALWAYS">
                <top>
-                  <AnchorPane styleClass="light-purple" BorderPane.alignment="CENTER">
+                  <AnchorPane BorderPane.alignment="CENTER">
                      <children>
                         <TextField alignment="CENTER" layoutX="42.0" layoutY="38.0" prefHeight="38.0" prefWidth="222.0" promptText="Search">
                            <styleClass>
@@ -132,7 +132,7 @@
                </ImageView>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="167.0" onMouseClicked="#messageBtn" styleClass="message-btn" text="Message" textFill="WHITE">
+               <Button mnemonicParsing="false" onMouseClicked="#messageBtn" prefHeight="26.0" prefWidth="167.0" styleClass="message-btn" text="Message" textFill="WHITE">
                   <HBox.margin>
                      <Insets right="10.0" />
                   </HBox.margin>

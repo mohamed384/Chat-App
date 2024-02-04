@@ -17,6 +17,8 @@ public interface ChatRMI extends Remote {
     public String getReceiverPhoneNumber(String senderPhoneNumber, int chatID) throws RemoteException;
 
 
+
+
 }
 
 

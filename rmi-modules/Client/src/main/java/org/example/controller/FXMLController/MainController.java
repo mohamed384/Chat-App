@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -16,6 +17,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -32,13 +36,16 @@ import org.example.interfaces.UserAuthentication;
 import javax.management.Notification;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class MainController {
+public class MainController implements Initializable {
 
+    public VBox nav;
     @FXML
     private Button contact;
 
@@ -56,6 +63,7 @@ public class MainController {
 
     CallBackServer callBackServer;
     CallBackClientImp callBackClient;
+    LinearGradient gradient;
 
 
 
@@ -75,6 +83,7 @@ public class MainController {
        } catch (RemoteException | NotBoundException | MalformedURLException e) {
             throw new RuntimeException(e);
        }
+
 
 
     }
@@ -98,7 +107,9 @@ public class MainController {
         ///
         BorderPane pane = PaneLoaderFactory.messagePageLoader().getKey();
         MessagePage page = PaneLoaderFactory.getInstance().getMessagePage();
+
         page.setCallBackClient(callBackClient);
+        callBackClient.setMessagePage(page);
 
 
        // MessagePage messagePage = PaneLoaderFactory.messagePageLoader().getValue();
@@ -188,5 +199,15 @@ public class MainController {
 
         }
 
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        gradient = new LinearGradient(
+                0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
+                new Stop(0, Color.web("#6639a6")),
+                new Stop(1, Color.web("#9b75d0"))
+        );
+        //nav.setBackground(new Background(new BackgroundFill(gradient, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 }

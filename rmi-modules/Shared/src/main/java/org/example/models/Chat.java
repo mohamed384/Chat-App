@@ -8,6 +8,7 @@ public class Chat {
     private byte[] chatImage;
     private int adminID;
 
+
     public String getReceiverName() {
         return ReceiverName;
     }

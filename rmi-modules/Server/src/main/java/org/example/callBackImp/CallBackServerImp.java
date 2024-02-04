@@ -73,7 +73,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
             Message message = new Message();
             message.setSenderID(senderPhoneNumber);
             message.setMessageContent(msg);
-            message.setAttachment(false); // Set this based on whether the message is an attachment
+            message.setIsAttachment(false); // Set this based on whether the message is an attachment
 
             // Get the ChatID
 

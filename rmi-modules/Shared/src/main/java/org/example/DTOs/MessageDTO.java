@@ -9,8 +9,19 @@ public class MessageDTO {
     private String messageContent;
     private boolean isAttachment;
 
+    private byte[] attachment;
+
+
+
     private Timestamp timestamp;
 //    public MessageDTO(){}
+
+    public MessageDTO(String senderID, int chatID, byte[] attachment) {
+        this.senderID = senderID;
+        this.chatID = chatID;
+        this.attachment = attachment;
+        isAttachment = true; //TODO: check if this is necessary
+    }
 
     public MessageDTO( String messageContent,String senderID, int chatID, Timestamp timestamp) {
         this.senderID = senderID;

@@ -3,8 +3,8 @@
 }
 
 /* Set the pane's background color to purple */
-.BorderPane {
-    -fx-background-color: #9b75d0;
+.color {
+    -fx-background-color: linear-gradient(to top, #6639a6 0%, #9b75d0 100%);
 }
 .textfield{
     -fx-border-radius:10;
@@ -50,3 +50,4 @@
 .tree-cell:focused:selected {
     -fx-background-color:purple;
 }
+

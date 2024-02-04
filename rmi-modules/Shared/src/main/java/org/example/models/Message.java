@@ -10,7 +10,16 @@ public class Message {
     private boolean isAttachment;
     private Timestamp timestamp;
 
+  //  private byte[] attachment;
+
     public Message(){}
+
+//    public Message(String senderID, int chatID, byte[] attachment) {
+//        this.senderID = senderID;
+//        this.chatID = chatID;
+//        this.attachment = attachment;
+//        isAttachment = true; //TODO: check if this is necessary
+//    }
 
     public Message(String senderID, int receiverID, String messageContent, boolean isAttachment) {
         this.senderID = senderID;
@@ -62,7 +71,14 @@ public class Message {
         return isAttachment;
     }
 
-    public void setAttachment(boolean attachment) {
+    public void setIsAttachment(boolean attachment) {
         isAttachment = attachment;
     }
+//    public byte[] getAttachment() {
+//        return attachment;
+//    }
+//
+//    public void setAttachment(byte[] attachment) {
+//        this.attachment = attachment;
+//    }
 }

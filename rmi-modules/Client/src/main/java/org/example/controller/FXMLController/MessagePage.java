@@ -8,37 +8,36 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
+import javafx.scene.shape.Circle;
 import org.controlsfx.control.HiddenSidesPane;
 import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.ChatDTO;
+import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
-import org.example.interfaces.CallBackClient;
-import org.example.interfaces.CallBackServer;
 import org.example.interfaces.ChatRMI;
+import org.example.interfaces.UserAuthentication;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 
 public class MessagePage implements Initializable {
     @FXML
     private BorderPane contactListview;
+
+    @FXML
+    private Circle boxImage;
 
     @FXML
     private HiddenSidesPane hiddenSidesPane;
@@ -71,11 +70,10 @@ public class MessagePage implements Initializable {
     URL location;
     ChatRMI chatRMI;
 
-    @FXML
-    ImageView boxImage;
 
     @FXML
     Label boxLabelName;
+
 
 
     CallBackClientImp callBackClientImp;
@@ -125,24 +123,36 @@ public class MessagePage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        LinearGradient gradient = new LinearGradient(
+                0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
+                new Stop(0, Color.web("#6639a6")),
+                new Stop(1, Color.web("#9b75d0"))
+        );
 
-        boxImage.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
+       // contactListview.setBackground(new Background(new BackgroundFill(gradient, CornerRadii.EMPTY, Insets.EMPTY)));
+
+
+        boxImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture()))));
         boxLabelName.setText(UserToken.getInstance().getUser().getDisplayName());
 
         PaneLoaderFactory.getInstance().setMessagePage(this);
         System.out.println("this is message page in initialize" + this);
         location = url;
 
-        try {
-            listView.refresh();
-            List<ChatDTO>  chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
-            ObservableList<ChatDTO> chats = FXCollections.observableArrayList(chatDTOList);
-            System.out.println("chats size" + chats.size());
-            listView.setItems(chats);
+        new Thread(() -> {
+            try {
+                List<ChatDTO> chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
+                ObservableList<ChatDTO> chats = FXCollections.observableArrayList(chatDTOList);
+                System.out.println("chats size" + chats.size());
 
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+                Platform.runLater(() -> {
+                    listView.setItems(chats);
+                    listView.refresh();
+                });
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 //            profileImage.setImage(new Image(new ByteArrayInputStream(newValue.getReceiverImage())));
@@ -152,15 +162,6 @@ public class MessagePage implements Initializable {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/message22.fxml"));
                     borderPane = loader.load();
-
-                    // If you have a controller for your FXML file and you want to use it
-
-                    // Call any method from the controller if needed
-                    // controller.someMethod();
-
-                    // Now you can add 'root' to any container
-                    // For example, if you have a BorderPane named 'borderPane'
-                   // borderPane.setCenter(root);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -209,16 +210,29 @@ public class MessagePage implements Initializable {
                     setGraphic(null);
                 } else {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageNode.fxml"));
-                        HBox notificationItem = loader.load();
-                        MessageNode controller = loader.getController();
-                        controller.setUserName(item.getReceiverName());
-                        Image image = new Image(new ByteArrayInputStream(item.getReceiverImage()));
-                        controller.setUserImg(image);
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ContactNode.fxml"));
+                        VBox notificationItem = loader.load();
+                        ContactController controller = loader.getController();
+                        new Thread(() -> {
+                            try {
+                                ChatRMI chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
+                                String receiverPhoneNumber = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(),item.getChatID());
+                                UserAuthentication userAuthentication = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+                                UserDTO userDTO = userAuthentication.getUser(receiverPhoneNumber);
+                                javafx.application.Platform.runLater(() -> {
+                                    controller.setUserName(userDTO.getDisplayName());
+                                    controller.setUserNumber(userDTO.getPhoneNumber());
+                                    controller.setUserImg(userDTO.getPicture());
+                                    controller.setStatus(userDTO.getUserMode(), userDTO.getUserStatus());
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }).start();
 
 
 //                        System.out.println("name from cell" + selectedUser.getDisplayName());
-                        controller.setMessageController(MessagePage.this); // Pass the reference
+                        //controller.setMessageController(MessagePage.this); // Pass the reference
 //                     //   Image image = new Image("/images/profile.jpg");
 //                        Image image = new Image(new ByteArrayInputStream(selectedUser.getPicture()));
                         setGraphic(notificationItem);
@@ -228,6 +242,21 @@ public class MessagePage implements Initializable {
                 }
             }
         });
+    }
+    public void updateList(){
+
+        try {
+            List<ChatDTO>  chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
+            ObservableList<ChatDTO> chats = FXCollections.observableArrayList(chatDTOList);
+            System.out.println("chats size" + chats.size());
+            listView.setItems(chats);
+            listView.refresh();
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
 

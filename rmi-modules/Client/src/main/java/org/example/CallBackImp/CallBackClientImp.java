@@ -43,14 +43,19 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     Message22Controller message22Controller;
+    MessagePage messagePage;
 
 
     public CallBackClientImp() throws RemoteException{
 
     }
-    public   void setMessage22Controller(Message22Controller message22Controller) {
+    public void setMessage22Controller(Message22Controller message22Controller) {
         this.message22Controller = message22Controller;
     }
+    public void setMessagePage(MessagePage messagePage) {
+        this.messagePage = messagePage;
+    }
+
 
 
 //    public CallBackClientImp(MessagePage   messagePage) throws RemoteException {
@@ -106,6 +111,8 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
         Platform.runLater(() -> {
             if (contactMainController != null)
                 contactMainController.updateContactList();
+            if(messagePage != null)
+                messagePage.updateList();
         });
     }
 

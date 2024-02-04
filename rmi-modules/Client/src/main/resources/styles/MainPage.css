@@ -42,4 +42,9 @@
 -fx-border-color: black; -fx-border-width: 2px;
 }
 
-
+.VBox {
+    -fx-background-color: linear-gradient(to top, #6639a6 0%, #9b75d0 100%);
+}
+.button:hover {
+    -fx-background-color: #5d25da; /* Lighter shade of purple */
+}

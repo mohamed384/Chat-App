@@ -1,145 +1,71 @@
 package org.example.controller.FXMLController;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import org.example.DTOs.UserDTO;
-import org.example.interfaces.CallBackServer;
+import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
-import org.example.service.ContactService;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 
-public class ContactController implements Initializable {
+import java.io.ByteArrayInputStream;
 
-
+public class ContactController {
 
     @FXML
-    public TreeView<UserDTO> contactsTreeView;
+    private VBox contact;
 
-    private final ContactService contactService;
-    private ObservableList<UserDTO> contacts = FXCollections.observableArrayList();
+    @FXML
+    private ImageView status;
 
+    @FXML
+    private ImageView userImg;
+
+    @FXML
+    private Label userName;
+
+    @FXML
+    private Label userNumber;
 
     public ContactController() {
-        this.contactService = new ContactService();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        populateContactsTree();
-    }
-
-    private void populateContactsTree() {
-        getAllContacts();
-
-        TreeItem<UserDTO> root = new TreeItem<>(new UserDTO("", "Contacts", "", "", "", "", "", null, "", null, null, null));
-        TreeItem<UserDTO> onlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Online", "", "", "", "", "", null, "", null, null, null));
-        TreeItem<UserDTO> offlineContactsTreeItem = new TreeItem<>(new UserDTO("", "Offline", "", "", "", "", "", null, "", null, null, null));
-        contactsTreeView.setRoot(root);
-        contactsTreeView.getRoot().getChildren().addAll(onlineContactsTreeItem, offlineContactsTreeItem);
-
-        populateContacts(onlineContactsTreeItem,getOnlineContacts());
-        populateContacts(offlineContactsTreeItem, getOfflineContacts());
-
-        onlineContactsTreeItem.setExpanded(true);
-        offlineContactsTreeItem.setExpanded(true);
-
-        contactsTreeView.setCellFactory(param -> new TreeCell<UserDTO>() {
-            @Override
-            protected void updateItem(UserDTO item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    if (getTreeItem().getValue().getDisplayName().equals("Contacts") || getTreeItem().getValue().getDisplayName().equals("Online") || getTreeItem().getValue().getDisplayName().equals( "Offline") ){
-                        setText(getTreeItem().getValue().getDisplayName());
-                    }else {
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ContactNode.fxml"));
-                            VBox contactCell = loader.load();
-
-                            ContactAddFriendController controller = loader.getController();
-                            controller.setUserName(item.getDisplayName());
-                            controller.setUserImg(item.getPicture());
-                            controller.setUserNumber(item.getPhoneNumber());
-
-                            // Set the loaded HBox as the graphic
-                            setGraphic(contactCell);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-
-
-    private void populateContacts(TreeItem<UserDTO> treeItem, ObservableList<UserDTO> contacts) {
-        for (UserDTO contact : contacts) {
-            treeItem.getChildren().add(new TreeItem<>(contact));
-        }
-    }
-
-    public void getAllContacts(){
-        contacts =  FXCollections.observableArrayList(contactService.getAllContacts());
-    }
-
-    private ObservableList<UserDTO> getOfflineContacts() {
-        contacts.removeIf(contact -> contact.getUserStatus() != UserStatus.Offline);
-        return contacts;
-    }
-    private ObservableList<UserDTO> getOnlineContacts() {
-        contacts.removeIf(contact -> contact.getUserStatus() != UserStatus.Online);
-        return contacts;
+    public ContactController(Image image , String userName, String userNumber , Image status){
+        this.userName.setText(userName);
+        this.userNumber.setText(userNumber);
+        this.userImg.setImage(image);
+        this.status.setImage(status);
     }
 
     @FXML
-    public void onAddContactClick(ActionEvent event) {
+    void SendAddFriend(MouseEvent event) {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddFriend.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+    }
+
+    public void setUserName(String name) {
+        userName.setText(name);
+    }
+
+    public void setUserNumber(String number) {
+        userNumber.setText(number);
+    }
+    public void setUserImg(byte [] img){
+        userImg.setImage(new Image(new ByteArrayInputStream(img)));
+    }
+    public void setStatus(UserMode userMode, UserStatus userStatus){
+        Image statusImage;
+        if(userStatus == UserStatus.Offline)
+            statusImage = new Image(getClass().getResource("/images/offline-2.png").toExternalForm());
+        else {
+            statusImage = userMode == UserMode.Available ? new Image(getClass().getResource("/images/online.png").toExternalForm()) :
+                    userMode == UserMode.Busy ? new Image(getClass().getResource("/images/busy.png").toExternalForm()):
+                            new Image(getClass().getResource("/images/idle.png").toExternalForm());
         }
-       // AddFriend controller = loader.getController();
-        //controller.setCallBackServer(callBackServer);
-
-        Scene secondScene = new Scene(root, 550, 300);
-
-        Stage newWindow = new Stage();
-        newWindow.initModality(Modality.APPLICATION_MODAL);
-        newWindow.initStyle(StageStyle.UTILITY);
-        newWindow.setTitle("Add Friend");
-        newWindow.setScene(secondScene);
-        newWindow.show();
-
-
-
+        this.status.setImage(statusImage);
     }
 
 
-
-    public void creatGroup(ActionEvent actionEvent) {
-    }
 }
