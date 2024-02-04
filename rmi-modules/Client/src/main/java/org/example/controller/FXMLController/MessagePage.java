@@ -8,36 +8,37 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.*;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.controlsfx.control.HiddenSidesPane;
 import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.ChatDTO;
-import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
+import org.example.interfaces.CallBackClient;
+import org.example.interfaces.CallBackServer;
 import org.example.interfaces.ChatRMI;
-import org.example.interfaces.UserAuthentication;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 
 public class MessagePage implements Initializable {
     @FXML
     private BorderPane contactListview;
-
-    @FXML
-    private Circle boxImage;
 
     @FXML
     private HiddenSidesPane hiddenSidesPane;
@@ -70,10 +71,11 @@ public class MessagePage implements Initializable {
     URL location;
     ChatRMI chatRMI;
 
+    @FXML
+    ImageView boxImage;
 
     @FXML
     Label boxLabelName;
-
 
 
     CallBackClientImp callBackClientImp;
@@ -85,6 +87,8 @@ public class MessagePage implements Initializable {
             throw new RuntimeException(e);
         }
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
+        groupChatRMIController = (GroupChatRMI)StubContext.getStub("GroupChatControllerStub");
+
 
     }
 
@@ -123,16 +127,8 @@ public class MessagePage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        LinearGradient gradient = new LinearGradient(
-                0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
-                new Stop(0, Color.web("#6639a6")),
-                new Stop(1, Color.web("#9b75d0"))
-        );
 
-       // contactListview.setBackground(new Background(new BackgroundFill(gradient, CornerRadii.EMPTY, Insets.EMPTY)));
-
-
-        boxImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture()))));
+        boxImage.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
         boxLabelName.setText(UserToken.getInstance().getUser().getDisplayName());
 
         PaneLoaderFactory.getInstance().setMessagePage(this);
@@ -162,13 +158,28 @@ public class MessagePage implements Initializable {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/message22.fxml"));
                     borderPane = loader.load();
+
+                    // If you have a controller for your FXML file and you want to use it
+
+                    // Call any method from the controller if needed
+                    // controller.someMethod();
+
+                    // Now you can add 'root' to any container
+                    // For example, if you have a BorderPane named 'borderPane'
+                   // borderPane.setCenter(root);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
             }
+
             Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
+            if(!Objects.equals(newValue.getAdminID(), "")){
+                message22Controller.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
+
+            }else{
             message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
+            }
             callBackClient.setMessage22Controller(PaneLoaderFactory.getInstance().getMessage22Controller());
             //contactListview.setCenter(PaneLoaderFactory.getmessage22Pane().getKey());
 
@@ -232,7 +243,7 @@ public class MessagePage implements Initializable {
 
 
 //                        System.out.println("name from cell" + selectedUser.getDisplayName());
-                        //controller.setMessageController(MessagePage.this); // Pass the reference
+                        controller.setMessageController(MessagePage.this); // Pass the reference
 //                     //   Image image = new Image("/images/profile.jpg");
 //                        Image image = new Image(new ByteArrayInputStream(selectedUser.getPicture()));
                         setGraphic(notificationItem);

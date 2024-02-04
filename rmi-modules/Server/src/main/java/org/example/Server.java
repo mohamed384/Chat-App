@@ -8,10 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.callBackImp.CallBackServerImp;
-import org.example.controller.ChatController;
-import org.example.controller.ContactController;
-import org.example.controller.UserController;
-import org.example.controller.UserNotificationController;
+import org.example.controller.*;
 import org.example.interfaces.*;
 import org.example.utils.DBConnection;
 import org.example.Utils.StubContext;
@@ -34,7 +31,7 @@ public class Server  extends  Application{
             UserContact contactControllerStub = new ContactController();
             ChatRMI ChatControllerStub = new ChatController();
             CallBackServer callBackServer = new CallBackServerImp();
-
+            GroupChatRMI groupChatRMI = new GroupChatController();
 
             // Hena 3mlna add lel stubs bta3tna
 //            StubContext.addStub("UserAuthenticationStub", userAuthenticationStub);
@@ -45,6 +42,7 @@ public class Server  extends  Application{
             // Hena 3mlna create lel registry w 3mlna rebind lel stubs bta3tna
             java.rmi.registry.LocateRegistry.createRegistry(1099);
             StubContext.addStub("ChatControllerStub", ChatControllerStub);
+            StubContext.addStub("GroupChatControllerStub", groupChatRMI);
 
             java.rmi.Naming.rebind("UserAuthenticationStub", userAuthenticationStub);
             java.rmi.Naming.rebind("UserSendNotificationStub", userSendNotificationStub);

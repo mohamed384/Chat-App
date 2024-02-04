@@ -39,7 +39,6 @@ public class StubContext {
             if (stub != null) {
                 stubs.put(name, stub);
             }
-
             return stub;
         } catch (Exception e) {
             e.printStackTrace();

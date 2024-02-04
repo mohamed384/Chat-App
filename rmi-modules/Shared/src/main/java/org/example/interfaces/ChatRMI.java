@@ -8,13 +8,13 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface ChatRMI extends Remote {
-    public boolean createChat(String name, byte[] img, int adminId, String sender, String receiver) throws RemoteException;
+     boolean createChat(String name, byte[] img, String sender, String receiver) throws RemoteException;
 
-    public ChatDTO getPrivateChat(String sender, String receiver) throws RemoteException;
+     ChatDTO getPrivateChat(String sender, String receiver) throws RemoteException;
 
-    public List<ChatDTO> getAllChatsForUser(String phoneNumber) throws RemoteException;
+     List<ChatDTO> getAllChatsForUser(String phoneNumber) throws RemoteException;
 
-    public String getReceiverPhoneNumber(String senderPhoneNumber, int chatID) throws RemoteException;
+     String getReceiverPhoneNumber(String senderPhoneNumber, int chatID) throws RemoteException;
 
 
 

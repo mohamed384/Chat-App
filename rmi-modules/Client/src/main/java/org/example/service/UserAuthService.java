@@ -40,6 +40,7 @@ public class UserAuthService {
     CallBackServer callBackServer;
     CallBackClientImp callBackClient;
     public UserAuthService() {
+        //TODO Error Here check it please by running client without server Exception thrown from here
         callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
 
     }
@@ -102,6 +103,11 @@ public class UserAuthService {
                 UserToken userToken = UserToken.getInstance();
                 userToken.setUser(user);
                 switchToMessagePage(actionEvent);
+                UserToken.getInstance().getUser().setUserStatus(UserStatus.Online);
+                System.out.println("login from client auth service is successfully done" + UserToken.getInstance().getUser().getUserStatus());
+                //UserToken.getInstance().getUser().setUserMode(UserMode.Available);
+                remoteObject.updateUser(UserToken.getInstance().getUser());
+                callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
 
             } else {
@@ -118,11 +124,7 @@ public class UserAuthService {
         } else {
             return null;
         }
-        UserToken.getInstance().getUser().setUserStatus(UserStatus.Online);
-        System.out.println("login from client auth service is successfully done" + UserToken.getInstance().getUser().getUserStatus());
-        //UserToken.getInstance().getUser().setUserMode(UserMode.Available);
-        remoteObject.updateUser(UserToken.getInstance().getUser());
-        callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
+
 
 //        PasswordLog.setText("");
 //        PhoneLog.setText("");

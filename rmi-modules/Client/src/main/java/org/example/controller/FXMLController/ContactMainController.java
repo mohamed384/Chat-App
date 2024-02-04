@@ -51,7 +51,6 @@ public class ContactMainController  implements Initializable {
     ChatRMI chatRMI;
     UserDTO selectedItem;
 
-    URL location;
 
     public ContactMainController() {
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
@@ -202,7 +201,25 @@ public class ContactMainController  implements Initializable {
 
 
 
-    public void creatGroup(ActionEvent actionEvent) {
+    public void createGroup(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/GroupPage.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        GroupController groupController= loader.getController();
+        groupController.setContactList(contacts);
+        Scene secondScene = new Scene(root, 388, 495);
+
+        Stage newWindow = new Stage();
+        newWindow.initModality(Modality.APPLICATION_MODAL);
+        newWindow.initStyle(StageStyle.UTILITY);
+        newWindow.setResizable(false);
+        newWindow.setTitle("Create Group");
+        newWindow.setScene(secondScene);
+        newWindow.show();
     }
 
 
@@ -215,7 +232,7 @@ public class ContactMainController  implements Initializable {
 
             if(existChat == null){
                 System.out.println("walahy mal2it chat");
-                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),0,
+                chatRMI.createChat(nameLabel.getText(),selectedItem.getPicture(),
                         UserToken.getInstance().getUser().getPhoneNumber(),phoneLabel.getText());
             }
 

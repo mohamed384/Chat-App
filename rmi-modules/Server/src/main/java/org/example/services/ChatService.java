@@ -16,8 +16,8 @@ public class ChatService {
         this.chatDAO = new ChatDAOImpl();
     }
 
-    public boolean createChat(String name, byte[] img, int adminId,String sender,String receiver) {
-         return chatDAO.create(name, img, adminId, sender, receiver);
+    public boolean createChat(String name, byte[] img, String sender,String receiver) {
+         return chatDAO.create(name, img, sender, receiver);
     }
     public ChatDTO getPrivateChat(String sender, String receiver){
         return chatMapper.toDTO(chatDAO.getPrivateChat(sender, receiver));

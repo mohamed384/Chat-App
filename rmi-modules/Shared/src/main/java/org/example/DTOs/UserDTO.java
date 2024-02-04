@@ -24,6 +24,12 @@ import java.util.Date;
         private String gender;
         private String country;
         private Date dateOfBirth;
+
+        @Override
+        public String toString() {
+            return displayName ;
+        }
+
         private String bio;
         private UserMode userMode;
         private UserStatus userStatus;
@@ -70,24 +76,6 @@ import java.util.Date;
         public UserDTO(String displayName, byte[] picture) {
             this.displayName = displayName;
             this.picture = picture;
-        }
-
-        @Override
-        public String toString() {
-            return "UserDTO{" +
-                    "phoneNumber='" + phoneNumber + '\'' +
-                    ", displayName='" + displayName + '\'' +
-                    ", email='" + emailAddress + '\'' +
-                    ", passwordHash='" + passwordHash + '\'' +
-                    ", confirmPassword='" + confirmPassword + '\'' +
-                    ", gender='" + gender + '\'' +
-                    ", country='" + country + '\'' +
-                    ", dateOfBirth=" + dateOfBirth +
-                    ", bio='" + bio + '\'' +
-                    ", status=" + userStatus +
-                    ", lastSeen=" + lastSeen +
-                    ", picture='" + picture + '\'' +
-                    '}';
         }
 
         public String getConfirmPassword() {
