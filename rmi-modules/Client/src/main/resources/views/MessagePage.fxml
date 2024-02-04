@@ -10,6 +10,8 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <BorderPane fx:id="contactListview" prefHeight="600.0" prefWidth="847.0" stylesheets="@../styles/chatList.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.MessagePage">
 
 
@@ -33,23 +35,19 @@
                <children>
                       <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="182.0">
                           <children>
-                              <!--                  <ImageView fx:id="boxImage" fitHeight="53.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">-->
-                              <!--                      <clip>-->
-                              <!--                          <Circle centerX="20" centerY="20" radius="25" />-->
-                              <!--                      </clip>-->
+                                                <ImageView fx:id="boxImage" fitHeight="53.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                                                    <clip>
+                                                        <Circle centerX="20" centerY="20" radius="25" />
+                                                    </clip>
       
-                                    <!--                      <image>-->
-                              <!--                        <Image url="@../images/user.png" />-->
-                              <!--                     </image>-->
-                              <!--                     <HBox.margin>-->
-                              <!--                        <Insets left="15.0" right="10.0" />-->
-                              <!--                     </HBox.margin>-->
-                              <!--                  </ImageView>-->
-                              <Circle fx:id="boxImage" centerX="20" centerY="20" radius="25">
-                                  <HBox.margin>
-                                      <Insets left="10.0" right="20.0" />
-                                  </HBox.margin>
-                              </Circle>
+                                                          <image>
+                                                      <Image url="@../images/user.png" />
+                                                   </image>
+                                                   <HBox.margin>
+                                                      <Insets left="15.0" right="10.0" />
+                                                   </HBox.margin>
+                                                </ImageView>
+
       
                                     <Label fx:id="boxLabelName" prefHeight="26.0" prefWidth="115.0" text="Eslam Ahmed" textFill="WHITE">
                                   <font>

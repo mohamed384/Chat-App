@@ -112,7 +112,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
             if (contactMainController != null)
                 contactMainController.updateContactList();
             if(messagePage != null)
-                messagePage.updateList();
+                  messagePage.updateList();
         });
     }
 

@@ -181,6 +181,8 @@ public class Message22Controller implements Initializable {
         hBox.getChildren().add( text);
         hBox.getChildren().add(imageView);
         hBox.setAlignment(Pos.CENTER_RIGHT);
+        ImagePattern pattern = (ImagePattern) profileImage.getFill();
+        Image image = pattern.getImage();
 
 
         VBox messageBubble = new VBox();

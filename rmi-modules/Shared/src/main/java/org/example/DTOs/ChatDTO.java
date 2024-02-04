@@ -36,6 +36,7 @@ public class ChatDTO implements Serializable {
     public void setReceiverImage(byte[] receiverImage) {
         this.receiverImage = receiverImage;
     }
+    public ChatDTO (){}
 
     public ChatDTO(String chatName, byte[] chatImage, String ReceiverName, byte[] receiverImage, int adminID) {
 
