@@ -98,6 +98,8 @@ public class Server  extends  Application{
             }
         });
 
+    primaryStage.setTitle("Server App");
+
         // Start the pause
         pause.play();
     }

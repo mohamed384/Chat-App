@@ -4,12 +4,15 @@ import org.example.DAO.MessageDAOImpl;
 import org.example.DTOs.UserDTO;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
+import org.example.models.Chat;
 import org.example.models.Message;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CallBackServerImp extends UnicastRemoteObject implements CallBackServer , Serializable {
 
@@ -28,6 +31,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     @Override
     public boolean login(String phoneNumber, CallBackClient callBackClient) {
             System.out.println("login: "+phoneNumber);
+
         try {
             callBackClient.notification("Welcome to CyberChat App");
         } catch (Exception e) {
@@ -59,11 +63,10 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
         CallBackClient callBackClient = clients.get(receiverPhoneNumber);
 
-
-
         try {
           //  callBackClient.notification( "You have a new message from "+senderPhoneNumber);
-            callBackClient.receiveMsg(msg, senderPhoneNumber);
+            Chat chat = chatDAO.getPrivateChat(senderPhoneNumber, receiverPhoneNumber);
+            callBackClient.receiveMsg(msg, chat.getChatID() , senderPhoneNumber , receiverPhoneNumber);
             /// add message in db
 
             // Create a new Message
@@ -89,16 +92,23 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
     }
 
-    public void sendAnnouncement(String title,  String msg) {
+
+    public void sendAnnouncement(String title, String msg) {
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+
         for (String phoneNumber : clients.keySet()) {
-            try {
-                clients.get(phoneNumber).announce(title, msg);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            executorService.submit(() -> {
+                try {
+                    clients.get(phoneNumber).announce(title, msg);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
+
+        executorService.shutdown();
     }
 
 
