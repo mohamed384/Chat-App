@@ -10,4 +10,5 @@ public interface UserAuthentication extends Remote {
     public  UserDTO login(String phoneNumber , String password) throws RemoteException;
     public UserDTO getUser(String phoneNumber) throws RemoteException;
     public boolean updateUser(UserDTO userDto) throws RemoteException;
+    public boolean logout(UserDTO userDTO) throws RemoteException;
 }

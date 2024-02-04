@@ -21,5 +21,6 @@ public interface CallBackServer extends Remote {
     public  void logoutAll() throws RemoteException;
 
     public void updateContactList(String phoneNumber) throws RemoteException;
+    public void notifyStatusUpdate(UserDTO userDTO) throws RemoteException;
 
 }

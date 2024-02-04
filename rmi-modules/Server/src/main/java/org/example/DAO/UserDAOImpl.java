@@ -82,6 +82,7 @@ public class UserDAOImpl implements DAO<User> {
 
     @Override
     public boolean update(User user) {
+        System.out.println("From UserDAOImpl: " + user.getUserMode());
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
 
@@ -89,7 +90,9 @@ public class UserDAOImpl implements DAO<User> {
                         "SET DisplayName = ?, " +
                         "    EmailAddress = ?, " +
                         "    ProfilePicture = ?, " +
-                        "    Bio = ? " +
+                        "    Bio = ?, " +
+                        "    UserMode = ?," +
+                        "    UserStatus = ?"+
                         "WHERE PhoneNumber = ?";
 
                 //ImageConvertor.bytesToBlob(user.getPicture())
@@ -98,7 +101,9 @@ public class UserDAOImpl implements DAO<User> {
                     preparedStatement.setString(2, user.getEmailAddress());
                     preparedStatement.setBytes(3,user.getPicture());
                     preparedStatement.setString(4, user.getBio());
-                    preparedStatement.setString(5, user.getPhoneNumber());
+                    preparedStatement.setString(5, user.getUserMode());
+                    preparedStatement.setString(6, user.getUserStatus().name());
+                    preparedStatement.setString(7, user.getPhoneNumber());
                     preparedStatement.executeUpdate();
                     System.out.println("Updated Successfully");
                     return true;

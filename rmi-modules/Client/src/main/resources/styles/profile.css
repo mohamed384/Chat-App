@@ -51,3 +51,33 @@
       -fx-focus-color: transparent;
       -fx-border-color: red;
    }
+
+.custom-combobox {
+    -fx-background-color: linear-gradient(to top right ,#9b75d0  , #6639a6);
+    -fx-text-fill:white;
+    -fx-border-width: 0;
+    -fx-background-radius: 10px;
+    -fx-font-size: 15px;
+    -fx-font-weight: 300;
+    /*-fx-padding: 5px 15px;*/
+}
+
+.custom-combobox:hover {
+    -fx-background-color:#361b72;
+    -fx-transition-duration: 0.3s;
+    -fx-text-fill: white;
+}
+
+/*.custom-combobox .list-cell {*/
+/*    -fx-padding: 5px;*/
+/*    -fx-text-fill: black;*/
+/*}*/
+.custom-combobox .cell:selected {
+    /*-fx-background-color: #d0d0d0;*/
+    -fx-text-fill: white;
+}
+
+.custom-combobox .cell:hover {
+    -fx-background-color: rgba(197, 130, 208, 0.81);
+}
+

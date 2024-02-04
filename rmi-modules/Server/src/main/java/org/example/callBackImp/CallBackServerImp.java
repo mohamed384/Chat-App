@@ -1,6 +1,7 @@
 package org.example.callBackImp;
 import org.example.DAO.ChatDAOImpl;
 import org.example.DAO.MessageDAOImpl;
+import org.example.DTOs.UserDTO;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 import org.example.models.Message;
@@ -125,6 +126,20 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
             callBackClient.updateContactList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void notifyStatusUpdate(UserDTO userDTO) throws RemoteException {
+        for (String phoneNumber : clients.keySet()) {
+            try {
+                if(!userDTO.getPhoneNumber().equals(phoneNumber))
+                    clients.get(phoneNumber).updateContactList();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
