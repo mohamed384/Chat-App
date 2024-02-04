@@ -18,14 +18,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import org.controlsfx.control.HiddenSidesPane;
 import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.ChatDTO;
+import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
-import org.example.interfaces.CallBackClient;
-import org.example.interfaces.CallBackServer;
-import org.example.interfaces.ChatRMI;
+import org.example.interfaces.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -39,6 +40,9 @@ import java.util.*;
 public class MessagePage implements Initializable {
     @FXML
     private BorderPane contactListview;
+
+    @FXML
+    Circle boxImage;
 
     @FXML
     private HiddenSidesPane hiddenSidesPane;
@@ -71,14 +75,13 @@ public class MessagePage implements Initializable {
     URL location;
     ChatRMI chatRMI;
 
-    @FXML
-    ImageView boxImage;
 
     @FXML
     Label boxLabelName;
 
 
     CallBackClientImp callBackClientImp;
+    GroupChatRMI groupChatRMIController;
     public MessagePage(){
 
         try {
@@ -128,27 +131,26 @@ public class MessagePage implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        boxImage.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
+        boxImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture()))));
         boxLabelName.setText(UserToken.getInstance().getUser().getDisplayName());
 
         PaneLoaderFactory.getInstance().setMessagePage(this);
         System.out.println("this is message page in initialize" + this);
         location = url;
 
-        new Thread(() -> {
-            try {
-                List<ChatDTO> chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
-                ObservableList<ChatDTO> chats = FXCollections.observableArrayList(chatDTOList);
-                System.out.println("chats size" + chats.size());
+        try {
+            listView.refresh();
+            List<ChatDTO>  chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
+            List<ChatDTO>  groupChatDTOS= groupChatRMIController.getAllGroupChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
+            List<ChatDTO> combinedList = new ArrayList<>(chatDTOList);
+            combinedList.addAll(groupChatDTOS);
+            ObservableList<ChatDTO> chats = FXCollections.observableArrayList(combinedList);
+            System.out.println("chats size" + chats.size());
+            listView.setItems(chats);
 
-                Platform.runLater(() -> {
-                    listView.setItems(chats);
-                    listView.refresh();
-                });
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 //            profileImage.setImage(new Image(new ByteArrayInputStream(newValue.getReceiverImage())));
@@ -212,6 +214,7 @@ public class MessagePage implements Initializable {
 //            reciver.setText(selectedUser.getDisplayName());
 //        }
 
+
         listView.setCellFactory(param -> new ListCell<ChatDTO>() {
             @Override
             protected void updateItem(ChatDTO item, boolean empty) {
@@ -226,16 +229,28 @@ public class MessagePage implements Initializable {
                         ContactController controller = loader.getController();
                         new Thread(() -> {
                             try {
-                                ChatRMI chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
-                                String receiverPhoneNumber = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(),item.getChatID());
-                                UserAuthentication userAuthentication = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
-                                UserDTO userDTO = userAuthentication.getUser(receiverPhoneNumber);
-                                javafx.application.Platform.runLater(() -> {
-                                    controller.setUserName(userDTO.getDisplayName());
-                                    controller.setUserNumber(userDTO.getPhoneNumber());
-                                    controller.setUserImg(userDTO.getPicture());
-                                    controller.setStatus(userDTO.getUserMode(), userDTO.getUserStatus());
-                                });
+                                if(Objects.equals(item.getAdminID(), "")) {
+                                    ChatRMI chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
+                                    String receiverPhoneNumber = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(), item.getChatID());
+                                    UserAuthentication userAuthentication = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+                                    UserDTO userDTO = userAuthentication.getUser(receiverPhoneNumber);
+                                    javafx.application.Platform.runLater(() -> {
+                                        controller.setUserName(item.getReceiverName());
+                                        controller.setUserNumber(userDTO.getPhoneNumber());
+                                        controller.setUserImg(userDTO.getPicture());
+                                        controller.setStatus(userDTO.getUserMode(), userDTO.getUserStatus());
+                                    });
+
+                                }
+                               else{
+                                    Platform.runLater(() -> {
+                                        controller.setUserName(item.getChatName());
+                                        controller.setUserImg(item.getChatImage());
+                                        controller.setUserNumber("");
+                                        controller.setStatus(null,null);
+                                    });
+
+                                    }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -243,7 +258,7 @@ public class MessagePage implements Initializable {
 
 
 //                        System.out.println("name from cell" + selectedUser.getDisplayName());
-                        controller.setMessageController(MessagePage.this); // Pass the reference
+                       // controller.setMessageController(MessagePage.this); // Pass the reference
 //                     //   Image image = new Image("/images/profile.jpg");
 //                        Image image = new Image(new ByteArrayInputStream(selectedUser.getPicture()));
                         setGraphic(notificationItem);

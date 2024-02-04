@@ -185,6 +185,8 @@ public class ContactMainController  implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        // AddFriend controller = loader.getController();
+        //controller.setCallBackServer(callBackServer);
 
         Scene secondScene = new Scene(root, 550, 300);
 
@@ -195,10 +197,7 @@ public class ContactMainController  implements Initializable {
         newWindow.setScene(secondScene);
         newWindow.show();
 
-
-
     }
-
 
 
     public void createGroup(ActionEvent actionEvent) {
@@ -251,5 +250,6 @@ public class ContactMainController  implements Initializable {
         }
 
     }
+
 
 }

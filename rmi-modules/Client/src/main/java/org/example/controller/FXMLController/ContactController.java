@@ -29,6 +29,8 @@ public class ContactController {
     @FXML
     private Label userNumber;
 
+
+
     public ContactController() {
     }
 
@@ -57,6 +59,10 @@ public class ContactController {
     }
     public void setStatus(UserMode userMode, UserStatus userStatus){
         Image statusImage;
+        if(userMode == null && userStatus == null) {
+            status.setVisible(false);
+            return;
+        }
         if(userStatus == UserStatus.Offline)
             statusImage = new Image(getClass().getResource("/images/offline-2.png").toExternalForm());
         else {

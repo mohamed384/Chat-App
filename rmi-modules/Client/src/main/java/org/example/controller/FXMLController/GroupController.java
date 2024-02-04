@@ -1,23 +1,32 @@
 package org.example.controller.FXMLController;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.controlsfx.control.CheckListView;
+import org.example.DTOs.ChatDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.LoadImage;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
+import org.example.interfaces.ChatRMI;
 import org.example.interfaces.GroupChatRMI;
+import org.example.interfaces.UserAuthentication;
 import org.example.service.ContactService;
+
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -108,8 +117,54 @@ public class GroupController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateContactList();
+      //  cellFactory();
 
     }
+//    public void cellFactory(){
+//        contactList.setCellFactory(new Callback<ListView<UserDTO>, ListCell<UserDTO>>() {
+//            @Override
+//            public ListCell<UserDTO> call(ListView<UserDTO> param) {
+//                return new CustomCheckListCell();
+//            }
+//        });
+//
+//    }
+//    private static class CustomCheckListCell extends ListCell<UserDTO> {
+//        @Override
+//        protected void updateItem(UserDTO item, boolean empty) {
+//            super.updateItem(item, empty);
+//
+//            if (empty || item == null) {
+//                setText(null);
+//                setGraphic(null);
+//            } else {
+//                try {
+//                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ContactNode.fxml"));
+//                    VBox node = loader.load();
+//                    ContactController controller = loader.getController();
+//                    new Thread(() -> {
+//                        try {
+//
+//                            javafx.application.Platform.runLater(() -> {
+//                                controller.setUserName(item.getDisplayName());
+//                                controller.setUserNumber(item.getPhoneNumber());
+//                                controller.setUserImg(item.getPicture());
+//                                controller.setStatus(item.getUserMode(), item.getUserStatus());
+//                            });
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }).start();
+//                    HBox hBox = new HBox();
+//                    hBox.getChildren().add(new CheckBox());
+//                    hBox.getChildren().add(node);
+//                    setGraphic(hBox);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
     private void populateContactList() {
         List<UserDTO> userDTOList = contactService.getAllContacts();
