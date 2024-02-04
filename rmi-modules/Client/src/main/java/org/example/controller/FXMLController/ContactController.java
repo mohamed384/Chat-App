@@ -134,12 +134,28 @@ public class ContactController implements Initializable {
         newWindow.setScene(secondScene);
         newWindow.show();
 
-
-
     }
 
 
 
-    public void creatGroup(ActionEvent actionEvent) {
+    public void createGroup(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddFriend.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // AddFriend controller = loader.getController();
+        //controller.setCallBackServer(callBackServer);
+
+        Scene secondScene = new Scene(root, 550, 300);
+
+        Stage newWindow = new Stage();
+        newWindow.initModality(Modality.APPLICATION_MODAL);
+        newWindow.initStyle(StageStyle.UTILITY);
+        newWindow.setTitle("Add Friend");
+        newWindow.setScene(secondScene);
+        newWindow.show();
     }
 }

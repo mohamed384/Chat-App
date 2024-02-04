@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -21,12 +20,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.controlsfx.control.HiddenSidesPane;
 import org.example.DTOs.ChatDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
-import org.example.controller.FXMLController.UtilsFX.ChatListManager;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.ChatRMI;
 import org.example.models.Enums.UserStatus;
@@ -54,7 +51,6 @@ public class ContactMainController  implements Initializable {
     ChatRMI chatRMI;
     UserDTO selectedItem;
 
-    URL location;
 
     public ContactMainController() {
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
@@ -243,7 +239,25 @@ public class ContactMainController  implements Initializable {
 
 
 
-    public void creatGroup(ActionEvent actionEvent) {
+    public void createGroup(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/GroupPage.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        GroupController groupController= loader.getController();
+        groupController.setContactList(contacts);
+        Scene secondScene = new Scene(root, 388, 495);
+
+        Stage newWindow = new Stage();
+        newWindow.initModality(Modality.APPLICATION_MODAL);
+        newWindow.initStyle(StageStyle.UTILITY);
+        newWindow.setResizable(false);
+        newWindow.setTitle("Create Group");
+        newWindow.setScene(secondScene);
+        newWindow.show();
     }
 
 
