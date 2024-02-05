@@ -6,7 +6,9 @@ import org.example.utils.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatParticipantDAOImpl implements ChatParticipantDAO {
@@ -52,6 +54,7 @@ public class ChatParticipantDAOImpl implements ChatParticipantDAO {
         }
         return false;
     }
+
     @Override
     public void delete(ChatParticipant chatParticipant) {
         String query = "DELETE FROM ChatParticipants WHERE ChatID = ? AND ParticipantUserID = ?";

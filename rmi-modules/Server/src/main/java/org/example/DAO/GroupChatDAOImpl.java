@@ -69,7 +69,7 @@ public class GroupChatDAOImpl implements GroupChatDAO {
 
 
     }
-//    @Override
+    //    @Override
     public List<Chat> getAllGroupChatsForUser(String phoneNumber) {
         String query = "select  ChatParticipants.chatId, chat.chatName ,chat.AdminID,chat.ChatImage\n" +
                 "from users  inner join ChatParticipants on users.PhoneNumber= Chatparticipants.ParticipantUserID \n" +

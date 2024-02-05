@@ -37,7 +37,7 @@
                         <Insets left="30.0" right="10.0" />
                      </HBox.margin></Circle>
 
-            <Label fx:id="receiver" text="Eslam Ahmed" HBox.hgrow="ALWAYS">
+            <Label fx:id="receiver" text="" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>

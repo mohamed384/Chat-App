@@ -98,8 +98,8 @@ public class UserAuthService {
         UserDTO user;
         if (remoteObject != null) {
             user = remoteObject.login(phone, password);
-
-            if (user != null) {
+            boolean userOnlient = callBackServer.isOnline(phone);
+            if (user != null && !userOnlient) {
                 UserToken userToken = UserToken.getInstance();
                 userToken.setUser(user);
                 switchToMessagePage(actionEvent);
@@ -109,12 +109,15 @@ public class UserAuthService {
                 remoteObject.updateUser(UserToken.getInstance().getUser());
                 callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
-
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Login Failed");
                 alert.setHeaderText(null);
-                alert.setContentText("Invalid phone number or password");
+                if(userOnlient){
+                    alert.setContentText("These Account already Login.. :)");
+                }else {
+                    alert.setContentText("Invalid phone number or password");
+                }
                 alert.showAndWait();
                 PhoneLog.getStyleClass().remove("custom-text-field");
                 PhoneLog.getStyleClass().add("not-valid-text-field");

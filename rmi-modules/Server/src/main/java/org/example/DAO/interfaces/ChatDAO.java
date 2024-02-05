@@ -16,4 +16,5 @@ public interface ChatDAO extends DAO<Chat> {
      Chat getPrivateChat(String sender, String receiver);
      List<Chat> getAllChatsForUser(String phoneNumber);
      String getReceiverPhoneNumber(String senderPhoneNumber, int chatID);
+    public List<String> getChatParticipants(String sender, int ChatID);
 }

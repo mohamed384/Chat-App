@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,6 +47,15 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         return true;
     }
 
+    public boolean isOnline(String clientPhoneNumber) {
+        if(clients.containsKey(clientPhoneNumber)){
+            return true;
+        }else  {
+            return  false;
+        }
+
+    }
+
     @Override
     public boolean logout(String phoneNumber, CallBackClient callBackClient) {
 
@@ -55,41 +65,23 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     }
 
     @Override
-    public void sendMsg(String msg, String senderPhoneNumber, String receiverPhoneNumber) {
-
-        System.out.println("sendMsg: "+ msg);
-        System.out.println("sender: "+ senderPhoneNumber);
-        System.out.println("clients: " + clients);
-
-        CallBackClient callBackClient = clients.get(receiverPhoneNumber);
-
-        try {
-          //  callBackClient.notification( "You have a new message from "+senderPhoneNumber);
-            Chat chat = chatDAO.getPrivateChat(senderPhoneNumber, receiverPhoneNumber);
-            callBackClient.receiveMsg(msg, chat.getChatID() , senderPhoneNumber , receiverPhoneNumber);
-            /// add message in db
-
-            // Create a new Message
-            Message message = new Message();
-            message.setSenderID(senderPhoneNumber);
-            message.setMessageContent(msg);
-            message.setIsAttachment(false); // Set this based on whether the message is an attachment
-
-            // Get the ChatID
-
-            int chatID = chatDAO.getPrivateChat(senderPhoneNumber, receiverPhoneNumber).getChatID();
-            System.out.println("ChatID: " + chatID);
-            message.setChatID(chatID);
-
-
-            // Save the message to the database
-             messageDAO.create(message);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void sendMsg(String msg, String senderPhoneNumber, List<String> receiverPhoneNumbers , int chatID) {
+        Message message = new Message();
+        message.setSenderID(senderPhoneNumber);
+        message.setMessageContent(msg);
+        message.setIsAttachment(false);
+        message.setChatID(chatID);
+        messageDAO.create(message);
+        for (String s : receiverPhoneNumbers) {
+            CallBackClient callBackClient = clients.get(s);
+            try {
+                if(callBackClient != null) {
+                    callBackClient.receiveMsg(msg, senderPhoneNumber, chatID);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
 

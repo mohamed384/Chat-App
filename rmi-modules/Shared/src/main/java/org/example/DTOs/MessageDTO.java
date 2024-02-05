@@ -8,13 +8,27 @@ public class MessageDTO {
     private int chatID;
     private String messageContent;
     private boolean isAttachment;
+    private Timestamp timestamp;
 
     private byte[] attachment;
+    public MessageDTO(){
+
+    }
 
 
 
-    private Timestamp timestamp;
-//    public MessageDTO(){}
+
+
+    public byte[] getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(byte[] attachment) {
+        this.attachment = attachment;
+    }
+
+
+
 
     public MessageDTO(String senderID, int chatID, byte[] attachment) {
         this.senderID = senderID;
@@ -34,9 +48,6 @@ public class MessageDTO {
         this.messageID = messageID;
         this.messageContent = content;
         this.senderID = senderPhoneNumber;
-
-    }
-    public MessageDTO(){
 
     }
 

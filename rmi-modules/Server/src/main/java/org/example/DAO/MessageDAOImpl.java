@@ -15,33 +15,13 @@ public class MessageDAOImpl implements MessageDAO {
     public boolean create(Message message) {
         boolean isSaved;
         try (Connection connection = DBConnection.getConnection()) {
-//            if(message.isAttachment())
-//                isSaved = saveAttachment(message, connection);
-//            else
-                isSaved = save(message, connection);
+            isSaved = save(message, connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return isSaved;
     }
 
-    @Override
-    public boolean save(Message message, Connection connection) {
-        String query = "INSERT INTO Messages (SenderID, ChatID, MessageContent, IsAttachment) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, message.getSenderID());
-            preparedStatement.setInt(2, message.getChatID());
-            preparedStatement.setString(3, message.getMessageContent());
-            preparedStatement.setBoolean(4, message.isAttachment());
-
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     @Override
     public void delete(Message message) {
@@ -77,41 +57,41 @@ public class MessageDAOImpl implements MessageDAO {
 
     }
 
-//    public boolean saveAttachment(Message message, Connection connection) {
-//        String query = "INSERT INTO Messages (SenderID, ChatID, MessageContent, IsAttachment) VALUES (?, ?, ?, ?)";
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-//            preparedStatement.setString(1, message.getSenderID());
-//            preparedStatement.setInt(2, message.getChatID());
-//            preparedStatement.setString(3, message.getMessageContent());
-//            preparedStatement.setBoolean(4, message.isAttachment());
-//
-//            int rowsAffected = preparedStatement.executeUpdate();
-//            if (rowsAffected > 0) {
-//                ResultSet rs = preparedStatement.getGeneratedKeys();
-//                if (rs.next()) {
-//                    int messageId = rs.getInt(1);
-//                    return saveAttachment(messageId, message.getAttachment(), connection);
-//                }
-//            }
-//            return false;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-//
-//    public boolean saveAttachment(int messageId, byte[] attachment, Connection connection) {
-//        String query = "INSERT INTO Attachment (MessageID, Attachment) VALUES (?, ?)";
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-//            preparedStatement.setInt(1, messageId);
-//            preparedStatement.setBytes(2, attachment);
-//
-//            int rowsAffected = preparedStatement.executeUpdate();
-//            return rowsAffected > 0;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-//
+    public boolean save(Message message, Connection connection) {
+        String query = "INSERT INTO Messages (SenderID, ChatID, MessageContent, IsAttachment) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, message.getSenderID());
+            preparedStatement.setInt(2, message.getChatID());
+            preparedStatement.setString(3, message.getMessageContent());
+            preparedStatement.setBoolean(4, message.isAttachment());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+                if(message.isAttachment()){
+                    ResultSet rs = preparedStatement.getGeneratedKeys();
+                    if (rs.next()) {
+                        int messageId = rs.getInt(1);
+                        return saveAttachmentFile(messageId, message.getAttachment(), connection);
+                    }
+                }else return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
+    public boolean saveAttachmentFile(int messageId, byte[] attachment, Connection connection) {
+        String query = "INSERT INTO Attachment (MessageID, Attachment) VALUES (?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, messageId);
+            preparedStatement.setBytes(2, attachment);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

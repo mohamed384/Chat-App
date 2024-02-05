@@ -31,6 +31,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CallBackClientImp extends UnicastRemoteObject implements CallBackClient {
@@ -69,15 +71,13 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     }
 
 
-
-    @Override
-    public void receiveMsg(String msg, int chatID  ,String sender , String reciver) throws Exception {
+    public void receiveMsg(String msg , String senderPhoneNumber , int chatID  ) throws Exception{
         System.out.println("receiveMsg: "+msg);
       //  System.out.println("sender: "+senderPhoneNumber);
         System.out.println("this is callback client receive msg"+ message22Controller +" this is the callallback client " +this);
-        boolean done = message22Controller.receiveMessage(msg , chatID );
+        boolean done = message22Controller.receiveMessage(msg , senderPhoneNumber,  chatID );
         if(!done){
-            this.notification("New Message from " + sender + ":" + msg);
+            this.notification("New Message from " + senderPhoneNumber + ":" + msg);
         }
 
     }
@@ -108,12 +108,17 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     @Override
     public void updateContactList() throws Exception {
         System.out.println("updateContactList in call back client imp : ");
-        Platform.runLater(() -> {
-            if (contactMainController != null)
-                contactMainController.updateContactList();
-            if(messagePage != null)
-                  messagePage.updateList();
-        });
+
+            if (contactMainController != null) {
+                Platform.runLater(contactMainController::updateContactList);
+            }
+
+            // After updateContactList() finishes execution, call updateList()
+            if (messagePage != null) {
+                Platform.runLater(messagePage::updateList);
+            }
+
+
     }
 
     @Override
