@@ -1,10 +1,12 @@
 package org.example.controllerFx;
 
 import javafx.fxml.FXML;
+import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.Utils.StubContext;
 import org.example.callBackImp.CallBackServerImp;
 
 import java.rmi.RemoteException;
@@ -42,11 +44,14 @@ public class ServiceController {
                 serverStatus.setText("Server Off");
                 serverStatus.setStyle("-fx-font-weight: bold;");
                 callBackServerImp.logoutAll();
+                StubContext.unbindAll();
+
 
             } else {
                 toggleImageView.setImage(oldImage);
                 serverStatus.setText("Server On");
                 serverStatus.setStyle("-fx-font-weight: bold;");
+              //  StubContext.bindAll();
             }
         });
 

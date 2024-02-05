@@ -8,10 +8,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
+import org.example.interfaces.CallBackServer;
 
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 
 public class Client extends Application {
@@ -21,27 +24,6 @@ public class Client extends Application {
         System.exit(0);
 
 
-        /*
-       try {
-            UserAuthentication remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/rmiObject");
-            boolean x=false;
-
-
-            User user = new User("1234567890", "John Doe", "johndoe@example.com",
-                    "passwordHash", "Male", "USA",
-                    new Date(),  "nada",UserStatus.AVAILABLE, "");
-            System.out.println( x = remoteObject.signup(user));
-
-            User user1 = new User("1234567891", "John Doed", "nada@example.com",
-                    "passwordHash", "Male", "USA",
-                    new Date(),  "nada",UserStatus.AVAILABLE,"D:\\ITI\\download.png");
-            System.out.println( x = remoteObject.signup(user1));
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
 
@@ -58,6 +40,16 @@ public class Client extends Application {
         stage.setScene(startScreenScene);
         stage.show();
         stage.setOnCloseRequest(event -> {
+
+            CallBackServer callBackServer = (CallBackServer) org.example.Utils.StubContext.getStub("CallBackServerStub");
+            try {
+                if(UserToken.getInstance().getUser() != null) {
+                    callBackServer.logout( UserToken.getInstance().getUser().getPhoneNumber());
+                    callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
+                }
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             Platform.exit();
             System.exit(0);
         });

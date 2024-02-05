@@ -99,6 +99,7 @@ public class UserAuthService {
         if (remoteObject != null) {
             user = remoteObject.login(phone, password);
             boolean userOnlient = callBackServer.isOnline(phone);
+
             if (user != null && !userOnlient) {
                 UserToken userToken = UserToken.getInstance();
                 userToken.setUser(user);
@@ -125,6 +126,11 @@ public class UserAuthService {
                 PasswordLog.getStyleClass().add("not-valid-text-field");
             }
         } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Server Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Server is not available now, please try again later.");
+            alert.showAndWait();
             return null;
         }
 
@@ -207,7 +213,11 @@ public class UserAuthService {
             return true;
 
         } else {
-            System.out.println("Cant connect to server");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Server Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Server is not available now, please try again later.");
+            alert.showAndWait();
             return false;
         }
 

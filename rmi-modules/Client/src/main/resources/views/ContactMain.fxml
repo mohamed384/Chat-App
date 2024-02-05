@@ -97,13 +97,16 @@
             </GridPane.margin>
          </Pane>
          <VBox alignment="CENTER" prefHeight="313.0" prefWidth="500.0" GridPane.columnIndex="1">
-            <ImageView fx:id="contactImage" fitHeight="162.0" fitWidth="241.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+            <ImageView fx:id="contactImage" fitHeight="204.0" fitWidth="206.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                <clip>
-                  <Circle centerX="125" centerY="80" radius="80" />
+                  <Circle centerX="95" centerY="95" radius="90" />
                </clip>
                <VBox.margin>
                   <Insets top="30.0" />
                </VBox.margin>
+               <image>
+                  <Image url="@../images/profile.jpg" />
+               </image>
 <!--               <Image url="@../../../../../../../../portfolio-html-site-master/images/portfolio2.jpg" />-->
             </ImageView>
             <Label fx:id="nameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="263.0" text="Medo" textAlignment="CENTER">
@@ -111,7 +114,7 @@
                   <Font name="System Bold" size="24.0" />
                </font>
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets top="5.0" />
                </VBox.margin>
             </Label>
             <HBox alignment="CENTER" prefHeight="51.0" prefWidth="230.0">
@@ -142,7 +145,7 @@
                </Button>
                <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="81.0" styleClass="delete-btn" text="Delete" textFill="WHITE">
                   <HBox.margin>
-                     <Insets />
+                     <Insets bottom="5.0" />
                   </HBox.margin>
                   <font>
                      <Font name="System Bold" size="12.0" />

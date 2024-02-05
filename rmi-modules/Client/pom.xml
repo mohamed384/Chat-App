@@ -17,7 +17,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
+<dependencies>
+    <!-- chatBot -->
+        <dependency>
+        <groupId>ca.pjer</groupId>
+        <artifactId>chatter-bot-api</artifactId>
+        <version>1.4.7</version>
+        </dependency>
 
             <!-- ... other dependencies ... -->
             <dependency>
@@ -41,6 +47,8 @@
             <version>21</version>
         </dependency>
     </dependencies>
+
+
     <build>
         <plugins>
             <plugin>

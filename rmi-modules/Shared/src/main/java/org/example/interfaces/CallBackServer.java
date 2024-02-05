@@ -10,7 +10,7 @@ public interface CallBackServer extends Remote {
 
     public boolean login(String phoneNumber , CallBackClient callBackClient) throws RemoteException;
 
-    public boolean logout(String phoneNumber , CallBackClient callBackClient) throws RemoteException ;
+    public boolean logout(String phoneNumber) throws RemoteException ;
 
     public void sendMsg(String msg, String senderPhoneNumber, List<String> receiverPhoneNumber , int chatID) throws RemoteException;
 

@@ -37,6 +37,8 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
+
+
 public class MessagePage implements Initializable {
     @FXML
     private BorderPane contactListview;
@@ -147,15 +149,20 @@ public class MessagePage implements Initializable {
                     e.printStackTrace();
                 }
 
+                Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
+
+                if ( newValue.getAdminID() != null) {
+                    message22Controller.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
+
+                } else {
+                    message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
+                }
+
+
             }
 
-            Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
-            if (newValue.getAdminID() != null) {
-                message22Controller.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
+//            Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
 
-            } else {
-                message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
-            }
             callBackClient.setMessage22Controller(PaneLoaderFactory.getInstance().getMessage22Controller());
             //contactListview.setCenter(PaneLoaderFactory.getmessage22Pane().getKey());
 

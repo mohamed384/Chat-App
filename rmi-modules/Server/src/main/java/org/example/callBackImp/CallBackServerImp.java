@@ -57,10 +57,10 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     }
 
     @Override
-    public boolean logout(String phoneNumber, CallBackClient callBackClient) {
+    public boolean logout(String phoneNumber) {
 
-            System.out.println("logout: "+phoneNumber);
-            clients.remove(phoneNumber);
+        System.out.println("logout: "+phoneNumber);
+        clients.remove(phoneNumber);
         return true;
     }
 
@@ -111,7 +111,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
             try {
 
                 clients.get(phoneNumber).serverShoutdownMessage();
-                logout(phoneNumber, clients.get(phoneNumber));
+                logout(phoneNumber);
             } catch (RemoteException e) {
                 e.printStackTrace();
             } catch (Exception e) {

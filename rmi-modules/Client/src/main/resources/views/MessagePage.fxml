@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -10,8 +12,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <BorderPane fx:id="contactListview" prefHeight="600.0" prefWidth="847.0" stylesheets="@../styles/chatList.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.MessagePage">
 
 
@@ -35,7 +35,7 @@
                <children>
                       <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="182.0">
                           <children>
-                                                <ImageView fx:id="boxImage" fitHeight="53.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="boxImage" fitHeight="41.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                                                     <clip>
                                                         <Circle centerX="20" centerY="20" radius="25" />
                                                     </clip>

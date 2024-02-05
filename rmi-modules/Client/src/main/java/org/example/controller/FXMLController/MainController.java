@@ -190,7 +190,7 @@ public class MainController implements Initializable {
                 String number = UserToken.getInstance().getUser().getPhoneNumber();
                 UserAuthentication remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
                 remoteObject.logout(UserToken.getInstance().getUser());
-                callBackServer.logout( number, callBackClient);
+                callBackServer.logout( number);
                 callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
             } catch (RemoteException e) {
