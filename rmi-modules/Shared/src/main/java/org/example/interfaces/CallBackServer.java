@@ -12,7 +12,7 @@ public interface CallBackServer extends Remote {
 
     public boolean logout(String phoneNumber , CallBackClient callBackClient) throws RemoteException ;
 
-    public void sendMsg(String msg , String senderPhoneNumber , String receiverPhoneNumber) throws RemoteException;
+    public void sendMsg(String msg, String senderPhoneNumber, List<String> receiverPhoneNumber , int chatID) throws RemoteException;
 
    // public  void sendFile(byte[] file , String senderPhoneNumber , String receiverPhoneNumber) throws RemoteException;
 
@@ -22,5 +22,5 @@ public interface CallBackServer extends Remote {
 
     public void updateContactList(String phoneNumber) throws RemoteException;
     public void notifyStatusUpdate(UserDTO userDTO) throws RemoteException;
-
+    public boolean isOnline(String clientPhoneNumber) throws  RemoteException;
 }

@@ -5,6 +5,7 @@
 }
 .list-cell:focused{
     -fx-background-color: #c45fc4;
+    -fx-text-fill: white;
 }
 .color{
     -fx-background-color: linear-gradient(to top, #6639a6 0%, #9b75d0 100%);

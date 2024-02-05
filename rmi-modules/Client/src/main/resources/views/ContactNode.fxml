@@ -19,7 +19,7 @@
                 <clip>
                     <Circle centerX="25" centerY="25" radius="25" />
                 </clip>
-                <Image url="@../images/profile.jpg" />
+                <Image url="@../images/user.png"/>
             <StackPane.margin>
                <Insets />
             </StackPane.margin>
@@ -36,7 +36,7 @@
         </StackPane>
         <VBox prefHeight="40.0" prefWidth="114.0">
             <children>
-                <Label fx:id="userName" text="Nada Emam" textFill="#041014">
+                <Label fx:id="userName" text="" textFill="#041014">
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
@@ -47,7 +47,7 @@
                         <Cursor fx:constant="TEXT" />
                     </cursor>
                 </Label>
-                <Label fx:id="userNumber" text="010000000056" textFill="#040f1280">
+                <Label fx:id="userNumber" text="" textFill="#040f1280">
                     <font>
                         <Font size="14.0" />
                     </font>

@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public class ChatDTO implements Serializable {
-        private int chatID;
-        private String chatName;
-        private byte[] chatImage;
-        private String ReceiverName;
-        private String adminID;
+    private int chatID;
+    private String chatName;
+    private byte[] chatImage;
+    private String ReceiverName;
+    private String adminID;
 
     public String getAdminID() {
         return adminID;
@@ -20,7 +20,7 @@ public class ChatDTO implements Serializable {
 
     private byte[] receiverImage;
 
-        public String getReceiverName() {
+    public String getReceiverName() {
         return ReceiverName;
     }
 
@@ -38,37 +38,37 @@ public class ChatDTO implements Serializable {
     }
     public ChatDTO (){}
 
-    public ChatDTO(String chatName, byte[] chatImage, String ReceiverName, byte[] receiverImage, int adminID) {
+    public ChatDTO(String chatName, byte[] chatImage, String ReceiverName, byte[] receiverImage) {
 
-            this.chatName = chatName;
-            this.chatImage = chatImage;
-            this.ReceiverName = ReceiverName;
-            this.receiverImage = receiverImage;
-        }
+        this.chatName = chatName;
+        this.chatImage = chatImage;
+        this.ReceiverName = ReceiverName;
+        this.receiverImage = receiverImage;
+    }
 
-        public int getChatID() {
-            return chatID;
-        }
+    public int getChatID() {
+        return chatID;
+    }
 
-        public void setChatID(int chatID) {
-            this.chatID = chatID;
-        }
+    public void setChatID(int chatID) {
+        this.chatID = chatID;
+    }
 
-        public String getChatName() {
-            return chatName;
-        }
+    public String getChatName() {
+        return chatName;
+    }
 
-        public void setChatName(String chatName) {
-            this.chatName = chatName;
-        }
+    public void setChatName(String chatName) {
+        this.chatName = chatName;
+    }
 
-        public byte[] getChatImage() {
-            return chatImage;
-        }
+    public byte[] getChatImage() {
+        return chatImage;
+    }
 
-        public void setChatImage(byte[] chatImage) {
-            this.chatImage = chatImage;
-        }
+    public void setChatImage(byte[] chatImage) {
+        this.chatImage = chatImage;
+    }
 
 
 }

@@ -3,6 +3,7 @@ package org.example.controller.FXMLController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class MessagePage implements Initializable {
     @FXML
@@ -79,7 +81,8 @@ public class MessagePage implements Initializable {
     GroupChatRMI groupChatRMIController;
 
     CallBackClientImp callBackClientImp;
-    public MessagePage(){
+
+    public MessagePage() {
 
         try {
             this.callBackClient = new CallBackClientImp();
@@ -87,7 +90,7 @@ public class MessagePage implements Initializable {
             throw new RuntimeException(e);
         }
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
-        groupChatRMIController = (GroupChatRMI)StubContext.getStub("GroupChatControllerStub");
+        groupChatRMIController = (GroupChatRMI) StubContext.getStub("GroupChatControllerStub");
 
 
     }
@@ -95,7 +98,6 @@ public class MessagePage implements Initializable {
 //    public void setCallBackClient(CallBackClient callBackClient) {
 //        this.callBackClient = callBackClient;
 //    }
-
 
 
     public void showProfile(MouseEvent mouseEvent) {
@@ -108,7 +110,6 @@ public class MessagePage implements Initializable {
     }
 
 
-
     public void startBot(ActionEvent event) {
         botBoolean = true;
     }
@@ -118,11 +119,11 @@ public class MessagePage implements Initializable {
 
     public void sendAttachment(ActionEvent event) {
     }
-//    UserDTO selectedUser ;
+
+    //    UserDTO selectedUser ;
     void setCallBackClient(CallBackClientImp callBackClient) {
         this.callBackClient = callBackClient;
     }
-
 
 
     @Override
@@ -134,24 +135,11 @@ public class MessagePage implements Initializable {
         PaneLoaderFactory.getInstance().setMessagePage(this);
         System.out.println("this is message page in initialize" + this);
         location = url;
-
-        try {
-            listView.refresh();
-            List<ChatDTO>  chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
-            List<ChatDTO>  groupChatDTOS= groupChatRMIController.getAllGroupChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
-            List<ChatDTO> combinedList = new ArrayList<>(chatDTOList);
-            combinedList.addAll(groupChatDTOS);
-            ObservableList<ChatDTO> chats = FXCollections.observableArrayList(combinedList);
-            System.out.println("chats size" + chats.size());
-            listView.setItems(chats);
-
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        updateList();
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             Parent borderPane = null;
-            if(newValue != null){
+            if (newValue != null) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/message22.fxml"));
                     borderPane = loader.load();
@@ -162,11 +150,11 @@ public class MessagePage implements Initializable {
             }
 
             Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
-            if(!Objects.equals(newValue.getAdminID(), "")){
+            if (newValue.getAdminID() != null) {
                 message22Controller.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
 
-            }else{
-            message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
+            } else {
+                message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
             }
             callBackClient.setMessage22Controller(PaneLoaderFactory.getInstance().getMessage22Controller());
             //contactListview.setCenter(PaneLoaderFactory.getmessage22Pane().getKey());
@@ -212,35 +200,39 @@ public class MessagePage implements Initializable {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ContactNode.fxml"));
                         VBox notificationItem = loader.load();
                         ContactController controller = loader.getController();
-                        new Thread(() -> {
-                            try {
-                                System.out.println("admin in message page" +item.getAdminID());
-                                if(item.getAdminID()==null) {
-                                    ChatRMI chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
-                                    String receiverPhoneNumber = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(), item.getChatID());
-                                    UserAuthentication userAuthentication = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
-                                    UserDTO userDTO = userAuthentication.getUser(receiverPhoneNumber);
-                                    Platform.runLater(() -> {
-                                        controller.setUserName(item.getReceiverName());
-                                        controller.setUserNumber(userDTO.getPhoneNumber());
-                                        controller.setUserImg(userDTO.getPicture());
-                                        controller.setStatus(userDTO.getUserMode(), userDTO.getUserStatus());
-                                    });
+                        try {
+                            System.out.println("admin in message page" + item.getAdminID());
+                            if (item.getAdminID() == null) {
+                                Task<Void> task = new Task<>() {
+                                    @Override
+                                    protected Void call() throws Exception {
+                                        String receiverPhoneNumber = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(), item.getChatID());
+                                        UserAuthentication userAuthentication = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+                                        UserDTO userDTO = userAuthentication.getUser(receiverPhoneNumber);
 
-                                }
-                                else{
-                                    Platform.runLater(() -> {
-                                        controller.setUserName(item.getChatName());
-                                        controller.setUserImg(item.getChatImage());
-                                        controller.setUserNumber("");
-                                        controller.setStatus(null,null);
-                                    });
+                                        Platform.runLater(() -> {
+                                            controller.setUserName(item.getReceiverName());
+                                            controller.setUserNumber(userDTO.getPhoneNumber());
+                                            controller.setUserImg(userDTO.getPicture());
+                                            controller.setStatus(userDTO.getUserMode(), userDTO.getUserStatus());
+                                        });
+                                        return null;
+                                    }
+                                };
 
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                new Thread(task).start();
+
+                            } else {
+
+                                    controller.setUserName(item.getChatName());
+                                    controller.setUserImg(item.getChatImage());
+                                    controller.setUserNumber("");
+                                    controller.setStatus(null, null);
+
                             }
-                        }).start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
 
 //                        System.out.println("name from cell" + selectedUser.getDisplayName());
@@ -255,22 +247,37 @@ public class MessagePage implements Initializable {
             }
         });
     }
-    public void updateList(){
 
-        try {
-            List<ChatDTO>  chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
-            ObservableList<ChatDTO> chats = FXCollections.observableArrayList(chatDTOList);
-            System.out.println("chats size" + chats.size());
-            listView.setItems(chats);
+    public void updateList() {
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        listView.setPlaceholder(progressIndicator); // Show the progress indicator while data is loading
+
+        Task<ObservableList<ChatDTO>> task = new Task<>() {
+            @Override
+            protected ObservableList<ChatDTO> call() throws Exception {
+                List<ChatDTO> chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
+                List<ChatDTO> groupChatDTOS = groupChatRMIController.getAllGroupChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
+                List<ChatDTO> combinedList = new ArrayList<>(chatDTOList);
+                combinedList.addAll(groupChatDTOS);
+                return FXCollections.observableArrayList(combinedList);
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            listView.setItems(task.getValue());
             listView.refresh();
+            listView.setPlaceholder(null); // Hide the progress indicator when data has loaded
+        });
 
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        task.setOnFailed(event -> {
+            // Handle any exceptions here
+            Throwable exception = task.getException();
+            exception.printStackTrace();
+            listView.setPlaceholder(null); // Hide the progress indicator if there was an error
+        });
 
-
+        new Thread(task).start();
     }
-
 
 
 }

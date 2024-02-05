@@ -36,6 +36,7 @@ import java.nio.file.Paths;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Message22Controller implements Initializable {
@@ -62,6 +63,8 @@ public class Message22Controller implements Initializable {
 
     int chatID;
 
+    List<String> receiverPhoneNumbers;
+
     public  void setDataSource(String receiverName, byte[] receiverImage,int ChatID){
         this.chatID = ChatID;
      Platform.runLater(() ->{
@@ -72,7 +75,8 @@ public class Message22Controller implements Initializable {
         });
 
         try {
-            receiverPhoneNumber  = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(),chatID);
+            receiverPhoneNumbers = chatRMI.getChatParticipants(UserToken.getInstance().getUser().getPhoneNumber(),chatID);
+         //  receiverPhoneNumbers  = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(),chatID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -109,6 +113,7 @@ public class Message22Controller implements Initializable {
     }
 
     public void sendAttachment(ActionEvent event) {
+
     }
 
     public void sendMessage(ActionEvent event) {
@@ -144,18 +149,13 @@ public class Message22Controller implements Initializable {
                     callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
 
                     System.out.println("callBackServer from message page" + callBackServer);
-                    try {
-                        receiverPhoneNumber  = chatRMI.getReceiverPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber(),chatID);
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                    callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), receiverPhoneNumber);
+                    callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), receiverPhoneNumbers, chatID);
                 } catch (RemoteException | MalformedURLException | NotBoundException e) {
                     throw new RuntimeException(e);
                 }
             });
         }
-    public  boolean receiveMessage(String Result , int chatID){
+    public  boolean receiveMessage(String Result , String senderPhoneNumber , int chatID){
         System.out.println("this is message page in receive message" + this);
 
         if (chatID != this.chatID){

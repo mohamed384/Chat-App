@@ -16,7 +16,6 @@ public class Chat {
         this.adminID = adminID;
     }
 
-
     public String getReceiverName() {
         return ReceiverName;
     }

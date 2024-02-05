@@ -69,6 +69,7 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
 
+
     @Override
     public Chat getPrivateChat(String sender, String receiver) {
         String sql = "SELECT C.* FROM Chat C " +
@@ -131,6 +132,27 @@ public class ChatDAOImpl implements ChatDAO {
         }
 
         return chats;
+    }
+    public List<String> getChatParticipants(String sender, int ChatID){
+        String query = "SELECT CP.* FROM ChatParticipants CP " +
+                "WHERE CP.ChatID = ? AND CP.ParticipantUserID != ?";
+        List<String> participants = new ArrayList<>();
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, ChatID);
+            pstmt.setString(2, sender);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                ChatParticipant participant = new ChatParticipant(rs.getInt("ChatID"),
+                        rs.getString("ParticipantUserID"));
+                participants.add(participant.getParticipantUserID());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return participants;
     }
 
 

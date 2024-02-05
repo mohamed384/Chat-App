@@ -10,8 +10,8 @@ public class Message {
     private boolean isAttachment;
     private Timestamp timestamp;
 
-  //  private byte[] attachment;
-
+    private byte[] attachment;
+//TODO add attachment to messageDTO and delete target
     public Message(){}
 
 //    public Message(String senderID, int chatID, byte[] attachment) {
@@ -74,11 +74,11 @@ public class Message {
     public void setIsAttachment(boolean attachment) {
         isAttachment = attachment;
     }
-//    public byte[] getAttachment() {
-//        return attachment;
-//    }
-//
-//    public void setAttachment(byte[] attachment) {
-//        this.attachment = attachment;
-//    }
+    public byte[] getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(byte[] attachment) {
+        this.attachment = attachment;
+    }
 }

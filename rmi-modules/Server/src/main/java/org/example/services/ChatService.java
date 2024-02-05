@@ -37,5 +37,8 @@ public class ChatService {
     public String getReceiverPhoneNumber(String senderPhoneNumber, int chatID){
         return chatDAO.getReceiverPhoneNumber(senderPhoneNumber,chatID);
     }
+    public List<String> getChatParticipants(String senderPhoneNumber, int chatID){
+        return chatDAO.getChatParticipants(senderPhoneNumber,chatID);
+    }
 
 }
