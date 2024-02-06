@@ -49,19 +49,15 @@ public class UserService {
         return userDAO.create(user);
     }
     public UserDTO login (String phoneNumber,  String password) {
-
         User user = UserDAOImpl.findByPhoneNumber(phoneNumber);
-        String passwordHash ;
+
         if(user == null){
             System.out.println("user Not Found");
              return null;
         }
-        passwordHash = user.getPasswordHash();
-        password = PasswordHashing.hashPassword(password);
 
-        if (passwordHash.equals(password)) {
+        if (PasswordHashing.passwordMatch(password, user.getPasswordHash())) {
             System.out.println("Login successful");
-            //UserDTO userDto = userMapper.toDTO(user);
             UserDTO userDto = UserMapper.INSTANCE.toDTO(user);
 
             SessionManager.getInstance().startSession(userDto);
@@ -86,12 +82,8 @@ public class UserService {
 
         user.setLastLogin(new Timestamp(System.currentTimeMillis()));
 
-        //User user = userMapper.toUser(userDto);
         boolean result = userDAO.update(user);
 
-        if (result) {
-            //SessionManager.getInstance().endSession();
-        }
         return result;
     }
 
