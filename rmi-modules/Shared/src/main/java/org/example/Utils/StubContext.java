@@ -1,31 +1,52 @@
 package org.example.Utils;
 
+import org.example.interfaces.UserAuthentication;
+
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StubContext {
-    private static final Map<String, Remote> stubs = new HashMap<>();;
-    private static Registry registry;
+    public static final Map<String, Remote> stubs = new HashMap<>();;
+    public static Registry registry;
+    private static final int  ServerPort = 1099;
+    private static StubContext instance = null;
+//    private static boolean firstRun;
+    public static boolean isRunning = true;
+    private  StubContext() {
+        try {
+            registry  =  LocateRegistry.createRegistry(ServerPort);
+//            firstRun = true;
+            isRunning = true;
+            System.out.println("StubContext Manager Created and server is Running");
 
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static StubContext getInstance() {
+        if (instance == null) {
+            instance = new StubContext();
+        }
+        return instance;
+    }
 
     public static void addStub(String name, Remote stub) {
-//        if(registry ==null){
-//            try {
-//                registry = LocateRegistry.createRegistry(1099);
-//
-//            } catch (RemoteException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+
         try {
             Naming.rebind(name, stub);
-        } catch (RemoteException | MalformedURLException e) {
+
+        } catch (RemoteException e) {
+            System.out.println("addStub exception ya naas");
+            throw new RuntimeException(e);
+        } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
 
@@ -41,22 +62,17 @@ public class StubContext {
             }
             return stub;
         } catch (Exception e) {
+            System.out.println("getStub exception ya naas");
             e.printStackTrace();
             return null;
         }
     }
 
-    public static void unbindAll() {
-        try {
-            for (String name : stubs.keySet()) {
-                // Unbind the RMI object
-                Naming.unbind(name);
-            }
-
-            // Clear the stubs map
-            stubs.clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static boolean isFirst() {
+//        return firstRun;
+//    }
+//
+//    public static void setFirst(boolean first) {
+//        firstRun = first;
+//    }
 }

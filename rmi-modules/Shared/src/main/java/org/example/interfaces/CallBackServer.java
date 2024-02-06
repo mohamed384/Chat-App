@@ -1,5 +1,6 @@
 package org.example.interfaces;
 
+import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 
 import java.rmi.Remote;
@@ -12,12 +13,13 @@ public interface CallBackServer extends Remote {
 
     public boolean logout(String phoneNumber) throws RemoteException ;
 
-    public void sendMsg(String msg, String senderPhoneNumber, List<String> receiverPhoneNumber , int chatID) throws RemoteException;
+    public void sendMsg(MessageDTO messageDTO) throws RemoteException;
 
    // public  void sendFile(byte[] file , String senderPhoneNumber , String receiverPhoneNumber) throws RemoteException;
 
   //  public void chatBot( String message, String senderPhoneNumber , String receiverPhoneNumber) throws RemoteException;
 
+    void serverStandUpMessage() throws RemoteException;
     public  void logoutAll() throws RemoteException;
 
     public void updateContactList(String phoneNumber) throws RemoteException;

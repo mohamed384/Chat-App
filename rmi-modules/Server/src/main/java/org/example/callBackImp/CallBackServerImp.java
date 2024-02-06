@@ -1,11 +1,15 @@
 package org.example.callBackImp;
 import org.example.DAO.ChatDAOImpl;
 import org.example.DAO.MessageDAOImpl;
+import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
-import org.example.models.Chat;
+import org.example.interfaces.MessageRMI;
 import org.example.models.Message;
+import org.example.services.MessageService;
+import org.example.utils.MessageDAOSaveHelper;
+
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -18,9 +22,10 @@ import java.util.concurrent.Executors;
 public class CallBackServerImp extends UnicastRemoteObject implements CallBackServer , Serializable {
 
     static Map<String, CallBackClient> clients = new HashMap<>();
+    static Map<String, CallBackClient> logoutClients = new HashMap<>();
     private final MessageDAOImpl messageDAO;
     private final ChatDAOImpl chatDAO;
-
+    private final  MessageService messageService ;
     public static int getClients() {
         return clients.size();
     }
@@ -28,6 +33,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     public CallBackServerImp() throws RemoteException {
         messageDAO  = new MessageDAOImpl();
         chatDAO = new ChatDAOImpl();
+        messageService = new MessageService();
     }
     @Override
     public boolean login(String phoneNumber, CallBackClient callBackClient) {
@@ -58,30 +64,63 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
     @Override
     public boolean logout(String phoneNumber) {
-
         System.out.println("logout: "+phoneNumber);
         clients.remove(phoneNumber);
         return true;
     }
 
     @Override
-    public void sendMsg(String msg, String senderPhoneNumber, List<String> receiverPhoneNumbers , int chatID) {
+    public void sendMsg(MessageDTO messageDTO) throws RemoteException {
+
         Message message = new Message();
-        message.setSenderID(senderPhoneNumber);
-        message.setMessageContent(msg);
-        message.setIsAttachment(false);
-        message.setChatID(chatID);
-        messageDAO.create(message);
-        for (String s : receiverPhoneNumbers) {
-            CallBackClient callBackClient = clients.get(s);
+        MessageDAOSaveHelper test;
+        MessageDTO ee = null;
+        if (!messageDTO.isAttachment()) {
+
+            message.setSenderID(messageDTO.getSenderID());
+            message.setMessageContent(messageDTO.getMessageContent());
+            message.setIsAttachment(false);
+            message.setChatID(messageDTO.getChatID());
+             test = messageDAO.createWithHandler(message);
+            System.out.println("this is send mesg 3adyaaa call back server  " + test);
+        } else {
+            message.setSenderID(messageDTO.getSenderID());
+            message.setMessageContent(messageDTO.getMessageContent());
+            message.setIsAttachment(true);
+            message.setChatID(messageDTO.getChatID());
+            message.setAttachment(messageDTO.getAttachment());
+            System.out.println(message.toString());
+             test = messageDAO.createWithHandler(message);
+            System.out.println("this is send mesg FILEEE call back server  " + test);
+        }
+
+        List<String> participants = chatDAO.getChatParticipants(messageDTO.getSenderID(), messageDTO.getChatID());
+
+        if(messageDTO.isAttachment()) {
+            ee = messageService.retrieveFileFromDB(test.getGeneratedKey());
+            System.out.println("######################");
+            System.out.println(ee.getMessageContent());
+            System.out.println(ee.getSenderID());
+            System.out.println(ee.isAttachment());
+            System.out.println("test Key "+test.getGeneratedKey());
+        }
+
+        for (String senderPhoneNumber :participants ) {
+            CallBackClient callBackClient = clients.get(senderPhoneNumber);
             try {
                 if(callBackClient != null) {
-                    callBackClient.receiveMsg(msg, senderPhoneNumber, chatID);
+
+                    if(messageDTO.isAttachment()){
+                        callBackClient.receiveMsg(ee);
+                    }else {
+                        callBackClient.receiveMsg(messageDTO);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
     }
 
 
@@ -103,6 +142,17 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         executorService.shutdown();
     }
 
+  public   void serverStandUpMessage(){
+        for (String phoneNumber : logoutClients.keySet()) {
+            try {
+                logoutClients.get(phoneNumber).serveStandUp();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     @Override
     public  void logoutAll() {
@@ -110,7 +160,8 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         for (String phoneNumber : clients.keySet()) {
             try {
 
-                clients.get(phoneNumber).serverShoutdownMessage();
+                clients.get(phoneNumber).serverShutdownMessage();
+                logoutClients.put(phoneNumber,clients.get(phoneNumber));
                 logout(phoneNumber);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -119,6 +170,8 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
             }
         }
     }
+
+
 
     @Override
     public void updateContactList(String phoneNumber) throws RemoteException {

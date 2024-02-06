@@ -1,14 +1,31 @@
 package org.example.DTOs;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
-public class MessageDTO {
+public class MessageDTO implements Serializable {
     private int messageID;
     private String senderID;
     private int chatID;
     private String messageContent;
+
+    @Override
+    public String toString() {
+        return "MessageDTO{" +
+                "messageID=" + messageID +
+                ", senderID='" + senderID + '\'' +
+                ", chatID=" + chatID +
+                ", messageContent='" + messageContent + '\'' +
+                ", isAttachment=" + isAttachment +
+                ", timestamp=" + timestamp +
+                ", attachment=" + Arrays.toString(attachment) +
+                '}';
+    }
+
     private boolean isAttachment;
     private Timestamp timestamp;
+
 
     private byte[] attachment;
     public MessageDTO(){
@@ -85,6 +102,10 @@ public class MessageDTO {
 
     public boolean isAttachment() {
         return isAttachment;
+    }
+
+    public void setIsAttachment(boolean isAttachment){
+        this.isAttachment = isAttachment;
     }
 
     public void setAttachment(boolean attachment) {

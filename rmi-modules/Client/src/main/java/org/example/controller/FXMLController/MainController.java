@@ -32,6 +32,7 @@ import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
+import org.example.models.Enums.UserStatus;
 
 import javax.management.Notification;
 import java.io.IOException;
@@ -189,7 +190,9 @@ public class MainController implements Initializable {
             try {
                 String number = UserToken.getInstance().getUser().getPhoneNumber();
                 UserAuthentication remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+                UserToken.getInstance().getUser().setUserStatus(UserStatus.Offline);
                 remoteObject.logout(UserToken.getInstance().getUser());
+                remoteObject.updateUser(UserToken.getInstance().getUser());
                 callBackServer.logout( number);
                 callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 

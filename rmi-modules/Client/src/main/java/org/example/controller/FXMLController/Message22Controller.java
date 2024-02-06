@@ -15,11 +15,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
@@ -74,6 +76,8 @@ public class Message22Controller implements Initializable {
 
     List<String> receiverPhoneNumbers;
 
+    MessageDTO messageDTO;
+
     public  void setDataSource(String receiverName, byte[] receiverImage,int ChatID){
         this.chatID = ChatID;
         Platform.runLater(() ->{
@@ -94,6 +98,7 @@ public class Message22Controller implements Initializable {
 
 
     public Message22Controller(){
+         messageDTO = new MessageDTO();
 
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
 
@@ -106,6 +111,11 @@ public class Message22Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         PaneLoaderFactory.getInstance().setMessage22Controller(this);
         this.url = url;
+        try {
+            this.callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+        } catch (NotBoundException | MalformedURLException | RemoteException e) {
+            e.printStackTrace();
+        }
 
     }
     public void setCallBackServer(CallBackServer callBackServer) {
@@ -116,7 +126,7 @@ public class Message22Controller implements Initializable {
     }
 
     private boolean chatBotBtn = false;
-    private static final String BOT_ACTIVE_COLOR = "#7b55a0";
+    private static final String BOT_ACTIVE_COLOR = " #6B4FA1";
     private static final String BOT_INACTIVE_COLOR = "#9b75d0";
 
     public void startBot(ActionEvent event) {
@@ -132,7 +142,18 @@ public class Message22Controller implements Initializable {
         bot.setStyle("-fx-background-color: " + color + ";");
         showNotification("Bot", notificationMessage);
     }
-    public void receiveAttachment(ActionEvent event) {
+    public boolean receiveAttachment(MessageDTO  messageDTO) {
+
+        File file = new File(messageDTO.getMessageContent());
+        FileController fileController = prepareFileController(file);
+        // Pass the file path to the FileController
+        fileController.setAttachmentFromDB(messageDTO);
+        // Load the file pane and bubble the receiver message
+
+        Parent filePane = loadFilePane(fileController);
+        bubleReceiverMessage(filePane , messageDTO.getSenderID());
+
+        return true;
     }
 
 
@@ -193,34 +214,25 @@ public class Message22Controller implements Initializable {
                     }
                 }
 
+                Path destinationPath = destinationDirectory.resolve(file.getName());
+
                 try (InputStream in = new FileInputStream(file);
-                     OutputStream out = new FileOutputStream(destinationDirectory.resolve(file.getName()).toFile())) {
+                     OutputStream out = new FileOutputStream(destinationPath.toFile())) {
 
                     byte[] buffer = new byte[8192];
-                    byte[] bufferall = new byte[(int)file.length()];
-                    double progress = (double) bufferall.length/buffer.length;
+//                    byte[] buffer1 = new byte[(int)  file.length()];
                     int bytesReadThisTime;
+
 
                     while ((bytesReadThisTime = in.read(buffer)) != -1) {
                         out.write(buffer, 0, bytesReadThisTime);
                         bytesRead += bytesReadThisTime;
 
-                        //  double progress = (double) bytesRead / fileSize;
-                        updateProgress(progress, progress);
+                        double progress = (double) bytesRead / fileSize;
+                        updateProgress(progress, fileSize);
 
                         // Update progress in the FileController
                         Platform.runLater(() -> fileController.setProgress(progress));
-
-                        // Update color based on progress
-//                        Platform.runLater(() -> {
-//                            if (progress < 0.3) {
-//                                progressBar.setStyle("-fx-bar-fill: red;");
-//                            } else if (progress < 0.6) {
-//                                progressBar.setStyle("-fx-bar-fill: orange;");
-//                            } else {
-//                                progressBar.setStyle("-fx-bar-fill: green;");
-//                            }
-//                        });
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -229,16 +241,24 @@ public class Message22Controller implements Initializable {
                     });
                 }
 
-                uploadedFilePath = destinationDirectory.resolve(file.getName());
-                // After the file is uploaded, read the file into a byte array and send it
+                // After the file is uploaded, read the file from the destination directory into a byte array and send it
                 try {
-                    byte[] fileData = Files.readAllBytes(file.toPath());
+                    byte[] fileData = Files.readAllBytes(destinationPath);
                     System.out.println("this is file data" + fileData);
-                    System.out.println("this is file data" + fileData.length);
+                    System.out.println("this is file data length" + fileData.length);
 //                    for (int i = 0; i < fileData.length; i++) {
 //                        System.out.println(fileData[i]);
 //                    }
-                    //  callBackServer.sendFile(fileData);
+
+                    MessageDTO messageDTO1 = new MessageDTO();
+                    messageDTO1.setMessageContent(file.toString());
+                    messageDTO1.setAttachment(fileData);
+                    messageDTO1.setChatID(chatID);
+                    messageDTO1.setSenderID(UserToken.getInstance().getUser().getPhoneNumber());
+                    messageDTO1.setIsAttachment(true);
+                    messageDTO1.toString();
+                    callBackServer.sendMsg(messageDTO1);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -249,8 +269,8 @@ public class Message22Controller implements Initializable {
 
         task.exceptionProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                Throwable ex = newValue;
-                // Handle exception
+                System.err.println("Exception occurred in task:");
+                newValue.printStackTrace();
             }
         });
 
@@ -385,7 +405,12 @@ public class Message22Controller implements Initializable {
                 callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
 
                 System.out.println("callBackServer from message page" + callBackServer);
-                callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), receiverPhoneNumbers, chatID);
+
+                messageDTO.setMessageContent(message);
+                messageDTO.setChatID(chatID);
+                messageDTO.setSenderID(UserToken.getInstance().getUser().getPhoneNumber());
+                messageDTO.setIsAttachment(false);
+                callBackServer.sendMsg(messageDTO);
             } catch (RemoteException | MalformedURLException | NotBoundException e) {
                 throw new RuntimeException(e);
             }
@@ -413,8 +438,12 @@ public class Message22Controller implements Initializable {
 
                     Platform.runLater(() ->
                             bubbleMessageSender(labelText(botResult)));
+                    messageDTO.setMessageContent(botResult);
+                    messageDTO.setChatID(chatID);
+                    messageDTO.setSenderID(UserToken.getInstance().getUser().getPhoneNumber());
+                    messageDTO.setIsAttachment(false);
 
-                    callBackServer.sendMsg(botResult, UserToken.getInstance().getUser().getPhoneNumber(), receiverPhoneNumbers, chatID);
+                    callBackServer.sendMsg(messageDTO);
                 } catch (RemoteException | MalformedURLException | NotBoundException e) {
                     throw new RuntimeException(e);
                 } catch (Exception e) {

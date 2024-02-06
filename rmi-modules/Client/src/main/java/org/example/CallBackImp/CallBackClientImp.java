@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.*;
@@ -48,6 +49,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     MessagePage messagePage;
 
 
+    public static boolean running=true;
     public CallBackClientImp() throws RemoteException{
 
     }
@@ -71,13 +73,20 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     }
 
 
-    public void receiveMsg(String msg , String senderPhoneNumber , int chatID  ) throws Exception{
-        System.out.println("receiveMsg: "+msg);
-      //  System.out.println("sender: "+senderPhoneNumber);
-        System.out.println("this is callback client receive msg"+ message22Controller +" this is the callallback client " +this);
-        boolean done = message22Controller.receiveMessage(msg , senderPhoneNumber,  chatID );
+    public void receiveMsg(MessageDTO messageDTO) throws Exception {
+//        System.out.println("receiveMsg: "+msg);
+////      //  System.out.println("sender: "+senderPhoneNumber);
+        System.out.println("this is callback client receive msg" + message22Controller + " this is the callallback client " + this);
+        boolean done;
+        if (messageDTO.isAttachment()) {
+            System.out.println("this is an attachment");
+            done =  message22Controller.receiveAttachment(messageDTO);
+        } else{
+            done = message22Controller.receiveMessage(messageDTO.getMessageContent(), messageDTO.getSenderID() ,messageDTO.getChatID() );
+        }
+
         if(!done){
-            this.notification("New Message from " + senderPhoneNumber + ":" + msg);
+            this.notification("New Message from " + messageDTO.getSenderID() + ":" + messageDTO.getMessageContent());
         }
 
     }
@@ -120,10 +129,14 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     }
-
     @Override
-    public void serverShoutdownMessage() {
-
+    public void serveStandUp(){
+        System.out.println("Stand up comedy");
+        running = true;
+    }
+    @Override
+    public void serverShutdownMessage() {
+        running=false;
         Platform.runLater(() -> {
             AtomicInteger i = new AtomicInteger(10);
             Alert alert = new Alert(Alert.AlertType.ERROR);

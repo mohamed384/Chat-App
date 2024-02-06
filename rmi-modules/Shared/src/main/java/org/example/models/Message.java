@@ -1,6 +1,7 @@
 package org.example.models;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 public class Message {
     private int messageID;
@@ -33,6 +34,14 @@ public class Message {
         this.chatID = chatID;
         this.messageContent = messageContent;
         this.timestamp = timestamp;
+    }
+
+    public Message(String messageContent, String senderID, int chatID, Timestamp messageTimestamp, boolean isAttachment) {
+        this.messageContent = messageContent;
+        this.senderID = senderID;
+        this.chatID = chatID;
+        this.timestamp = messageTimestamp;
+        this.isAttachment = isAttachment;
     }
 
     public int getMessageID() {
@@ -80,5 +89,17 @@ public class Message {
 
     public void setAttachment(byte[] attachment) {
         this.attachment = attachment;
+    }
+    @Override
+    public String toString() {
+        return "Message{" +
+                "messageID=" + messageID +
+                ", senderID='" + senderID + '\'' +
+                ", chatID=" + chatID +
+                ", messageContent='" + messageContent + '\'' +
+                ", isAttachment=" + isAttachment +
+                ", timestamp=" + timestamp +
+                ", attachment=" + Arrays.toString(attachment) +
+                '}';
     }
 }
