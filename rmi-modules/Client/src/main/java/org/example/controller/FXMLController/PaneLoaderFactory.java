@@ -15,6 +15,8 @@ public class PaneLoaderFactory {
 
     private static Message22Controller message22Controller;
 
+    private static NotificationController notificationController;
+
     private PaneLoaderFactory(){
     }
 
@@ -42,6 +44,13 @@ public class PaneLoaderFactory {
     }
     public MessagePage getMessagePage() {
        return messagePage;
+    }
+
+    public void setNotificationController(NotificationController notificationControllerCopy) {
+        notificationController = notificationControllerCopy;
+    }
+    public NotificationController getNotificationController(){
+        return notificationController;
     }
 
     public static Pair<BorderPane, MessagePage> messagePageLoader(){

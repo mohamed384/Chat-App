@@ -3,21 +3,15 @@ package org.example.CallBackImp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
-import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.*;
 import org.example.controller.FXMLController.AuthContainerController;
@@ -25,14 +19,11 @@ import org.example.controller.FXMLController.MessagePage;
 import org.example.controller.FXMLController.PaneLoaderFactory;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackClient;
-import org.example.models.Chat;
+import org.example.models.Enums.UserStatus;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CallBackClientImp extends UnicastRemoteObject implements CallBackClient {
@@ -41,6 +32,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     AuthContainerController authContainerController = AuthContainerController.getInstance();
 
     ContactMainController contactMainController;
+    NotificationController notificationController;
 
 
 
@@ -58,20 +50,15 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
         this.messagePage = messagePage;
     }
 
-
-
-//    public CallBackClientImp(MessagePage   messagePage) throws RemoteException {
-//
-//            this.messagePage = messagePage;
-//
-//    }
-
     public void setContactMainController(ContactMainController contactMainController) {
         this.contactMainController = contactMainController;
     }
+    public void setNotificationController(NotificationController notificationController){
+        this.notificationController = notificationController;
+    }
 
 
-    public void receiveMsg(String msg , String senderPhoneNumber , int chatID  ) throws Exception{
+    public void receiveMsg(String msg , String senderPhoneNumber , int chatID  ) throws RemoteException{
         System.out.println("receiveMsg: "+msg);
       //  System.out.println("sender: "+senderPhoneNumber);
         System.out.println("this is callback client receive msg"+ message22Controller +" this is the callallback client " +this);
@@ -106,7 +93,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     }
 
     @Override
-    public void updateContactList() throws Exception {
+    public void updateContactList() throws RemoteException {
         System.out.println("updateContactList in call back client imp : ");
 
             if (contactMainController != null) {
@@ -156,7 +143,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     @Override
-    public void announce(String title, String msg) throws Exception {
+    public void announce(String title, String msg) throws RemoteException {
         Platform.runLater(()->{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(title);
@@ -169,7 +156,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
     private  void login( ) {
         GridPane pane  = PaneLoaderFactory.authContainerPane().getKey();
-        AuthContainerController authContainerController = PaneLoaderFactory.authContainerPane().getValue();
+//        AuthContainerController authContainerController = PaneLoaderFactory.authContainerPane().getValue();
 
         pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -178,6 +165,24 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
        // Node source = (Node) event.getSource();
       Stage stage = StageUtils.getMainStage();
       stage.setScene(new Scene(pane));
+    }
+
+    public void receiveNotification() throws RemoteException{
+        Platform.runLater(()-> {
+            if(notificationController != null)
+                notificationController.updateNotificationList();
+        });
+    }
+
+    @Override
+    public void onContactStatusChanged(String contactName, UserStatus userStatus) throws RemoteException {
+        if(userStatus == UserStatus.Online){
+            notification(contactName + " is online");
+
+        } else if (userStatus== UserStatus.Offline) {
+            notification(contactName + " is offline");
+
+        }
     }
 
 

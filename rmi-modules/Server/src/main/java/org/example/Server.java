@@ -43,12 +43,14 @@ public class Server  extends  Application{
             java.rmi.registry.LocateRegistry.createRegistry(1099);
             StubContext.addStub("ChatControllerStub", ChatControllerStub);
             StubContext.addStub("GroupChatControllerStub", groupChatRMI);
+           StubContext.addStub("CallBackServerStub", callBackServer);
+
 
             java.rmi.Naming.rebind("UserAuthenticationStub", userAuthenticationStub);
             java.rmi.Naming.rebind("UserSendNotificationStub", userSendNotificationStub);
             java.rmi.Naming.rebind("UserContactStub", contactControllerStub);
                 java.rmi.Naming.rebind("ChatControllerStub", ChatControllerStub);
-            java.rmi.Naming.rebind("CallBackServerStub", callBackServer);
+                //java.rmi.Naming.rebind("CallBackServerStub", callBackServer);
 
             // Hena 3mlna connect lel database
             Connection connection = DBConnection.getConnection();

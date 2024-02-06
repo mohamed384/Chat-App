@@ -17,11 +17,11 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     @Override
-    public boolean create(String name, byte[] img,String sender, String receiver) {
+    public boolean create(String name, byte[] img, String sender, String receiver) {
         boolean isSaved = false;
         System.out.println("createCHAT DAOOO ana fel daoo");
         try (Connection connection = DBConnection.getConnection()) {
-            int chatId = save(name, img,connection);
+            int chatId = save(name, img, connection);
             if (chatId != -1) {
                 chatParticipantDAO.create(new ChatParticipant(chatId, sender));
                 chatParticipantDAO.create(new ChatParticipant(chatId, receiver));
@@ -54,20 +54,33 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
 
-    @Override
-    public void delete(Chat chat) {
+    public void deleteChat(Chat chat) {
         String sql = "DELETE FROM Chat WHERE ChatID = ?";
-
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, chat.getChatID());
 
-            pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
+//public boolean deleteChat(String sender, String receiver) {
+//    String sql = "DELETE FROM Chat WHERE ChatID = ?";
+//    int chatId = getPrivateChat(sender, receiver).getChatID();
+//    System.out.println("deleteChat DAOOO ana fel daoo" + chatId);
+//    try (Connection connection = DBConnection.getConnection();
+//         PreparedStatement pstmt = connection.prepareStatement(sql)) {
+//        pstmt.setInt(1, chatId);
+//
+//        int rowsAffected = pstmt.executeUpdate();
+//        return rowsAffected > 0;
+//    } catch (SQLException e) {
+//        e.printStackTrace();
+//    }
+//    return false;
+//}
 
 
     @Override
@@ -133,7 +146,8 @@ public class ChatDAOImpl implements ChatDAO {
 
         return chats;
     }
-    public List<String> getChatParticipants(String sender, int ChatID){
+
+    public List<String> getChatParticipants(String sender, int ChatID) {
         String query = "SELECT CP.* FROM ChatParticipants CP " +
                 "WHERE CP.ChatID = ? AND CP.ParticipantUserID != ?";
         List<String> participants = new ArrayList<>();
@@ -207,8 +221,6 @@ public class ChatDAOImpl implements ChatDAO {
         }
 
     }
-
-
 
 
 }

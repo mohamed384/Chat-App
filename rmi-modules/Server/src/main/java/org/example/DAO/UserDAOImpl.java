@@ -120,7 +120,7 @@ public class UserDAOImpl implements DAO<User> {
         return false;
     }
 
-    public static User findByPhoneNumber(String phoneNumber) {
+    public  User findByPhoneNumber(String phoneNumber) {
         User user = null;
 
         try (Connection connection = DBConnection.getConnection()) {

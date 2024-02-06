@@ -48,6 +48,7 @@ public class Message22Controller implements Initializable {
     @FXML
     ImageView profileImage;
 
+
     @FXML
     private Label receiver;
     @FXML
@@ -382,11 +383,11 @@ public class Message22Controller implements Initializable {
 
         Platform.runLater(() -> {
             try {
-                callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+                callBackServer = (CallBackServer)StubContext.getStub("CallBackServerStub");
 
                 System.out.println("callBackServer from message page" + callBackServer);
                 callBackServer.sendMsg(message, UserToken.getInstance().getUser().getPhoneNumber(), receiverPhoneNumbers, chatID);
-            } catch (RemoteException | MalformedURLException | NotBoundException e) {
+            } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
         });

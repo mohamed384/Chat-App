@@ -23,4 +23,6 @@ public interface CallBackServer extends Remote {
     public void updateContactList(String phoneNumber) throws RemoteException;
     public void notifyStatusUpdate(UserDTO userDTO) throws RemoteException;
     public boolean isOnline(String clientPhoneNumber) throws  RemoteException;
+
+    public void sendNotificationCallBack(String senderPhoneNumber, String receiverPhoneNumber) throws RemoteException;
 }

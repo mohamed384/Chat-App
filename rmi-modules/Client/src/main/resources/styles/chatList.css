@@ -3,7 +3,7 @@
     -fx-control-inner-background: transparent;
     -fx-control-inner-background-alt: transparent;
 }
-.list-cell:focused{
+.list-cell:filled:selected{
     -fx-background-color: #c45fc4;
     -fx-text-fill: white;
 }

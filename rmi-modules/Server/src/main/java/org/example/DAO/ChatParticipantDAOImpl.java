@@ -37,6 +37,7 @@ public class ChatParticipantDAOImpl implements ChatParticipantDAO {
         }
         return false;
     }
+
     public boolean saveGroup(List<ChatParticipant> chatParticipants, Connection connection) {
         String query = "INSERT INTO ChatParticipants (ChatID, ParticipantUserID) VALUES (?, ?)";
 
@@ -67,5 +68,36 @@ public class ChatParticipantDAOImpl implements ChatParticipantDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean deleteChatParticipants(String sender, String receiver) {
+        String query = "DELETE FROM ChatParticipants WHERE ChatID IN (SELECT * FROM (SELECT ChatID FROM ChatParticipants WHERE ParticipantUserID = ? OR ParticipantUserID = ?) AS temp)";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, sender);
+            pstmt.setString(2, receiver);
+
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deleteChatParticipants(int ChatID) {
+        String query = "DELETE FROM ChatParticipants WHERE ChatID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, ChatID);
+
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 }
