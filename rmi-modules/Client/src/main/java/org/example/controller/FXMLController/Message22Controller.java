@@ -223,7 +223,6 @@ public class Message22Controller implements Initializable {
 //                    byte[] buffer1 = new byte[(int)  file.length()];
                     int bytesReadThisTime;
 
-
                     while ((bytesReadThisTime = in.read(buffer)) != -1) {
                         out.write(buffer, 0, bytesReadThisTime);
                         bytesRead += bytesReadThisTime;
@@ -233,6 +232,17 @@ public class Message22Controller implements Initializable {
 
                         // Update progress in the FileController
                         Platform.runLater(() -> fileController.setProgress(progress));
+
+                        // Update color based on progress
+//                        Platform.runLater(() -> {
+//                            if (progress < 0.3) {
+//                                progressBar.setStyle("-fx-bar-fill: red;");
+//                            } else if (progress < 0.6) {
+//                                progressBar.setStyle("-fx-bar-fill: orange;");
+//                            } else {
+//                                progressBar.setStyle("-fx-bar-fill: green;");
+//                            }
+//                        });
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

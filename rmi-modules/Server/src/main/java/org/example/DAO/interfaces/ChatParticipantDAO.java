@@ -10,4 +10,6 @@ public interface ChatParticipantDAO extends DAO<ChatParticipant> {
     default boolean save(ChatParticipant t, Connection connection){ return false; };
 
     default void delete(ChatParticipant t){};
+
+    boolean deleteChatParticipants(String sender, String receiver);
 }

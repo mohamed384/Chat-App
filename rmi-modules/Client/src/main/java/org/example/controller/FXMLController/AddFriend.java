@@ -1,5 +1,6 @@
 package org.example.controller.FXMLController;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.example.DTOs.UserDTO;
+import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
@@ -104,6 +106,9 @@ public class AddFriend {
             try {
                 userDTO = remoteObject.getUser(phoneNumber);
                 if (userDTO != null) {
+                    searchImage.setVisible(true);
+                    searchNumber.setVisible(true);
+                    requestButton.setVisible(true);
                     searchResult.setVisible(true);
                     SearchName.setText(userDTO.getDisplayName());
                     searchImage.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
@@ -168,6 +173,9 @@ public class AddFriend {
 
                 } else {
                     boolean isNotificationSent = remoteObject.sendNotification(senderId, receiverId);
+                    callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+                    callBackServer.sendNotificationCallBack(senderId,receiverId);
+
                     if (isNotificationSent) {
                         requestImage.setImage(new Image("/images/remove.png"));
                         System.out.println("From AddFriend: Ml2tsh notification fa hb3t wa7da.");

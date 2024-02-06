@@ -40,6 +40,10 @@ public class ChatController extends UnicastRemoteObject implements ChatRMI {
     public List<String> getChatParticipants(String senderPhoneNumber, int chatID) throws RemoteException {
         return chatService.getChatParticipants(senderPhoneNumber,chatID);
     }
+    @Override
+    public boolean deleteChat(String sender, String receiver) throws RemoteException{
+        return chatService.deleteChat(sender,receiver);
+    }
 
 
 }

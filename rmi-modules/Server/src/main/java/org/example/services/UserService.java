@@ -50,7 +50,7 @@ public class UserService {
     }
     public UserDTO login (String phoneNumber,  String password) {
 
-        User user = UserDAOImpl.findByPhoneNumber(phoneNumber);
+        User user = userDAO.findByPhoneNumber(phoneNumber);
         String passwordHash ;
         if(user == null){
             System.out.println("user Not Found");

@@ -126,7 +126,7 @@ public class ContactDAOImpl extends HandleContactAndNotification implements Cont
 
 
     public boolean deleteContact(String userID, String friendID) {
-        String query = "DELETE FROM UserContacts WHERE (UserID = ? AND FriendID = ?) AND (UserID = ? AND FriendID = ?)";
+        String query = "DELETE FROM UserContacts WHERE (UserID = ? AND FriendID = ?) OR (UserID = ? AND FriendID = ?)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, userID);

@@ -9,8 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.CallBackImp.CallBackClientImp;
-import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackServer;
@@ -44,9 +42,9 @@ public class Client extends Application {
 
         stage.setScene(startScreenScene);
         stage.show();
-
         stage.setOnCloseRequest(event -> {
-            CallBackServer  callBackServer = null;
+
+            CallBackServer callBackServer = (CallBackServer) org.example.Utils.StubContext.getStub("CallBackServerStub");
             try {
                 if(CallBackClientImp.running){
                     callBackServer = (CallBackServer) org.example.Utils.StubContext.getStub("CallBackServerStub");
@@ -66,9 +64,7 @@ public class Client extends Application {
                     callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
                 }
             } catch (RemoteException e) {
-
                 throw new RuntimeException(e);
-
             }
             Platform.exit();
             System.exit(0);

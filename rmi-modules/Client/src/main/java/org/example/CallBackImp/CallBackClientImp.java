@@ -17,7 +17,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
-import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.*;
@@ -42,6 +41,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     AuthContainerController authContainerController = AuthContainerController.getInstance();
 
     ContactMainController contactMainController;
+    NotificationController notificationController;
 
 
 
@@ -70,6 +70,9 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
     public void setContactMainController(ContactMainController contactMainController) {
         this.contactMainController = contactMainController;
+    }
+    public void setNotificationController(NotificationController notificationController){
+        this.notificationController = notificationController;
     }
 
 
@@ -115,7 +118,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     }
 
     @Override
-    public void updateContactList() throws Exception {
+    public void updateContactList() throws RemoteException {
         System.out.println("updateContactList in call back client imp : ");
 
             if (contactMainController != null) {
@@ -129,6 +132,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     }
+
     @Override
     public void serveStandUp(){
         System.out.println("Stand up comedy");
@@ -169,7 +173,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     @Override
-    public void announce(String title, String msg) throws Exception {
+    public void announce(String title, String msg) throws RemoteException {
         Platform.runLater(()->{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(title);

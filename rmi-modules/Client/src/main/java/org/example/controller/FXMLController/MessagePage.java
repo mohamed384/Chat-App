@@ -3,6 +3,7 @@ package org.example.controller.FXMLController;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,11 +36,11 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-
+import java.util.concurrent.*;
 
 
 public class MessagePage implements Initializable {
+    public VBox NoChatsVbox;
     @FXML
     private BorderPane contactListview;
 
@@ -84,6 +85,9 @@ public class MessagePage implements Initializable {
 
     CallBackClientImp callBackClientImp;
 
+    String selectedContact;
+//    ChatDTO selectedUser;
+
     public MessagePage() {
 
         try {
@@ -96,8 +100,14 @@ public class MessagePage implements Initializable {
 
 
     }
+    public void setSelectedContact(String selectedContact) {
+        this.selectedContact = selectedContact;
+//        for(){}
+//        listView.getSelectionModel().select(selectedUser);
 
-//    public void setCallBackClient(CallBackClient callBackClient) {
+
+    }
+    //    public void setCallBackClient(CallBackClient callBackClient) {
 //        this.callBackClient = callBackClient;
 //    }
 
@@ -130,56 +140,19 @@ public class MessagePage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        NoChatsVbox.setVisible(false);
+        listView.setPlaceholder(null);
         boxImage.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
         boxLabelName.setText(UserToken.getInstance().getUser().getDisplayName());
 
         PaneLoaderFactory.getInstance().setMessagePage(this);
         System.out.println("this is message page in initialize" + this);
         location = url;
+
         updateList();
-
-        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            Parent borderPane = null;
-            if (newValue != null) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/message22.fxml"));
-                    borderPane = loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
-
-                if ( newValue.getAdminID() != null) {
-                    message22Controller.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
-
-                } else {
-                    message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
-                }
+        handleSelection();
 
 
-            }
-
-//            Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
-
-            callBackClient.setMessage22Controller(PaneLoaderFactory.getInstance().getMessage22Controller());
-            //contactListview.setCenter(PaneLoaderFactory.getmessage22Pane().getKey());
-
-//            FXMLLoader loader = new FXMLLoader();
-//            BorderPane borderPane = null;
-//            try {
-//                loader.setLocation(message22Controller.getFxmlUrl());
-//                borderPane = loader.load();
-//                // Now you can use 'root' as the root of your scene
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-            contactListview.setCenter(borderPane);
-
-
-            // Add your action here
-        });
 
 
 //        if(!ChatListManager.getInstance().getContacts().isEmpty())
@@ -208,7 +181,7 @@ public class MessagePage implements Initializable {
                         VBox notificationItem = loader.load();
                         ContactController controller = loader.getController();
                         try {
-                            System.out.println("admin in message page" + item.getAdminID());
+//                            System.out.println("admin in message page" + item.getAdminID());
                             if (item.getAdminID() == null) {
                                 Task<Void> task = new Task<>() {
                                     @Override
@@ -254,36 +227,105 @@ public class MessagePage implements Initializable {
             }
         });
     }
+    private void handleSelection(){
+        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            Parent borderPane = null;
+            System.out.println("newal"+newValue);
+            if (newValue != null) {
+                System.out.println("newValue" +newValue);
+
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/message22.fxml"));
+                    borderPane = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
+
+                if ( newValue.getAdminID() != null) {
+                    message22Controller.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
+
+                } else {
+                    message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
+                }
+
+
+            }
+
+//            Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
+
+            callBackClient.setMessage22Controller(PaneLoaderFactory.getInstance().getMessage22Controller());
+            //contactListview.setCenter(PaneLoaderFactory.getmessage22Pane().getKey());
+
+//            FXMLLoader loader = new FXMLLoader();
+//            BorderPane borderPane = null;
+//            try {
+//                loader.setLocation(message22Controller.getFxmlUrl());
+//                borderPane = loader.load();
+//                // Now you can use 'root' as the root of your scene
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+            contactListview.setCenter(borderPane);
+
+
+            // Add your action here
+        });
+
+    }
 
     public void updateList() {
         ProgressIndicator progressIndicator = new ProgressIndicator();
-        listView.setPlaceholder(progressIndicator); // Show the progress indicator while data is loading
-
+        listView.setPlaceholder(progressIndicator);
+     // Show the progress indicator while data is loading
         Task<ObservableList<ChatDTO>> task = new Task<>() {
             @Override
             protected ObservableList<ChatDTO> call() throws Exception {
                 List<ChatDTO> chatDTOList = chatRMI.getAllChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
                 List<ChatDTO> groupChatDTOS = groupChatRMIController.getAllGroupChatsForUser(UserToken.getInstance().getUser().getPhoneNumber());
-                List<ChatDTO> combinedList = new ArrayList<>(chatDTOList);
+                ObservableList<ChatDTO> combinedList = FXCollections.observableList(chatDTOList);
                 combinedList.addAll(groupChatDTOS);
+                FilteredList<ChatDTO> filteredList =combinedList.filtered(chatDTO -> chatDTO.getChatName().equals(selectedContact));
+                listView.setPlaceholder(null);
+                if (!filteredList.isEmpty()) {
+                    Platform.runLater(() -> {
+                        listView.getSelectionModel().select(filteredList.get(0));
+                        handleSelection();
+                    });
+                    System.out.println("name " + filteredList.get(0).getReceiverName());
+
+                }else{
+                    if(!combinedList.isEmpty()){
+                        Platform.runLater(() -> {
+                            listView.getSelectionModel().select(combinedList.get(0));
+                            handleSelection();
+                        });
+                    }
+
+                }
                 return FXCollections.observableArrayList(combinedList);
             }
         };
 
+
         task.setOnSucceeded(event -> {
-            listView.setItems(task.getValue());
-            listView.refresh();
-            listView.setPlaceholder(null); // Hide the progress indicator when data has loaded
+            ObservableList<ChatDTO> result = task.getValue();
+            if (result.isEmpty()) {
+                NoChatsVbox.toFront();
+                NoChatsVbox.setVisible(true);
+                listView.setVisible(false);
+                listView.setPlaceholder(null);
+            } else {
+                listView.setItems(result);
+                listView.toFront();
+                NoChatsVbox.setVisible(false);
+                }
         });
-
-        task.setOnFailed(event -> {
-            // Handle any exceptions here
-            Throwable exception = task.getException();
-            exception.printStackTrace();
-            listView.setPlaceholder(null); // Hide the progress indicator if there was an error
-        });
-
         new Thread(task).start();
+
+
+
     }
 
 

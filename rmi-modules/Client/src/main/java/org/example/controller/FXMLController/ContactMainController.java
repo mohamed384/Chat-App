@@ -8,14 +8,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,11 +31,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ContactMainController  implements Initializable {
 
     public BorderPane searchList;
+    public Button deleteBtn;
     @FXML
     private ImageView contactImage;
     @FXML
@@ -48,22 +48,25 @@ public class ContactMainController  implements Initializable {
     private Label phoneLabel;
     @FXML
     private Label emailLabel;
+
+    @FXML
+    public GridPane UserProfile;
+
+    @FXML
+    public ImageView cypherImg;
     ChatRMI chatRMI;
     UserDTO selectedItem;
+    MessagePage messagePage;
 
 
     public ContactMainController() {
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
-
-       // System.out.println(chatRMI);
     }
 
     @FXML
     public TreeView<UserDTO> contactsTreeView;
 
-    private
-
-    ContactService contactService ;
+    private ContactService contactService ;
 
     private ObservableList<UserDTO> contacts;
 
@@ -71,6 +74,7 @@ public class ContactMainController  implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        UserProfile.setVisible(false);
         contactService= new ContactService();
         contacts = FXCollections.observableArrayList();
         //System.out.println("annaaa contact main controller" + this);
@@ -87,6 +91,10 @@ public class ContactMainController  implements Initializable {
             if (newValue != null && newValue.getValue() != null && !newValue.getValue().getDisplayName().equals("Contacts") && !newValue.getValue().getDisplayName().equals("Online") && !newValue.getValue().getDisplayName().equals("Offline")) {
                 selectedItem = newValue.getValue();
                 if (selectedItem != null) {
+                    UserProfile.setVisible(true);
+                    cypherImg.setVisible(false);
+                    UserProfile.toFront();
+
                     contactImage.setImage(new Image(new ByteArrayInputStream(selectedItem.getPicture())));
                     nameLabel.setText(selectedItem.getDisplayName());
                     bioLabel.setText(selectedItem.getBio());
@@ -239,11 +247,16 @@ public class ContactMainController  implements Initializable {
             BorderPane borderPane = null;
 
 
-                borderPane = PaneLoaderFactory.messagePageLoader().getKey();
+
+            borderPane = PaneLoaderFactory.messagePageLoader().getKey();
 
 //            ChatListManager.getInstance().addContact(selectedItem);
             BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
             mainBorder.setCenter(borderPane);
+            messagePage = PaneLoaderFactory.getInstance().getMessagePage();
+            messagePage.setSelectedContact(selectedItem.getDisplayName());
+
+
 
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -252,4 +265,35 @@ public class ContactMainController  implements Initializable {
     }
 
 
+    public void onDeleteClick(MouseEvent mouseEvent) {
+        if (showConfirmationDialog()) {
+            deleteContact();
+        }
+    }
+
+    private boolean showConfirmationDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Contact");
+        alert.setContentText("Are you sure you want to delete this contact?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
+    private void deleteContact() {
+        contactService.deleteContact(selectedItem);
+        try {
+            boolean isDeleted = chatRMI.deleteChat(UserToken.getInstance().getUser().getPhoneNumber(), selectedItem.getPhoneNumber());
+            updateContactList();
+        } catch (RemoteException e) {
+            handleRemoteException(e);
+        }
+        UserProfile.setVisible(false);
+        cypherImg.setVisible(true);
+    }
+
+    private void handleRemoteException(RemoteException e) {
+        System.err.println("Failed to delete chat: " + e.getMessage());
+    }
 }

@@ -49,6 +49,10 @@ public class ContactController extends UnicastRemoteObject implements UserContac
         return contactService.acceptInvite(senderId, receiverId);
     }
 
+    @Override
+    public boolean deleteContact(String sender, String receiver) throws RemoteException {
+        return contactService.deleteContact(sender, receiver);
+    }
 
 
 }

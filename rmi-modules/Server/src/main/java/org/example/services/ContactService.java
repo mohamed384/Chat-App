@@ -37,4 +37,7 @@ public class ContactService {
     public boolean contactExists(String userPhone, String friendPhone) {
       return   contactDAO.contactExists(userPhone,friendPhone);
     }
+    public boolean deleteContact(String sender, String receiver) {
+        return contactDAO.deleteContact(sender, receiver);
+    }
 }
