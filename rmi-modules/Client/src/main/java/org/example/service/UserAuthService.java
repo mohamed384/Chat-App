@@ -41,7 +41,14 @@ public class UserAuthService {
     CallBackClientImp callBackClient;
     public UserAuthService() {
         //TODO Error Here check it please by running client without server Exception thrown from here
-        callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+        if(CallBackClientImp.running) {
+           callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+       }else {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+           alert.setTitle("Error");
+           alert.setHeaderText("the server is not running");
+           alert.setContentText("please try again later..");
+       }
 
     }
 
@@ -82,14 +89,34 @@ public class UserAuthService {
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
         try {
-            remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
+            if(CallBackClientImp.running) {
+                remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+            }else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("the server is not running");
+                alert.setContentText("please try again later");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("the server is not running");
+            alert.setContentText("please try again later");
+
+           // e.printStackTrace();
         }
         return remoteObject;
     }
 
     public UserDTO login(ActionEvent actionEvent, PasswordField PasswordLog, TextField PhoneLog) throws IOException {
+        if (!CallBackClientImp.running) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("the server is not running");
+            alert.setContentText("please try again later");
+
+            return null;
+        }
         String password = PasswordLog.getText();
         String phone = PhoneLog.getText();
         UserAuthentication remoteObject = UserAuthRemoteObject();
@@ -98,6 +125,8 @@ public class UserAuthService {
         UserDTO user;
         if (remoteObject != null) {
             user = remoteObject.login(phone, password);
+
+            callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
             boolean userOnlient = callBackServer.isOnline(phone);
 
             if (user != null && !userOnlient) {
@@ -108,6 +137,7 @@ public class UserAuthService {
                 System.out.println("login from client auth service is successfully done" + UserToken.getInstance().getUser().getUserStatus());
                 //UserToken.getInstance().getUser().setUserMode(UserMode.Available);
                 remoteObject.updateUser(UserToken.getInstance().getUser());
+
                 callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
             } else {
@@ -206,6 +236,8 @@ public class UserAuthService {
             UserToken userToken = UserToken.getInstance();
             userToken.setUser(user1);
             System.out.println("signup from client auth service is successfully done");
+
+            callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
             callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
 

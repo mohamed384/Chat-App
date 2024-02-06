@@ -10,13 +10,12 @@ import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import org.example.DTOs.MessageDTO;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
@@ -78,34 +77,46 @@ public class FileController implements Initializable {
 
     }
 
+    private  String attachmentPathName;
+    private  byte[] attachment;
+    public void setAttachmentFromDB(MessageDTO messageDTO)  {
+        attachmentPathName = messageDTO.getMessageContent();
+        attachment = messageDTO.getAttachment();
+    }
 
     public void downloadFile() {
-        Message22Controller message22Controller = new Message22Controller();
-        if (fileName != null) {
+        String filePath = attachmentPathName;
+        if (filePath != null) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save File");
-            fileChooser.setInitialFileName(fileName.replace("Name:", ""));
+            if (filePath.contains(".")) {
+                String extension = filePath.substring(filePath.lastIndexOf("."));
+                fileChooser.setInitialFileName(filePath.replace("Name:", "") + extension);
+            } else {
+                fileChooser.setInitialFileName(filePath.replace("Name:", ""));
+            }
+
             File file = fileChooser.showSaveDialog(null);
             if (file != null) {
-                Path sourcePath = null;
-                if (message22Controller.uploadedFilePath != null) {
-                    sourcePath = Paths.get(message22Controller.uploadedFilePath.toUri());
-                }
                 Path destinationPath = file.toPath();
 
-                Path finalSourcePath = sourcePath;
                 Task<Void> task = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        try (FileChannel sourceChannel = new FileInputStream(finalSourcePath.toFile()).getChannel();
-                             FileChannel destinationChannel = new FileOutputStream(destinationPath.toFile()).getChannel()) {
+                        try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destinationPath.toFile()))) {
+                            int totalBytes = attachment.length;
+                            int bytesWritten = 0;
+                            int bufferSize = 1024;
+                            byte[] buffer = new byte[bufferSize];
 
-                            long totalSize = sourceChannel.size();
-                            long transferredSize = 0;
-                            while (transferredSize < totalSize) {
-                                long transferred = destinationChannel.transferFrom(sourceChannel, transferredSize, 1024);
-                                transferredSize += transferred;
-                                updateProgress(transferredSize, totalSize);
+                            for (int i = 0; i < totalBytes; i += bufferSize) {
+                                int bytesToWrite = Math.min(bufferSize, totalBytes - i);
+                                System.arraycopy(attachment, i, buffer, 0, bytesToWrite);
+                                bos.write(buffer, 0, bytesToWrite);
+                                bytesWritten += bytesToWrite;
+
+                                // Update the progress
+                                updateProgress(bytesWritten, totalBytes);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -117,12 +128,10 @@ public class FileController implements Initializable {
                 progressBar.progressProperty().bind(task.progressProperty());
 
                 task.setOnSucceeded(event -> {
-                    // Download completed, show a notification
                     showNotification("File Download", "Download completed successfully.");
                 });
 
                 task.setOnFailed(event -> {
-                    // Download failed, show an error notification
                     showNotification("File Download Error", "An error occurred during the download.");
                 });
 

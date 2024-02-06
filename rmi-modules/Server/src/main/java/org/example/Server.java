@@ -22,9 +22,11 @@ public class Server  extends  Application{
 
     public static void main(String[] args) {
 
-
-
+         /*
         try {
+
+
+
             // Hena 3mlna el stubs bta3tna
             UserAuthentication userAuthenticationStub = new UserController();
             UserSendNotification userSendNotificationStub = new UserNotificationController();
@@ -32,6 +34,7 @@ public class Server  extends  Application{
             ChatRMI ChatControllerStub = new ChatController();
             CallBackServer callBackServer = new CallBackServerImp();
             GroupChatRMI groupChatRMI = new GroupChatController();
+            MessageRMI messageRMI = new MessageController();
 
             // Hena 3mlna add lel stubs bta3tna
 //            StubContext.addStub("UserAuthenticationStub", userAuthenticationStub);
@@ -40,15 +43,18 @@ public class Server  extends  Application{
 //            StubContext.addStub("CallBackServer", callBackServer);
 
             // Hena 3mlna create lel registry w 3mlna rebind lel stubs bta3tna
-            java.rmi.registry.LocateRegistry.createRegistry(1099);
+
             StubContext.addStub("ChatControllerStub", ChatControllerStub);
             StubContext.addStub("GroupChatControllerStub", groupChatRMI);
+            StubContext.addStub("MessageControllerStub", messageRMI);
+           StubContext.addStub("CallBackServerStub", callBackServer);
+
 
             java.rmi.Naming.rebind("UserAuthenticationStub", userAuthenticationStub);
             java.rmi.Naming.rebind("UserSendNotificationStub", userSendNotificationStub);
             java.rmi.Naming.rebind("UserContactStub", contactControllerStub);
                 java.rmi.Naming.rebind("ChatControllerStub", ChatControllerStub);
-            java.rmi.Naming.rebind("CallBackServerStub", callBackServer);
+                //java.rmi.Naming.rebind("CallBackServerStub", callBackServer);
 
             // Hena 3mlna connect lel database
             Connection connection = DBConnection.getConnection();
@@ -60,7 +66,10 @@ public class Server  extends  Application{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        launch(args);
+
+             */
+
+            launch(args);
 
         System.exit(0);
 

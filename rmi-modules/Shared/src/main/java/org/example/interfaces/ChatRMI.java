@@ -18,7 +18,7 @@ public interface ChatRMI extends Remote {
 
      List<String> getChatParticipants(String senderPhoneNumber,int chatID) throws RemoteException;
 
-
+     boolean deleteChat(String sender, String receiver) throws RemoteException;
 
 
 }

@@ -6,11 +6,14 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackServer;
+import org.example.interfaces.UserAuthentication;
+import org.example.models.Enums.UserStatus;
 
 
 import java.io.IOException;
@@ -43,7 +46,20 @@ public class Client extends Application {
 
             CallBackServer callBackServer = (CallBackServer) org.example.Utils.StubContext.getStub("CallBackServerStub");
             try {
-                if(UserToken.getInstance().getUser() != null) {
+                if(CallBackClientImp.running){
+                    callBackServer = (CallBackServer) org.example.Utils.StubContext.getStub("CallBackServerStub");
+                }else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("the server is not running");
+                    alert.setContentText("please try again later");
+                }
+
+                if(UserToken.getInstance().getUser() != null && callBackServer != null) {
+                    UserAuthentication remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+                    UserToken.getInstance().getUser().setUserStatus(UserStatus.Offline);
+                    remoteObject.logout(UserToken.getInstance().getUser());
+                    remoteObject.updateUser(UserToken.getInstance().getUser());
                     callBackServer.logout( UserToken.getInstance().getUser().getPhoneNumber());
                     callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
                 }
@@ -68,6 +84,10 @@ public class Client extends Application {
                     stage.setScene(mainScreenScene);
 
                 } catch (IOException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("the server is not running");
+                    alert.setContentText("please try again later");
                     e.printStackTrace();
                 }
             });

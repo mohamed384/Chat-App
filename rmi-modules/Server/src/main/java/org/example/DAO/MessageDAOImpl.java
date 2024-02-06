@@ -4,6 +4,7 @@ import org.example.DAO.interfaces.MessageDAO;
 import org.example.DTOs.MessageDTO;
 import org.example.models.Message;
 import org.example.utils.DBConnection;
+import org.example.utils.MessageDAOSaveHelper;
 
 import java.rmi.RemoteException;
 import java.sql.*;
@@ -12,16 +13,19 @@ import java.util.List;
 
 public class MessageDAOImpl implements MessageDAO {
     @Override
-    public boolean create(Message message) {
-        boolean isSaved;
+    public MessageDAOSaveHelper createWithHandler(Message message) {
+            MessageDAOSaveHelper isSaved;
         try (Connection connection = DBConnection.getConnection()) {
-            isSaved = save(message, connection);
+            isSaved = saveWithHandler(message, connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        System.out.println("this is create message dao impl"+ isSaved);
+        System.out.println(message.toString());
+
         return isSaved;
     }
-
 
     @Override
     public void delete(Message message) {
@@ -57,8 +61,11 @@ public class MessageDAOImpl implements MessageDAO {
 
     }
 
-    public boolean save(Message message, Connection connection) {
+    public MessageDAOSaveHelper saveWithHandler(Message message, Connection connection) {
         String query = "INSERT INTO Messages (SenderID, ChatID, MessageContent, IsAttachment) VALUES (?, ?, ?, ?)";
+        int generatedKey = -1;
+        boolean success = false;
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, message.getSenderID());
             preparedStatement.setInt(2, message.getChatID());
@@ -66,18 +73,20 @@ public class MessageDAOImpl implements MessageDAO {
             preparedStatement.setBoolean(4, message.isAttachment());
 
             int rowsAffected = preparedStatement.executeUpdate();
-                if(message.isAttachment()){
-                    ResultSet rs = preparedStatement.getGeneratedKeys();
-                    if (rs.next()) {
-                        int messageId = rs.getInt(1);
-                        return saveAttachmentFile(messageId, message.getAttachment(), connection);
-                    }
-                }else return rowsAffected > 0;
+            if(message.isAttachment()){
+                ResultSet rs = preparedStatement.getGeneratedKeys();
+                if (rs.next()) {
+                    generatedKey = rs.getInt(1);
+                    success = saveAttachmentFile(generatedKey, message.getAttachment(), connection);
+                }
+            } else {
+                success = rowsAffected > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
 
+        return new MessageDAOSaveHelper(success, generatedKey);
     }
 
     public boolean saveAttachmentFile(int messageId, byte[] attachment, Connection connection) {
@@ -92,6 +101,38 @@ public class MessageDAOImpl implements MessageDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public Message retrieveFileFromDB(int messageID) {
+        String query = "SELECT Messages.*, Attachment.Attachment FROM Attachment, Messages WHERE " +
+                "Attachment.MessageID = Messages.MessageID AND Attachment.MessageID = ?";
+
+        Message message = null;
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, messageID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+
+
+                message = new Message(
+                        rs.getString("MessageContent"),
+                        rs.getString("SenderID"),
+                        rs.getInt("ChatID"),
+                        rs.getTimestamp("MessageTimestamp"),
+                        rs.getBoolean("IsAttachment"));
+                message.setAttachment(rs.getBytes("Attachment"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return message;
     }
 
 }

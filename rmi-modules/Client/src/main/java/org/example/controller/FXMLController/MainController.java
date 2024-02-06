@@ -32,6 +32,7 @@ import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
+import org.example.models.Enums.UserStatus;
 
 import javax.management.Notification;
 import java.io.IOException;
@@ -71,7 +72,7 @@ public class MainController implements Initializable {
     public MainController(){
 
        try {
-            callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+            callBackServer = (CallBackServer)StubContext.getStub("CallBackServerStub");
 
            System.out.println(callBackServer);
            callBackClient = new CallBackClientImp();
@@ -80,10 +81,9 @@ public class MainController implements Initializable {
             System.out.println(number);
 
             callBackServer.login(number, callBackClient);
-       } catch (RemoteException | NotBoundException | MalformedURLException e) {
+       } catch (RemoteException e) {
             throw new RuntimeException(e);
        }
-
 
 
     }
@@ -154,6 +154,8 @@ public class MainController implements Initializable {
             BorderPane pane = PaneLoaderFactory.notificationPageLoader().getKey();
             //NotificationController controller = PaneLoaderFactory.notificationPageLoader().getValue();
             //controller.setCallBackServer(callBackServer);
+            NotificationController controller = PaneLoaderFactory.getInstance().getNotificationController();
+            callBackClient.setNotificationController(controller);
             pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
             borderPane.setCenter(null);
@@ -189,7 +191,9 @@ public class MainController implements Initializable {
             try {
                 String number = UserToken.getInstance().getUser().getPhoneNumber();
                 UserAuthentication remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+                UserToken.getInstance().getUser().setUserStatus(UserStatus.Offline);
                 remoteObject.logout(UserToken.getInstance().getUser());
+                remoteObject.updateUser(UserToken.getInstance().getUser());
                 callBackServer.logout( number);
                 callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 

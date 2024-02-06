@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserContact;
@@ -98,7 +99,8 @@ public class NotificationNodeController implements Initializable {
     private CallBackServer CallBackServerController() {
         CallBackServer remoteObject = null;
         try {
-            remoteObject = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+            remoteObject = (CallBackServer) StubContext.getStub("CallBackServerStub");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

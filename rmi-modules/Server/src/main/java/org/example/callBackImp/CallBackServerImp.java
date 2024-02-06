@@ -1,6 +1,11 @@
 package org.example.callBackImp;
+
+import javafx.geometry.Pos;
+import javafx.util.Duration;
 import org.example.DAO.ChatDAOImpl;
+import org.example.DAO.ContactDAOImpl;
 import org.example.DAO.MessageDAOImpl;
+import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
@@ -15,10 +20,17 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CallBackServerImp extends UnicastRemoteObject implements CallBackServer , Serializable {
+import org.controlsfx.control.Notifications;
+import org.example.models.User;
+import org.example.services.UserService;
+
+
+public class CallBackServerImp extends UnicastRemoteObject implements CallBackServer, Serializable {
 
     static Map<String, CallBackClient> clients = new HashMap<>();
+    static Map<String, CallBackClient> logoutClients = new HashMap<>();
     private final MessageDAOImpl messageDAO;
+    private final ContactDAOImpl contactDAOImpl;
     private final ChatDAOImpl chatDAO;
 
     public static int getClients() {
@@ -26,15 +38,42 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     }
 
     public CallBackServerImp() throws RemoteException {
-        messageDAO  = new MessageDAOImpl();
+        messageDAO = new MessageDAOImpl();
         chatDAO = new ChatDAOImpl();
+        messageService = new MessageService();
+        contactDAOImpl = new ContactDAOImpl();
+        userService = new UserService();
     }
+
+    private void showNotification(String title, String text) {
+        Notifications.create()
+                .title(title)
+                .text(text)
+                .owner(null) // You can set a specific owner if needed
+                .hideAfter(Duration.seconds(5)) // Notification duration
+                .position(Pos.TOP_RIGHT)
+                .showInformation(); // Use showInformation() for an information notification
+    }
+
     @Override
     public boolean login(String phoneNumber, CallBackClient callBackClient) {
-            System.out.println("login: "+phoneNumber);
+        System.out.println("login: " + phoneNumber);
 
         try {
             callBackClient.notification("Welcome to CyberChat App");
+            List<User> contacts = contactDAOImpl.getAllContactsByUserId(phoneNumber);
+            for (User contact : contacts) {
+                if (contact.getUserStatus() == UserStatus.Online) {
+                    CallBackClient callBackContact = clients.get(contact.getPhoneNumber());
+                    if(callBackContact!=null){
+                        callBackContact.onContactStatusChanged(userService.getUser(phoneNumber).getDisplayName()
+                                , UserStatus.Online);
+                    }
+
+
+                }
+
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -48,10 +87,10 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     }
 
     public boolean isOnline(String clientPhoneNumber) {
-        if(clients.containsKey(clientPhoneNumber)){
+        if (clients.containsKey(clientPhoneNumber)) {
             return true;
-        }else  {
-            return  false;
+        } else {
+            return false;
         }
 
     }
@@ -61,27 +100,79 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
         System.out.println("logout: "+phoneNumber);
         clients.remove(phoneNumber);
+        List<User> contacts = contactDAOImpl.getAllContactsByUserId(phoneNumber);
+        for (User contact : contacts) {
+            if (contact.getUserStatus() == UserStatus.Online) {
+                CallBackClient callBackContact = clients.get(contact.getPhoneNumber());
+                try {
+                    if(callBackContact!=null){
+                        callBackContact.onContactStatusChanged(userService.getUser(phoneNumber).getDisplayName()
+                                , UserStatus.Offline);
+                    }
+
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
         return true;
     }
 
     @Override
-    public void sendMsg(String msg, String senderPhoneNumber, List<String> receiverPhoneNumbers , int chatID) {
+    public void sendMsg(MessageDTO messageDTO) throws RemoteException {
+
         Message message = new Message();
-        message.setSenderID(senderPhoneNumber);
-        message.setMessageContent(msg);
-        message.setIsAttachment(false);
-        message.setChatID(chatID);
-        messageDAO.create(message);
-        for (String s : receiverPhoneNumbers) {
-            CallBackClient callBackClient = clients.get(s);
+        MessageDAOSaveHelper test;
+        MessageDTO ee = null;
+        if (!messageDTO.isAttachment()) {
+
+            message.setSenderID(messageDTO.getSenderID());
+            message.setMessageContent(messageDTO.getMessageContent());
+            message.setIsAttachment(false);
+            message.setChatID(messageDTO.getChatID());
+             test = messageDAO.createWithHandler(message);
+            System.out.println("this is send mesg 3adyaaa call back server  " + test);
+        } else {
+            message.setSenderID(messageDTO.getSenderID());
+            message.setMessageContent(messageDTO.getMessageContent());
+            message.setIsAttachment(true);
+            message.setChatID(messageDTO.getChatID());
+            message.setAttachment(messageDTO.getAttachment());
+            System.out.println(message.toString());
+             test = messageDAO.createWithHandler(message);
+            System.out.println("this is send mesg FILEEE call back server  " + test);
+        }
+
+        List<String> participants = chatDAO.getChatParticipants(messageDTO.getSenderID(), messageDTO.getChatID());
+
+        if(messageDTO.isAttachment()) {
+            ee = messageService.retrieveFileFromDB(test.getGeneratedKey());
+            System.out.println("######################");
+            System.out.println(ee.getMessageContent());
+            System.out.println(ee.getSenderID());
+            System.out.println(ee.isAttachment());
+            System.out.println("test Key "+test.getGeneratedKey());
+        }
+
+        for (String senderPhoneNumber :participants ) {
+            CallBackClient callBackClient = clients.get(senderPhoneNumber);
             try {
-                if(callBackClient != null) {
+                if (callBackClient != null) {
                     callBackClient.receiveMsg(msg, senderPhoneNumber, chatID);
+                if(callBackClient != null) {
+
+                    if(messageDTO.isAttachment()){
+                        callBackClient.receiveMsg(ee);
+                    }else {
+                        callBackClient.receiveMsg(messageDTO);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
     }
 
 
@@ -103,14 +194,26 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         executorService.shutdown();
     }
 
+  public   void serverStandUpMessage(){
+        for (String phoneNumber : logoutClients.keySet()) {
+            try {
+                logoutClients.get(phoneNumber).serveStandUp();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     @Override
-    public  void logoutAll() {
+    public void logoutAll() {
 
         for (String phoneNumber : clients.keySet()) {
             try {
 
-                clients.get(phoneNumber).serverShoutdownMessage();
+                clients.get(phoneNumber).serverShutdownMessage();
+                logoutClients.put(phoneNumber,clients.get(phoneNumber));
                 logout(phoneNumber);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -135,13 +238,25 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     public void notifyStatusUpdate(UserDTO userDTO) throws RemoteException {
         for (String phoneNumber : clients.keySet()) {
             try {
-                if(!userDTO.getPhoneNumber().equals(phoneNumber))
+                if (!userDTO.getPhoneNumber().equals(phoneNumber))
                     clients.get(phoneNumber).updateContactList();
             } catch (RemoteException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    @Override
+    public void sendNotificationCallBack(String senderPhoneNumber, String receiverPhoneNumber) {
+        CallBackClient callBackClient = clients.get(receiverPhoneNumber);
+
+        try {
+            if(callBackClient!=null)
+                callBackClient.receiveNotification();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
     }
 

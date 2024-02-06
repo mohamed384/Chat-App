@@ -41,6 +41,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     AuthContainerController authContainerController = AuthContainerController.getInstance();
 
     ContactMainController contactMainController;
+    NotificationController notificationController;
 
 
 
@@ -48,6 +49,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     MessagePage messagePage;
 
 
+    public static boolean running=true;
     public CallBackClientImp() throws RemoteException{
 
     }
@@ -69,15 +71,25 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     public void setContactMainController(ContactMainController contactMainController) {
         this.contactMainController = contactMainController;
     }
+    public void setNotificationController(NotificationController notificationController){
+        this.notificationController = notificationController;
+    }
 
 
-    public void receiveMsg(String msg , String senderPhoneNumber , int chatID  ) throws Exception{
-        System.out.println("receiveMsg: "+msg);
-      //  System.out.println("sender: "+senderPhoneNumber);
-        System.out.println("this is callback client receive msg"+ message22Controller +" this is the callallback client " +this);
-        boolean done = message22Controller.receiveMessage(msg , senderPhoneNumber,  chatID );
+    public void receiveMsg(MessageDTO messageDTO) throws Exception {
+//        System.out.println("receiveMsg: "+msg);
+////      //  System.out.println("sender: "+senderPhoneNumber);
+        System.out.println("this is callback client receive msg" + message22Controller + " this is the callallback client " + this);
+        boolean done;
+        if (messageDTO.isAttachment()) {
+            System.out.println("this is an attachment");
+            done =  message22Controller.receiveAttachment(messageDTO);
+        } else{
+            done = message22Controller.receiveMessage(messageDTO.getMessageContent(), messageDTO.getSenderID() ,messageDTO.getChatID() );
+        }
+
         if(!done){
-            this.notification("New Message from " + senderPhoneNumber + ":" + msg);
+            this.notification("New Message from " + messageDTO.getSenderID() + ":" + messageDTO.getMessageContent());
         }
 
     }
@@ -106,7 +118,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     }
 
     @Override
-    public void updateContactList() throws Exception {
+    public void updateContactList() throws RemoteException {
         System.out.println("updateContactList in call back client imp : ");
 
             if (contactMainController != null) {
@@ -122,8 +134,13 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     }
 
     @Override
-    public void serverShoutdownMessage() {
-
+    public void serveStandUp(){
+        System.out.println("Stand up comedy");
+        running = true;
+    }
+    @Override
+    public void serverShutdownMessage() {
+        running=false;
         Platform.runLater(() -> {
             AtomicInteger i = new AtomicInteger(10);
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -156,7 +173,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     @Override
-    public void announce(String title, String msg) throws Exception {
+    public void announce(String title, String msg) throws RemoteException {
         Platform.runLater(()->{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(title);

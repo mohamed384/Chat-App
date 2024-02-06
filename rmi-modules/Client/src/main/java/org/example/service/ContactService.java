@@ -2,7 +2,9 @@ package org.example.service;
 
 
 import org.example.DTOs.UserDTO;
+import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
+import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
 import org.example.interfaces.UserContact;
 
@@ -10,6 +12,14 @@ import java.rmi.Naming;
 import java.util.List;
 
 public class ContactService {
+    UserContact remoteContact = null;
+    CallBackServer callBackServer = null;
+
+    public ContactService() {
+        remoteContact = (UserContact) StubContext.getStub("UserContactStub");
+        callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+    }
+
 
     private UserContact UserContactRemote() {
         UserContact remoteObject = null;
@@ -22,10 +32,9 @@ public class ContactService {
     }
 
     public List<UserDTO> getAllContacts() {
-        UserContact remoteObject = UserContactRemote();
         List<UserDTO> contacts = null;
         try {
-            contacts = remoteObject.getAllContactsByUserPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber());
+            contacts = remoteContact.getAllContactsByUserPhoneNumber(UserToken.getInstance().getUser().getPhoneNumber());
         } catch (Exception e) {
             System.out.println("Error while getting all contacts " + e.getMessage());
         }
@@ -42,6 +51,20 @@ public class ContactService {
         }
         return user;
     }
+    public boolean deleteContact(UserDTO userDTO) {
+        try {
+            callBackServer.updateContactList(UserToken.getInstance().getUser().getPhoneNumber());
+            boolean deleted = remoteContact.deleteContact(UserToken.getInstance().getUser().getPhoneNumber(), userDTO.getPhoneNumber());
+            callBackServer.updateContactList(userDTO.getPhoneNumber());
+            return deleted;
+        } catch (Exception e) {
+            System.out.println("Error while deleting contact " + e.getMessage());
+        }
+        return false;
+
+    }
+
+
 
 
 }

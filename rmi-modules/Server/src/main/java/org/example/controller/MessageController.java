@@ -12,13 +12,19 @@ import java.util.List;
 public class MessageController extends UnicastRemoteObject implements MessageRMI {
     private final MessageService messageService;
 
-    protected MessageController() throws RemoteException {
+    public MessageController() throws RemoteException {
         messageService = new MessageService();
     }
 
     @Override
     public List<MessageDTO> getMessagesByChatId(int chatId) throws RemoteException {
         return messageService.getMessagesByChatId(chatId);
+    }
+
+
+    @Override
+    public MessageDTO retrieveFileFromDB(int messageID) throws RemoteException {
+        return messageService.retrieveFileFromDB(messageID);
     }
 
 }
