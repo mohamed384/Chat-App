@@ -25,4 +25,5 @@ public interface MessageDAO extends DAO<Message> {
 
     Message retrieveFileFromDB(int messageID);
 
+    List<Message> retrieveAllMessages(int chatID);
 }

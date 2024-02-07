@@ -8,6 +8,7 @@ import org.example.models.Mapper.ChatMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChatService {
     private final ChatDAOImpl chatDAO;
@@ -26,16 +27,10 @@ public class ChatService {
         return chatMapper.toDTO(chatDAO.getPrivateChat(sender, receiver));
     }
     public List<ChatDTO> getAllChatsForUser(String phoneNumber){
-        List<Chat> chats= chatDAO.getAllChatsForUser(phoneNumber);
-        List<ChatDTO> chatDTOS = new ArrayList<>();
-
-        System.out.println("chats size" + chats.size());
-        for(Chat c : chats){
-            chatDTOS.add( chatMapper.toDTO(c));
-        }
-
-        return  chatDTOS;
-    }
+        return chatDAO.getAllChatsForUser(phoneNumber).stream()
+                .map(chatMapper::toDTO)
+                .collect(Collectors.toList());
+    } // CAREE HEEREEEEE
 
     public String getReceiverPhoneNumber(String senderPhoneNumber, int chatID){
         return chatDAO.getReceiverPhoneNumber(senderPhoneNumber,chatID);

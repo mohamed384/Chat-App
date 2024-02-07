@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.callBackImp.CallBackServerImp;
@@ -87,7 +88,20 @@ public class Server  extends  Application{
         primaryStage.setScene(startScreenScene);
         primaryStage.show();
 
+        primaryStage.setOnCloseRequest(event -> {
 
+            CallBackServer callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+
+            if(callBackServer != null) {
+                try {
+                    callBackServer.logoutAll();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+
+        });
         PauseTransition pause = new PauseTransition(Duration.seconds(0.2));
 
         // Set the action to be executed after the pause
@@ -105,6 +119,8 @@ public class Server  extends  Application{
             }
         });
 
+    Image logo = new Image("/images/AppLogo.jpg");
+    primaryStage.getIcons().add(logo);
     primaryStage.setTitle("Server App");
 
         // Start the pause

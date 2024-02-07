@@ -35,73 +35,95 @@ public class ServiceController  implements Initializable {
 
     CallBackServerImp callBackServerImp;
 
-    static boolean  btnRunning= true;
-    static boolean  isFirst= true;
+    static boolean btnRunning = true;
+    static boolean isFirst = true;
 
-    private final  NetworkManager networkManager;
+    private final NetworkManager networkManager;
 
     public ServiceController() {
         networkManager = NetworkManager.getInstance();
 
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         newImage = new Image("/images/green.png");
         oldImage = new Image("/images/red.png");
-        if(isFirst) {
-            networkManager.bindAll();
-            isFirst=false;
+
+        if (isFirst) {
+            bindNetworkManager();
         }
 
-        if (btnRunning){
-            toggleImageView.setImage(newImage);
-            serverStatus.setText("Service is currently running..");
-            serverStatus.setStyle("-fx-font-weight: bold;");
+            updateServiceStatus();
 
-        }else{
-            toggleImageView.setImage(oldImage);
-            serverStatus.setText("Service is currently offline..");
-            serverStatus.setStyle("-fx-font-weight: bold;");
-        }
         try {
             callBackServerImp = new CallBackServerImp();
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        onOffButton.setOnAction(event -> {
-            System.out.println("service controller " + StubContext.isRunning);
 
-            btnRunning =!btnRunning;
-
-            if (btnRunning) {
-                toggleImageView.setImage(newImage);
-                serverStatus.setText("Service is currently running..");
-                serverStatus.setStyle("-fx-font-weight: bold;");
-                networkManager.bindAll();
-                callBackServerImp.serverStandUpMessage();
-                System.out.println("Binding happen in service Controller");
-            } else {
-                toggleImageView.setImage(oldImage);
-                serverStatus.setText("Service is currently offline..");
-                serverStatus.setStyle("-fx-font-weight: bold;");
-                callBackServerImp.logoutAll();
-                networkManager.unbindAll();
-
-
-            }
-
-
-
-        });
-
-
+        onOffButton.setOnAction(this::toggleService);
     }
 
-    public void onOffServer(ActionEvent event) {
-
-
-
+    private void bindNetworkManager() {
+        networkManager.bindAll();
+        isFirst = false;
     }
+
+    private void updateServiceStatus() {
+        if (btnRunning) {
+            setServiceRunningStatus();
+        } else {
+            setServiceOfflineStatus();
+        }
+    }
+
+    private void setServiceRunningStatus() {
+        toggleImageView.setImage(newImage);
+        serverStatus.setText("Service is currently running..");
+        serverStatus.setStyle("-fx-font-weight: bold;");
+    }
+
+    private void setServiceOfflineStatus() {
+        toggleImageView.setImage(oldImage);
+        serverStatus.setText("Service is currently offline..");
+        serverStatus.setStyle("-fx-font-weight: bold;");
+    }
+
+
+
+
+    private void toggleService(ActionEvent event) {
+
+        onOffButton.setDisable(true);
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+
+        pause.setOnFinished(e -> onOffButton.setDisable(false));
+        pause.play();
+
+        System.out.println("service controller " + StubContext.isRunning);
+
+        btnRunning = !btnRunning;
+
+        if (btnRunning) {
+            setServiceRunningStatus();
+            networkManager.bindAll();
+            callBackServerImp.serverStandUpMessage();
+            System.out.println("Binding happen in service Controller");
+        } else {
+            setServiceOfflineStatus();
+            callBackServerImp.logoutAll();
+            networkManager.unbindAll();
+        }
+    }
+
 
 
 }
+
+
+
+
+

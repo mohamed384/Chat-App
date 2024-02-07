@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -28,6 +29,7 @@ import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.ChatRMI;
 import org.example.Utils.BotClass;
+import org.example.interfaces.MessageRMI;
 import org.example.interfaces.UserAuthentication;
 
 import javax.sound.midi.Receiver;
@@ -40,8 +42,17 @@ import java.nio.file.Paths;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Message22Controller implements Initializable {
     @FXML
@@ -80,6 +91,7 @@ public class Message22Controller implements Initializable {
 
     public  void setDataSource(String receiverName, byte[] receiverImage,int ChatID){
         this.chatID = ChatID;
+        System.out.println("chat data source" + ChatID);
         Platform.runLater(() ->{
             receiver.setText(receiverName);
             profileImage.setImage(new Image(new ByteArrayInputStream(receiverImage)));
@@ -93,6 +105,8 @@ public class Message22Controller implements Initializable {
 
         System.out.println("this is message page in set data source" + this);
         System.out.println(receiverName + " message22" );
+
+
     }
 
 
@@ -101,14 +115,52 @@ public class Message22Controller implements Initializable {
          messageDTO = new MessageDTO();
 
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
-
     }
+
+    public void retriveMessages(MessageDTO messageDTO){
+        if (messageDTO.isAttachment()){
+            retriveAttachment(messageDTO);
+        }else {
+            retriveTextMessages(messageDTO);
+        }
+    }
+
+    private void retriveTextMessages(MessageDTO messageDTO){
+        String message = messageDTO.getMessageContent();
+        String senderPhoneNumber = messageDTO.getSenderID();
+        if(senderPhoneNumber.equals(UserToken.getInstance().getUser().getPhoneNumber())) {
+            bubbleMessageSender(MessageContainer.labelText(message));
+        } else {
+            bubleReceiverMessage(messageDTO);
+        }
+    }
+
+    private void retriveAttachment(MessageDTO messageDTO){
+        File file = new File(messageDTO.getMessageContent());
+        FileController fileController = prepareFileController(file);
+        fileController.setAttachmentFromDB(messageDTO);
+        Parent filePane = loadFilePane(fileController);
+        if (messageDTO.getSenderID().equals( UserToken.getInstance().getUser().getPhoneNumber())) {
+            bubbleMessageSender(filePane);
+        } else {
+            bubleReceiverMessage(messageDTO);
+        }
+    }
+
+
+
     public URL getFxmlUrl() {
         return url;
     }
 
+
+
+    public Pane emojiPane;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
         PaneLoaderFactory.getInstance().setMessage22Controller(this);
         this.url = url;
         try {
@@ -116,6 +168,32 @@ public class Message22Controller implements Initializable {
         } catch (NotBoundException | MalformedURLException | RemoteException e) {
             e.printStackTrace();
         }
+
+
+        Platform.runLater(() -> {
+            MessageRMI messages = (MessageRMI) StubContext.getStub("MessageControllerStub");
+            try {
+                List<MessageDTO> messageDTOS = messages.retrieveAllMessages(chatID);
+                ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
+                int delay = 0;
+                for (MessageDTO messageDTO : messageDTOS) {
+                    // Submit a new task to the thread pool for each message
+                    executorService.schedule(() -> {
+                        try {
+                            retriveMessages(messageDTO);
+                        } catch (Exception e) {
+                            // Handle exceptions here
+                            e.printStackTrace();
+                        }
+                    }, delay++, TimeUnit.MILLISECONDS);
+                }
+                executorService.shutdown();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
 
     }
     public void setCallBackServer(CallBackServer callBackServer) {
@@ -126,8 +204,8 @@ public class Message22Controller implements Initializable {
     }
 
     private boolean chatBotBtn = false;
-    private static final String BOT_ACTIVE_COLOR = " #6B4FA1";
-    private static final String BOT_INACTIVE_COLOR = "#9b75d0";
+    private static final String BOT_ACTIVE_COLOR = "#6639a6";
+    private static final String BOT_INACTIVE_COLOR = "#cfbceb";
 
     public void startBot(ActionEvent event) {
         chatBotBtn = !chatBotBtn;
@@ -151,7 +229,7 @@ public class Message22Controller implements Initializable {
         // Load the file pane and bubble the receiver message
 
         Parent filePane = loadFilePane(fileController);
-        bubleReceiverMessage(filePane , messageDTO.getSenderID());
+//        bubleReceiverMessage(filePane , messageDTO.getSenderID());
 
         return true;
     }
@@ -220,14 +298,15 @@ public class Message22Controller implements Initializable {
                      OutputStream out = new FileOutputStream(destinationPath.toFile())) {
 
                     byte[] buffer = new byte[8192];
-//                    byte[] buffer1 = new byte[(int)  file.length()];
+                    byte[] buffer1 =  new byte[(int)  file.length()];
                     int bytesReadThisTime;
+                    double progress =  buffer.length / buffer1.length;
 
                     while ((bytesReadThisTime = in.read(buffer)) != -1) {
                         out.write(buffer, 0, bytesReadThisTime);
                         bytesRead += bytesReadThisTime;
 
-                        double progress = (double) bytesRead / fileSize;
+
                         updateProgress(progress, fileSize);
 
                         // Update progress in the FileController
@@ -261,12 +340,12 @@ public class Message22Controller implements Initializable {
 //                    }
 
                     MessageDTO messageDTO1 = new MessageDTO();
-                    messageDTO1.setMessageContent(file.toString());
+                    messageDTO1.setMessageContent(file.getName());
                     messageDTO1.setAttachment(fileData);
                     messageDTO1.setChatID(chatID);
                     messageDTO1.setSenderID(UserToken.getInstance().getUser().getPhoneNumber());
                     messageDTO1.setIsAttachment(true);
-                    messageDTO1.toString();
+
                     callBackServer.sendMsg(messageDTO1);
 
                 } catch (IOException e) {
@@ -303,10 +382,10 @@ public class Message22Controller implements Initializable {
         Notifications.create()
                 .title(title)
                 .text(text)
-                .owner(null) // You can set a specific owner if needed
-                .hideAfter(Duration.seconds(5)) // Notification duration
+                .owner(null)
+                .hideAfter(Duration.seconds(5))
                 .position(Pos.TOP_RIGHT)
-                .showInformation(); // Use showInformation() for an information notification
+                .showInformation();
     }
 
 
@@ -337,18 +416,21 @@ public class Message22Controller implements Initializable {
     }
 
 
-    public void bubbleMessageSender(Node file) {
-        ImageView imageView = new ImageView();
-        imageView.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
+    public void bubbleMessageSender(Node node) {
 
-        HBox hBox = new HBox(10); // Add spacing between the image and the text
-        hBox.getChildren().addAll(imageView, file);
+        ImageView imageView = MessageContainer.getImageForReceiveMessage(UserToken.getInstance().getUser());
+
+        HBox hBox = new HBox(10);
+        hBox.getChildren().addAll(imageView, node);
+
+        BorderPane borderPane = MessageContainer.getDateTime(new Timestamp(new Date().getTime()));
 
         VBox messageBubble = new VBox();
-        messageBubble.setMaxHeight(Double.MAX_VALUE); // Set maximum height to a very large value
+        messageBubble.setMaxHeight(Double.MAX_VALUE);
         messageBubble.getChildren().add(hBox);
+        messageBubble.getChildren().add(borderPane);
+
+
         messageBubble.setStyle("-fx-background-color: rgba(0, 0, 0, 0); ; -fx-background-radius: 5px; -fx-padding: 10px;");
 
 
@@ -358,56 +440,42 @@ public class Message22Controller implements Initializable {
         });
     }
 
-    public  Label labelText(String text){
-        Label label = new Label();
-        label.setWrapText(true);
-        label.setMaxWidth(Double.MAX_VALUE);
-        label.setMaxHeight(Double.MAX_VALUE);
-        label.setText(text);
-        label.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; -fx-text-fill: white;");
-        return label;
-    }
 
-    public  void bubleReceiverMessage(Node text , String senderPhoneNumber){
 
-        UserAuthentication userAuthenticationRMI = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
-        UserDTO user = null;
-        try {
-            user = userAuthenticationRMI.getUser(senderPhoneNumber);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-        Image imageSender = new Image(new ByteArrayInputStream(user.getPicture()));
-        ImageView imageView = new ImageView();
-        imageView.setImage(imageSender);
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
 
-        HBox hBox = new HBox(10);
-//      //  hBox.setMinSize(text.getWidth() , text.getHeight());
-        hBox.setPadding(new Insets(5));
-        HBox.setMargin(imageView, new Insets(0, 5, 0, 0));
-        hBox.getChildren().add(text);
-        hBox.getChildren().add(imageView);
-        hBox.setAlignment(Pos.CENTER_RIGHT);
 
+
+    public  void bubleReceiverMessage(MessageDTO messageDTO){
+
+        UserDTO user = MessageContainer.user(messageDTO.getSenderID());
+
+
+        ImageView imageView = MessageContainer.getImageForReceiveMessage(user);
+
+        HBox hBox = MessageContainer.getHBoxForReceiveMessage(imageView , MessageContainer.labelText(messageDTO.getMessageContent()));
+
+        BorderPane borderPane =MessageContainer.getDateTime(new Timestamp(new Date().getTime()));
+        
 
         VBox messageBubble = new VBox();
         messageBubble.getChildren().add(hBox);
+        messageBubble.getChildren().add(borderPane);
+
+
         messageBubble.setStyle("-fx-background-color: rgba(0, 0, 0, 0); -fx-background-radius: 5px; -fx-padding: 10px;");
-        System.out.println("this is vbox message in receive message Messsage page" + vboxMessage);
 
         Platform.runLater(() -> {
             vboxMessage.getChildren().add(messageBubble);
             scrollPane.setVvalue(1.0);
         });
     }
+    
     public void sendMessage(ActionEvent event) {
 
         String message = textField.getText();
         textField.setText("");
 
-        bubbleMessageSender(labelText(message));
+        bubbleMessageSender(MessageContainer.labelText(message));
 
 
         Platform.runLater(() -> {
@@ -428,14 +496,14 @@ public class Message22Controller implements Initializable {
     }
 
 
-    public  boolean receiveMessage(String Result , String senderPhoneNumber , int chatID){
+    public  boolean receiveMessage(MessageDTO messageDTO){
         System.out.println("this is message page in receive message" + this);
 
         if (chatID != this.chatID){
             return false;
         }
 
-        bubleReceiverMessage(labelText(Result) , senderPhoneNumber);
+        bubleReceiverMessage(messageDTO);
 
         if(chatBotBtn == true){
             new Thread(() -> {
@@ -444,10 +512,10 @@ public class Message22Controller implements Initializable {
 
                     System.out.println("callBackServer from message page" + callBackServer);
 
-                    String botResult = BotClass.getBotResult(Result);
+                    String botResult = BotClass.getBotResult(messageDTO.getMessageContent());
 
                     Platform.runLater(() ->
-                            bubbleMessageSender(labelText(botResult)));
+                            bubbleMessageSender(MessageContainer.labelText(botResult)));
                     messageDTO.setMessageContent(botResult);
                     messageDTO.setChatID(chatID);
                     messageDTO.setSenderID(UserToken.getInstance().getUser().getPhoneNumber());

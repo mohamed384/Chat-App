@@ -10,6 +10,7 @@ import org.example.DTOs.UserDTO;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 import org.example.models.Chat;
+import org.example.models.Enums.UserStatus;
 import org.example.models.Message;
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -22,7 +23,9 @@ import java.util.concurrent.Executors;
 
 import org.controlsfx.control.Notifications;
 import org.example.models.User;
+import org.example.services.MessageService;
 import org.example.services.UserService;
+import org.example.utils.MessageDAOSaveHelper;
 
 
 public class CallBackServerImp extends UnicastRemoteObject implements CallBackServer, Serializable {
@@ -32,6 +35,8 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     private final MessageDAOImpl messageDAO;
     private final ContactDAOImpl contactDAOImpl;
     private final ChatDAOImpl chatDAO;
+    private final UserService userService;
+    private final MessageService messageService;
 
     public static int getClients() {
         return clients.size();
@@ -158,8 +163,6 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         for (String senderPhoneNumber :participants ) {
             CallBackClient callBackClient = clients.get(senderPhoneNumber);
             try {
-                if (callBackClient != null) {
-                    callBackClient.receiveMsg(msg, senderPhoneNumber, chatID);
                 if(callBackClient != null) {
 
                     if(messageDTO.isAttachment()){
@@ -176,7 +179,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
     }
 
 
-    public void sendAnnouncement(String title, String msg) {
+        public void sendAnnouncement(String title, String msg) {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
         for (String phoneNumber : clients.keySet()) {
@@ -259,6 +262,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
             throw new RuntimeException(e);
         }
     }
+
 
 
 }

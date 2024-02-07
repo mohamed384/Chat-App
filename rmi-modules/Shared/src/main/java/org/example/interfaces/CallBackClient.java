@@ -1,8 +1,11 @@
 package org.example.interfaces;
 
+import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
+import org.example.models.Enums.UserStatus;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 
 public interface CallBackClient extends Remote {

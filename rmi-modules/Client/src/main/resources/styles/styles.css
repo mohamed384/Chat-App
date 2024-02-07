@@ -8,7 +8,7 @@
 }
 
 .scroll-pane {
-    -fx-background-image: url('../images/background.png');
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover;
+    -fx-background-image: url('/images/background.png');
+    -fx-background-repeat: repeat;
+    -fx-background-size: contain;
 }

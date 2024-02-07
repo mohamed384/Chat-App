@@ -7,8 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.CallBackImp.CallBackClientImp;
+import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackServer;
@@ -34,7 +37,6 @@ public class Client extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
 
             // Load the FXML file for the start screen
         Parent startScreenParent = FXMLLoader.load(getClass().getResource("/views/StartScreen.fxml"));
@@ -93,6 +95,8 @@ public class Client extends Application {
             });
 
         stage.setTitle("Cypher App");
+        Image logo = new Image("/images/AppLogo.jpg");
+        stage.getIcons().add(logo);
         StageUtils.setMainStage(stage);
             // Start the pause
                 pause.play();
@@ -101,25 +105,4 @@ public class Client extends Application {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/views/AuthConatiner.fxml"));
-
-        Scene scene = new Scene(fxmlLoader.load());
-
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show()
-         */
     }

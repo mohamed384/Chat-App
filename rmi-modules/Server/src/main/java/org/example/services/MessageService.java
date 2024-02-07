@@ -7,6 +7,7 @@ import org.example.models.Mapper.MessageMapper;
 import org.example.models.Message;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MessageService {
     private MessageDAO messageDAO;
@@ -21,8 +22,12 @@ public class MessageService {
     }
 
     public MessageDTO retrieveFileFromDB(int messageID) {
-
         return messageMapper.toDTO(messageDAO.retrieveFileFromDB(messageID));
+    }
 
+    public List<MessageDTO> retrieveAllMessages(int chatID) {
+        return messageDAO.retrieveAllMessages(chatID).stream()
+                .map(messageMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -30,9 +30,13 @@ public class MainController {
     @FXML
     private GridPane gridPane;
 
+   public MainController(){
+
+    }
 
 
     public void initialize() {
+
         toggleGroup = new ToggleGroup();
 
         serverControlButton.setToggleGroup(toggleGroup);
@@ -49,7 +53,27 @@ public class MainController {
             }
         });
 
+        loader();
 
+
+    }
+
+
+
+
+    private void loader() {
+        Pane newPane = null;
+        try {
+            newPane = FXMLLoader.load(getClass().getResource("/views/servicecontroller.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        gridPane.add(newPane, 1, 0);
+
+        // Set the constraints on the new pane
+        GridPane.setRowSpan(newPane, 3);
+        GridPane.setHgrow(newPane, Priority.ALWAYS);
+        GridPane.setVgrow(newPane, Priority.ALWAYS);
     }
 
     @FXML

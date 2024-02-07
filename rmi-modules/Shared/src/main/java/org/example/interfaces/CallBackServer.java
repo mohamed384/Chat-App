@@ -27,4 +27,6 @@ public interface CallBackServer extends Remote {
     public boolean isOnline(String clientPhoneNumber) throws  RemoteException;
 
     public void sendNotificationCallBack(String senderPhoneNumber, String receiverPhoneNumber) throws RemoteException;
+
+
 }

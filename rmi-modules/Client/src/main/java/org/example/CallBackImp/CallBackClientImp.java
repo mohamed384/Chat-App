@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.*;
@@ -26,6 +27,7 @@ import org.example.controller.FXMLController.PaneLoaderFactory;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackClient;
 import org.example.models.Chat;
+import org.example.models.Enums.UserStatus;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -85,7 +87,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
             System.out.println("this is an attachment");
             done =  message22Controller.receiveAttachment(messageDTO);
         } else{
-            done = message22Controller.receiveMessage(messageDTO.getMessageContent(), messageDTO.getSenderID() ,messageDTO.getChatID() );
+            done = message22Controller.receiveMessage(messageDTO);
         }
 
         if(!done){
@@ -140,37 +142,35 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     }
     @Override
     public void serverShutdownMessage() {
-        running=false;
+        running = false;
         Platform.runLater(() -> {
             AtomicInteger i = new AtomicInteger(10);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Close the Application");
-            alert.setContentText("The server is shutting down, and the App will close after " + i + " seconds");
+            alert.setContentText("The server is shutting down, and the App will close after " + i.get() + " seconds");
+
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+                if (i.get() != 0) {
+                    i.decrementAndGet();
+                    alert.setContentText("The server is shutting down, and the App will close after " + i.get() + " seconds");
+                } else {
+                    alert.close();
+                    Platform.exit();
+                    System.exit(0);
+                }
+            }));
+            timeline.setCycleCount(11);
+            timeline.play();
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                    login();
+                timeline.stop();
+                Platform.exit();
+                System.exit(0);
             }
-
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-                if (i.get() > 0) {
-                     i.decrementAndGet();
-
-                     Platform.runLater(() -> {
-                         alert.setContentText("The server is shutting down, and the App will close after " + i.get() + " seconds");
-                     });
-                } else {
-
-                    login();
-
-                }
-            }));
-            timeline.setCycleCount(10);
-            timeline.play();
         });
     }
-
 
     @Override
     public void announce(String title, String msg) throws RemoteException {
@@ -196,6 +196,27 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
       Stage stage = StageUtils.getMainStage();
       stage.setScene(new Scene(pane));
     }
+
+
+    public void receiveNotification() throws RemoteException{
+        Platform.runLater(()-> {
+            if(notificationController != null)
+                notificationController.updateNotificationList();
+        });
+    }
+
+    @Override
+    public void onContactStatusChanged(String contactName, UserStatus userStatus) throws RemoteException {
+        if(userStatus == UserStatus.Online){
+            notification(contactName + " is online");
+
+        } else if (userStatus== UserStatus.Offline) {
+            notification(contactName + " is offline");
+
+        }
+    }
+
+
 
 
 }

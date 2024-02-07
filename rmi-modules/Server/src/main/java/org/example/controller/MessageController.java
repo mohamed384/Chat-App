@@ -27,4 +27,9 @@ public class MessageController extends UnicastRemoteObject implements MessageRMI
         return messageService.retrieveFileFromDB(messageID);
     }
 
+    @Override
+    public List<MessageDTO> retrieveAllMessages(int chatID) throws RemoteException {
+        return messageService.retrieveAllMessages(chatID);
+    }
+
 }

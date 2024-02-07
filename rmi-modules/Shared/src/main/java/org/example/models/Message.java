@@ -12,7 +12,7 @@ public class Message {
     private Timestamp timestamp;
 
     private byte[] attachment;
-//TODO add attachment to messageDTO and delete target
+    //TODO add attachment to messageDTO and delete target
     public Message(){}
 
 //    public Message(String senderID, int chatID, byte[] attachment) {

@@ -135,4 +135,36 @@ public class MessageDAOImpl implements MessageDAO {
         return message;
     }
 
+    @Override
+    public List<Message> retrieveAllMessages(int chatID) {
+        String query = "SELECT * FROM Messages WHERE ChatID = ? ORDER BY MessageTimestamp ASC limit 10";
+
+        List<Message> messages = new ArrayList<>();
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, chatID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Message message = new Message(
+                        rs.getString("MessageContent"),
+                        rs.getString("SenderID"),
+                        rs.getInt("ChatID"),
+                        rs.getTimestamp("MessageTimestamp"),
+                        rs.getBoolean("IsAttachment"));
+                if (rs.getBoolean("IsAttachment")) {
+                    message.setAttachment(retrieveFileFromDB(rs.getInt("MessageID")).getAttachment());
+                }
+                messages.add(message);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return messages;
+    }
+
 }
