@@ -20,6 +20,7 @@ import org.example.DTOs.UserDTO;
 import org.example.Utils.CheckFiledValidation;
 import org.example.Utils.Enum.ValidationTypes;
 import org.example.Utils.StubContext;
+import org.example.Utils.UserCash;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
