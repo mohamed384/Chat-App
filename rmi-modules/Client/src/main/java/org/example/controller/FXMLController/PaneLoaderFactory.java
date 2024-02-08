@@ -16,6 +16,8 @@ public class PaneLoaderFactory {
 
     private static NotificationController notificationController;
 
+    private static MainController mainController;
+
     private PaneLoaderFactory(){
     }
 
@@ -24,6 +26,12 @@ public class PaneLoaderFactory {
             instance = new PaneLoaderFactory();
         }
         return instance;
+    }
+    public void setMainController(MainController mainControllerCopy) {
+        mainController = mainControllerCopy;
+    }
+    public MainController getMainController() {
+        return mainController;
     }
     public void setContactMainController(ContactMainController contactMainControllerCopy) {
         contactMainController = contactMainControllerCopy;

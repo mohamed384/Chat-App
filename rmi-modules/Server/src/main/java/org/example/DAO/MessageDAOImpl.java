@@ -6,6 +6,7 @@ import org.example.models.Message;
 import org.example.utils.DBConnection;
 import org.example.utils.MessageDAOSaveHelper;
 
+import java.rmi.RemoteException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,23 @@ public class MessageDAOImpl implements MessageDAO {
     }
 
     @Override
-    public void delete(Message message) {
+    public boolean delete(int chatID) {
+        String query = "DELETE FROM Messages WHERE ChatID = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, chatID);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
 
     }
+
 
     @Override
     public List<MessageDTO> getMessagesByChatId(int chatId) {
@@ -125,6 +140,7 @@ public class MessageDAOImpl implements MessageDAO {
                         rs.getTimestamp("MessageTimestamp"),
                         rs.getBytes("Attachment"),
                         rs.getBoolean("IsAttachment"));
+                message.setAttachment(rs.getBytes("Attachment"));
 
                 System.out.println("------- isAtttachment----");
                 System.out.println(rs.getBoolean("IsAttachment"));

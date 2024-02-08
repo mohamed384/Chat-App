@@ -57,13 +57,13 @@ public class NetworkManager {
             CallBackServer callBackServer = new CallBackServerImp();
             GroupChatRMI groupChatRMI = new GroupChatController();
             MessageRMI messageRMI = new MessageController();
-             StubContext.addStub("UserAuthenticationStub", userAuthenticationStub);
-             StubContext.addStub("UserSendNotificationStub", userSendNotificationStub);
-             StubContext.addStub("UserContactStub", contactControllerStub);
-             StubContext.addStub("ChatControllerStub", ChatControllerStub);
-             StubContext.addStub("CallBackServerStub", callBackServer);
-             StubContext.addStub("GroupChatControllerStub", groupChatRMI);
-             StubContext.addStub("MessageControllerStub", messageRMI);
+            StubContext.addStub("UserAuthenticationStub", userAuthenticationStub);
+            StubContext.addStub("UserSendNotificationStub", userSendNotificationStub);
+            StubContext.addStub("UserContactStub", contactControllerStub);
+            StubContext.addStub("ChatControllerStub", ChatControllerStub);
+            StubContext.addStub("CallBackServerStub", callBackServer);
+            StubContext.addStub("GroupChatControllerStub", groupChatRMI);
+            StubContext.addStub("MessageControllerStub", messageRMI);
         } catch (RemoteException ex) {
             ex.printStackTrace();
         } catch (Exception e) {

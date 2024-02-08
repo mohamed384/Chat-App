@@ -283,17 +283,9 @@ public class ContactMainController  implements Initializable {
 
     private void deleteContact() {
         contactService.deleteContact(selectedItem);
-        try {
-            boolean isDeleted = chatRMI.deleteChat(UserToken.getInstance().getUser().getPhoneNumber(), selectedItem.getPhoneNumber());
-            updateContactList();
-        } catch (RemoteException e) {
-            handleRemoteException(e);
-        }
+
         UserProfile.setVisible(false);
         cypherImg.setVisible(true);
     }
 
-    private void handleRemoteException(RemoteException e) {
-        System.err.println("Failed to delete chat: " + e.getMessage());
-    }
 }

@@ -16,8 +16,8 @@ public interface MessageDAO extends DAO<Message> {
     @Override
     default boolean save(Message message, Connection connection){return false;};
 
-    @Override
-    void delete(Message message);
+
+    boolean delete(int chatID);
 
     MessageDAOSaveHelper saveWithHandler(Message message, Connection connection);
     MessageDAOSaveHelper createWithHandler(Message message);

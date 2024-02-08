@@ -5,15 +5,19 @@ import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackServer;
+import org.example.interfaces.ChatRMI;
 import org.example.interfaces.UserAuthentication;
 import org.example.interfaces.UserContact;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class ContactService {
     UserContact remoteContact = null;
     CallBackServer callBackServer = null;
+
+    ChatRMI chatRMI;
 
     public ContactService() {
         remoteContact = (UserContact) StubContext.getStub("UserContactStub");
@@ -52,12 +56,15 @@ public class ContactService {
         return user;
     }
     public boolean deleteContact(UserDTO userDTO) {
+        chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
         try {
-            callBackServer.updateContactList(UserToken.getInstance().getUser().getPhoneNumber());
+            boolean isDeleted = chatRMI.deleteChat(UserToken.getInstance().getUser().getPhoneNumber(), userDTO.getPhoneNumber());
             boolean deleted = remoteContact.deleteContact(UserToken.getInstance().getUser().getPhoneNumber(), userDTO.getPhoneNumber());
+            callBackServer.updateContactList(UserToken.getInstance().getUser().getPhoneNumber());
             callBackServer.updateContactList(userDTO.getPhoneNumber());
-            return deleted;
+            return deleted && isDeleted;
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error while deleting contact " + e.getMessage());
         }
         return false;

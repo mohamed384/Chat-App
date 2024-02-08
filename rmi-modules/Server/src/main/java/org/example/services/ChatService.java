@@ -2,6 +2,8 @@ package org.example.services;
 
 import org.example.DAO.ChatDAOImpl;
 import org.example.DAO.ChatParticipantDAOImpl;
+import org.example.DAO.MessageDAOImpl;
+import org.example.DAO.interfaces.MessageDAO;
 import org.example.DTOs.ChatDTO;
 import org.example.models.Chat;
 import org.example.models.Mapper.ChatMapper;
@@ -13,11 +15,14 @@ import java.util.stream.Collectors;
 public class ChatService {
     private final ChatDAOImpl chatDAO;
     private final ChatParticipantDAOImpl chatParticipantDAO;
+
+    private final MessageDAO messageDAO;
     private final ChatMapper chatMapper = ChatMapper.INSTANCE;
 
     public ChatService() {
         this.chatDAO = new ChatDAOImpl();
         this.chatParticipantDAO = new ChatParticipantDAOImpl();
+        this.messageDAO = new MessageDAOImpl();
     }
 
     public boolean createChat(String name, byte[] img, String sender,String receiver) {
@@ -40,8 +45,12 @@ public class ChatService {
     }
     public boolean deleteChat(String sender, String receiver){
         Chat chat = chatDAO.getPrivateChat(sender, receiver);
-        boolean result = chatParticipantDAO.deleteChatParticipants(chat.getChatID());
-        if(result){
+        boolean chatParticipantsDeleted = chatParticipantDAO.deleteChatParticipants(chat.getChatID());
+        boolean messagesDeleted = false;
+        if (chatParticipantsDeleted){
+            messagesDeleted = messageDAO.delete(chat.getChatID());
+        }
+        if(chatParticipantsDeleted && messagesDeleted){
             chatDAO.deleteChat(chat);
             return true;
         }

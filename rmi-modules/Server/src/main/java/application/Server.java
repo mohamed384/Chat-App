@@ -1,4 +1,4 @@
-package org.example;
+package application;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Application;

@@ -1,10 +1,7 @@
 package org.example.utils;
 
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
-import com.mysql.cj.jdbc.MysqlDataSource;
-import org.example.Server;
 
-import javax.sql.DataSource;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;

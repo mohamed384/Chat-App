@@ -1,5 +1,6 @@
 package org.example.CallBackImp;
 
+import com.sun.tools.javac.Main;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -10,8 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
@@ -25,6 +24,8 @@ import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackClient;
 import org.example.models.Enums.UserStatus;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
@@ -44,6 +45,8 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
     MessageChatController messageChatController;
     MessagePage messagePage;
+
+    MainController mainController;
 
 
     public static boolean running=true;
@@ -201,9 +204,11 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
     public void receiveNotification() throws RemoteException{
+        mainController = PaneLoaderFactory.getInstance().getMainController();
         Platform.runLater(()-> {
             if(notificationController != null)
                 notificationController.updateNotificationList();
+            mainController.setNewNotification();
         });
     }
 
@@ -220,6 +225,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
     private  void notificationSound(){
         String mediaUrl = getClass().getResource("/media/Notification.mp3").toExternalForm();
+        //Media media = new Media(mediaUrl);
         Media media = new Media(mediaUrl);
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
