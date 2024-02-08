@@ -55,7 +55,7 @@
                   <Insets />
                </VBox.margin>
                <children>
-                      <HBox alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="182.0">
+                      <HBox fx:id="minProfile" alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="182.0">
                           <children>
                                                 <ImageView fx:id="boxImage" fitHeight="42.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
                                                     <clip>

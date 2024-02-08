@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.HiddenSidesPane;
 import org.example.CallBackImp.CallBackClientImp;
@@ -30,13 +31,9 @@ import org.example.interfaces.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.*;
 
 
 public class MessagePage implements Initializable {
@@ -67,6 +64,9 @@ public class MessagePage implements Initializable {
 
     @FXML
     private VBox vboxMessage;
+
+    @FXML
+    private HBox minProfile;
 
     Boolean botBoolean = false;
     CallBackClientImp callBackClient;
@@ -152,7 +152,9 @@ public class MessagePage implements Initializable {
         updateList();
         handleSelection();
 
-
+//        minProfile.setOnMouseClicked(event -> {
+//
+//        });
 
 
 //        if(!ChatListManager.getInstance().getContacts().isEmpty())
@@ -235,19 +237,19 @@ public class MessagePage implements Initializable {
                 System.out.println("newValue" +newValue);
 
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/message22.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageChatController.fxml"));
                     borderPane = loader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
+                MessageChatController messageChatController = PaneLoaderFactory.getInstance().getMessage22Controller();
 
                 if ( newValue.getAdminID() != null) {
-                    message22Controller.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
+                    messageChatController.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
 
                 } else {
-                    message22Controller.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
+                    messageChatController.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
                 }
 
 
@@ -327,6 +329,7 @@ public class MessagePage implements Initializable {
 
 
     }
+
 
 
 }

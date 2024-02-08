@@ -29,11 +29,7 @@ public class MessageDTO implements Serializable {
 
     private byte[] attachment;
     public MessageDTO(){
-
     }
-
-
-
 
 
     public byte[] getAttachment() {
@@ -47,12 +43,6 @@ public class MessageDTO implements Serializable {
 
 
 
-    public MessageDTO(String senderID, int chatID, byte[] attachment) {
-        this.senderID = senderID;
-        this.chatID = chatID;
-        this.attachment = attachment;
-        isAttachment = true; //TODO: check if this is necessary
-    }
 
     public MessageDTO( String messageContent,String senderID, int chatID, Timestamp timestamp) {
         this.senderID = senderID;
@@ -60,13 +50,16 @@ public class MessageDTO implements Serializable {
         this.messageContent = messageContent;
         this.timestamp = timestamp;
     }
-
-    public MessageDTO(int messageID, String content, String senderPhoneNumber, int chatID) {
-        this.messageID = messageID;
-        this.messageContent = content;
-        this.senderID = senderPhoneNumber;
-
+    public MessageDTO( String messageContent,String senderID, int chatID, Timestamp timestamp,byte[]attachment,boolean isAttachment) {
+        this.senderID = senderID;
+        this.chatID = chatID;
+        this.messageContent = messageContent;
+        this.attachment= attachment;
+        this.isAttachment=isAttachment;
+        this.timestamp = timestamp;
     }
+
+
 
     public int getMessageID() {
         return messageID;
@@ -100,7 +93,7 @@ public class MessageDTO implements Serializable {
         this.messageContent = messageContent;
     }
 
-    public boolean isAttachment() {
+    public boolean getIsAttachment() {
         return isAttachment;
     }
 
@@ -108,7 +101,4 @@ public class MessageDTO implements Serializable {
         this.isAttachment = isAttachment;
     }
 
-    public void setAttachment(boolean attachment) {
-        isAttachment = attachment;
-    }
 }

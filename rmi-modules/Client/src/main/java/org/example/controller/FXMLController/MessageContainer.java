@@ -25,6 +25,7 @@ public class MessageContainer {
     public static Label labelText(String text){
         Label label = new Label();
         label.setWrapText(true);
+        label.setStyle("-fx-font-weight: bold");
         label.setMaxWidth(Double.MAX_VALUE);
         label.setMaxHeight(Double.MAX_VALUE);
         label.setText(text);

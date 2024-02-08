@@ -16,12 +16,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import org.controlsfx.control.PopOver;
 import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
@@ -30,9 +29,7 @@ import org.example.interfaces.CallBackServer;
 import org.example.interfaces.ChatRMI;
 import org.example.Utils.BotClass;
 import org.example.interfaces.MessageRMI;
-import org.example.interfaces.UserAuthentication;
 
-import javax.sound.midi.Receiver;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,18 +40,14 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Message22Controller implements Initializable {
+public class MessageChatController implements Initializable {
     @FXML
     public Button bot;
 
@@ -71,6 +64,7 @@ public class Message22Controller implements Initializable {
     private Button editTxt;
     @FXML
     private Button sendEmoji;
+    private PopOver emojiPopOver;
     @FXML
     private TextField textField;
 
@@ -88,6 +82,18 @@ public class Message22Controller implements Initializable {
     List<String> receiverPhoneNumbers;
 
     MessageDTO messageDTO;
+
+    private boolean chatBotBtn = false;
+    private static final String BOT_ACTIVE_COLOR = "#6639a6";
+    private static final String BOT_INACTIVE_COLOR = "#cfbceb";
+
+
+
+    public MessageChatController(){
+        messageDTO = new MessageDTO();
+
+        this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
+    }
 
     public  void setDataSource(String receiverName, byte[] receiverImage,int ChatID){
         this.chatID = ChatID;
@@ -109,17 +115,26 @@ public class Message22Controller implements Initializable {
 
     }
 
+    @FXML
+    public void handleSendEmojiButton() {
 
-
-    public Message22Controller(){
-         messageDTO = new MessageDTO();
-
-        this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
+        if (emojiPopOver.isShowing()) {
+            emojiPopOver.hide();
+        } else {
+            emojiPopOver.show(sendEmoji);
+        }
     }
 
+
+    public void setTextFieldText(String text) {
+        textField.setText(text);
+    }
+
+
+
     public void retriveMessages(MessageDTO messageDTO){
-        if (messageDTO.isAttachment()){
-            retriveAttachment(messageDTO);
+        if (messageDTO.getIsAttachment()){
+            retriveAttachmentFiles(messageDTO);
         }else {
             retriveTextMessages(messageDTO);
         }
@@ -135,16 +150,28 @@ public class Message22Controller implements Initializable {
         }
     }
 
-    private void retriveAttachment(MessageDTO messageDTO){
-        File file = new File(messageDTO.getMessageContent());
-        FileController fileController = prepareFileController(file);
+    private FileController retriveFileControllerII(String fileName, byte[] size) {
+
+        String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        String estintion = fileName.substring(fileName.lastIndexOf('.'));
+        double fileSizeInMB = size.length / (1024.0 * 1024.0);
+        return new FileController(fileNameWithoutExtension, String.format("%.2f", fileSizeInMB), estintion);
+    }
+
+    private void retriveAttachmentFiles(MessageDTO messageDTO){
+
+        FileController fileController = retriveFileControllerII(messageDTO.getMessageContent(), messageDTO.getAttachment());
+        System.out.println("-----------fillle contant ------");
+        System.out.println(messageDTO.getAttachment());
         fileController.setAttachmentFromDB(messageDTO);
+
         Parent filePane = loadFilePane(fileController);
         if (messageDTO.getSenderID().equals( UserToken.getInstance().getUser().getPhoneNumber())) {
             bubbleMessageSender(filePane);
         } else {
-            bubleReceiverMessage(messageDTO);
+            bubbleReceiverFileMessage(filePane , messageDTO.getSenderID());
         }
+
     }
 
 
@@ -154,8 +181,6 @@ public class Message22Controller implements Initializable {
     }
 
 
-
-    public Pane emojiPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -168,7 +193,26 @@ public class Message22Controller implements Initializable {
         } catch (NotBoundException | MalformedURLException | RemoteException e) {
             e.printStackTrace();
         }
+        /////////////////////////// load emoji
 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/emoji.fxml"));
+        VBox emojiPane;
+        try {
+            emojiPane = loader.load();
+            System.out.println("FXML loaded successfully");
+            EmojiController emojiController = loader.getController();
+            emojiController.setTextFieldInOtherController(textField); // Pass a reference to the TextField
+            emojiPopOver = new PopOver(emojiPane);
+            emojiPopOver.setDetachable(false); // To prevent closing when clicking outside
+            emojiPopOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT); // Set arrow position
+            emojiPopOver.setHideOnEscape(true); // Hide when pressing ESC
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+        ///////////////////////////  retrieve all messages from the server
 
         Platform.runLater(() -> {
             MessageRMI messages = (MessageRMI) StubContext.getStub("MessageControllerStub");
@@ -203,9 +247,7 @@ public class Message22Controller implements Initializable {
     public void showProfile(MouseEvent mouseEvent) {
     }
 
-    private boolean chatBotBtn = false;
-    private static final String BOT_ACTIVE_COLOR = "#6639a6";
-    private static final String BOT_INACTIVE_COLOR = "#cfbceb";
+
 
     public void startBot(ActionEvent event) {
         chatBotBtn = !chatBotBtn;
@@ -220,19 +262,50 @@ public class Message22Controller implements Initializable {
         bot.setStyle("-fx-background-color: " + color + ";");
         showNotification("Bot", notificationMessage);
     }
+
+
     public boolean receiveAttachment(MessageDTO  messageDTO) {
 
-        File file = new File(messageDTO.getMessageContent());
-        FileController fileController = prepareFileController(file);
-        // Pass the file path to the FileController
+        FileController fileController = retriveFileControllerII(messageDTO.getMessageContent(), messageDTO.getAttachment());
         fileController.setAttachmentFromDB(messageDTO);
-        // Load the file pane and bubble the receiver message
-
         Parent filePane = loadFilePane(fileController);
-//        bubleReceiverMessage(filePane , messageDTO.getSenderID());
+        bubbleReceiverFileMessage(filePane , messageDTO.getSenderID());
+
 
         return true;
     }
+
+
+
+    public void bubbleReceiverFileMessage(Parent filePane , String receiverPhoneNumber) {
+
+
+        BorderPane borderPane = MessageContainer.getDateTime(new Timestamp(new Date().getTime()));
+
+        ImageView imageView = MessageContainer.getImageForReceiveMessage(MessageContainer.user(receiverPhoneNumber));
+
+        HBox hBox = new HBox();
+//      //  hBox.setMinSize(text.getWidth() , text.getHeight());
+        hBox.setPadding(new Insets(5));
+        HBox.setMargin(imageView, new Insets(0, 5, 0, 0));
+        hBox.getChildren().add(filePane);
+        hBox.getChildren().add(imageView);
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+
+
+        VBox messageBubble = new VBox();
+        messageBubble.getChildren().add(hBox);
+        messageBubble.getChildren().add(borderPane);
+        messageBubble.setStyle("-fx-background-color: rgba(0, 0, 0, 0); -fx-background-radius: 5px; -fx-padding: 10px;");
+
+
+        Platform.runLater(() -> {
+            vboxMessage.getChildren().add(messageBubble);
+            scrollPane.setVvalue(1.0);
+        });
+    }
+
+
 
 
     public void sendAttachment(ActionEvent event) {
@@ -307,21 +380,12 @@ public class Message22Controller implements Initializable {
                         bytesRead += bytesReadThisTime;
 
 
-                        updateProgress(progress, fileSize);
+                        updateProgress(progress, progress);
 
                         // Update progress in the FileController
                         Platform.runLater(() -> fileController.setProgress(progress));
 
-                        // Update color based on progress
-//                        Platform.runLater(() -> {
-//                            if (progress < 0.3) {
-//                                progressBar.setStyle("-fx-bar-fill: red;");
-//                            } else if (progress < 0.6) {
-//                                progressBar.setStyle("-fx-bar-fill: orange;");
-//                            } else {
-//                                progressBar.setStyle("-fx-bar-fill: green;");
-//                            }
-//                        });
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -429,8 +493,6 @@ public class Message22Controller implements Initializable {
         messageBubble.setMaxHeight(Double.MAX_VALUE);
         messageBubble.getChildren().add(hBox);
         messageBubble.getChildren().add(borderPane);
-
-
         messageBubble.setStyle("-fx-background-color: rgba(0, 0, 0, 0); ; -fx-background-radius: 5px; -fx-padding: 10px;");
 
 
@@ -448,7 +510,6 @@ public class Message22Controller implements Initializable {
     public  void bubleReceiverMessage(MessageDTO messageDTO){
 
         UserDTO user = MessageContainer.user(messageDTO.getSenderID());
-
 
         ImageView imageView = MessageContainer.getImageForReceiveMessage(user);
 
@@ -474,7 +535,9 @@ public class Message22Controller implements Initializable {
 
         String message = textField.getText();
         textField.setText("");
-
+        if(message.isEmpty()){
+            return;
+        }
         bubbleMessageSender(MessageContainer.labelText(message));
 
 

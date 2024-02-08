@@ -3,7 +3,6 @@ package org.example.controller.FXMLController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
-import org.controlsfx.control.HiddenSidesPane;
 
 import java.io.IOException;
 
@@ -13,7 +12,7 @@ public class PaneLoaderFactory {
 
     private static PaneLoaderFactory instance;
 
-    private static Message22Controller message22Controller;
+    private static MessageChatController messageChatController;
 
     private static NotificationController notificationController;
 
@@ -29,11 +28,11 @@ public class PaneLoaderFactory {
     public void setContactMainController(ContactMainController contactMainControllerCopy) {
         contactMainController = contactMainControllerCopy;
     }
-    public void setMessage22Controller(Message22Controller message22){
-        message22Controller = message22;
+    public void setMessage22Controller(MessageChatController message22){
+        messageChatController = message22;
     }
-    public Message22Controller getMessage22Controller(){
-        return message22Controller;
+    public MessageChatController getMessage22Controller(){
+        return messageChatController;
     }
 
     public ContactMainController getContactMainController() {
@@ -148,15 +147,15 @@ public class PaneLoaderFactory {
         return new Pair<>(pane, controller);
     }
 
-    public static Pair<BorderPane,Message22Controller > getmessage22Pane(){
-        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/Message22.fxml"));
+    public static Pair<BorderPane, MessageChatController> getmessage22Pane(){
+        FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/MessageChatController.fxml"));
         BorderPane pane = null;
         try {
             pane = (BorderPane) loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Message22Controller controller = loader.getController();
+        MessageChatController controller = loader.getController();
         return new Pair<>(pane, controller);
     }
 

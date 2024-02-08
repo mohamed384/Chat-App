@@ -73,12 +73,14 @@ public class FileController implements Initializable {
 
         downloadBtn.setOnAction(event -> downloadFile());
 
-
-
     }
+
 
     private  String attachmentPathName;
     private  byte[] attachment;
+
+
+
     public void setAttachmentFromDB(MessageDTO messageDTO)  {
         attachmentPathName = messageDTO.getMessageContent();
         attachment = messageDTO.getAttachment();

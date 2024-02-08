@@ -1,0 +1,8 @@
+.notification-pane {
+    -fx-background-color: linear-gradient(to top right, #6639a6, #9b75d0);
+    -fx-text-fill: #fff;
+}
+
+.notification-bar {
+    -fx-background-color: #666;
+}

@@ -4,91 +4,91 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox fx:id="emojiList" prefHeight="129.0" prefWidth="272.0" xmlns="http://javafx.com/javafx/21"
+<VBox  prefHeight="129.0" prefWidth="272.0" xmlns="http://javafx.com/javafx/21"
       fx:controller="org.example.controller.FXMLController.EmojiController" xmlns:fx="http://javafx.com/fxml/1">
 
-    <TextFlow layoutX="91.0" layoutY="397.0" prefHeight="129.0" prefWidth="272.0" visible="false">
+    <TextFlow  fx:id="emojiList" layoutX="91.0" layoutY="397.0" prefHeight="129.0" prefWidth="272.0" style="-fx-font-size: 24px;">
         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😀" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😁" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😂" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😃" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😄" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😅" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😆" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😇" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😈" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😉" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😊" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😋" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😌" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😍" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😎" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😏" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😐" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😑" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😒" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😓" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😔" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😕" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😖" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😗" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😘" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😙" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😚" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😛" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😜" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😝" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😞" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😟" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😠" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😡" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😢" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😣" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😤" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😥" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😦" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😧" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😨" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😩" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😪" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😫" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😬" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😭" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😮" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😯" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😰" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😱" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😲" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😳" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😴" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😵" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😶" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😷" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😸" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😹" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😺" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😻" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😼" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😽" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😾" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😿" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙀" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙁" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙂" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙃" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙄" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙅" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙆" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙇" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙈" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙉" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙊" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙋" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙌" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙍" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙎" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙏" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😀"  style="-fx-font-size: 24px; " />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😁"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😂"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😃"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😄"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😅"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😆"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😇"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😈"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😉"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😊"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😋"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😌"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😍"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😎"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😏"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😐"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😑"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😒"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😓"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😔"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😕"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😖"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😗"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😘"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😙"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😚"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😛"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😜"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😝"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😞"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😟"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😠"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😡"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😢"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😣"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😤"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😥"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😦"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😧"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😨"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😩"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😪"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😫"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😬"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😭"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😮"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😯"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😰"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😱"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😲"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😳"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😴"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😵"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😶"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😷"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😸"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😹"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😺"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😻"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😼"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😽"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😾"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="😿"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙀"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙁"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙂"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙃"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙄"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙅"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙆"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙇"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙈"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙉"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙊"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙋"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙌"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙍"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙎"  style="-fx-font-size: 24px; "/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🙏"  style="-fx-font-size: 24px; "/>
 
         </children>
     </TextFlow>

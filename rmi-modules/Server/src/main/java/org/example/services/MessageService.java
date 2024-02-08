@@ -22,6 +22,12 @@ public class MessageService {
     }
 
     public MessageDTO retrieveFileFromDB(int messageID) {
+
+        Message test1 = messageDAO.retrieveFileFromDB(messageID);
+        System.out.println("before mapper " + test1.getIsAttachment());
+        MessageDTO test = messageMapper.toDTO(test1);
+        System.out.println("this is retreive file from db in message service");
+        System.out.println(test.getIsAttachment());
         return messageMapper.toDTO(messageDAO.retrieveFileFromDB(messageID));
     }
 

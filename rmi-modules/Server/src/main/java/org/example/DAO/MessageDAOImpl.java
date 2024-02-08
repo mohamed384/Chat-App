@@ -6,7 +6,6 @@ import org.example.models.Message;
 import org.example.utils.DBConnection;
 import org.example.utils.MessageDAOSaveHelper;
 
-import java.rmi.RemoteException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,10 +69,10 @@ public class MessageDAOImpl implements MessageDAO {
             preparedStatement.setString(1, message.getSenderID());
             preparedStatement.setInt(2, message.getChatID());
             preparedStatement.setString(3, message.getMessageContent());
-            preparedStatement.setBoolean(4, message.isAttachment());
+            preparedStatement.setBoolean(4, message.getIsAttachment());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if(message.isAttachment()){
+            if(message.getIsAttachment()){
                 ResultSet rs = preparedStatement.getGeneratedKeys();
                 if (rs.next()) {
                     generatedKey = rs.getInt(1);
@@ -124,9 +123,14 @@ public class MessageDAOImpl implements MessageDAO {
                         rs.getString("SenderID"),
                         rs.getInt("ChatID"),
                         rs.getTimestamp("MessageTimestamp"),
+                        rs.getBytes("Attachment"),
                         rs.getBoolean("IsAttachment"));
-                message.setAttachment(rs.getBytes("Attachment"));
 
+                System.out.println("------- isAtttachment----");
+                System.out.println(rs.getBoolean("IsAttachment"));
+
+                System.out.println("checking message object");
+                System.out.println(message.getIsAttachment());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -137,7 +141,7 @@ public class MessageDAOImpl implements MessageDAO {
 
     @Override
     public List<Message> retrieveAllMessages(int chatID) {
-        String query = "SELECT * FROM Messages WHERE ChatID = ? ORDER BY MessageTimestamp ASC limit 10";
+        String query = "SELECT * FROM Messages WHERE ChatID = ? ORDER BY MessageTimestamp DESC limit 10";
 
         List<Message> messages = new ArrayList<>();
 
@@ -148,14 +152,21 @@ public class MessageDAOImpl implements MessageDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Message message = new Message(
-                        rs.getString("MessageContent"),
-                        rs.getString("SenderID"),
-                        rs.getInt("ChatID"),
-                        rs.getTimestamp("MessageTimestamp"),
-                        rs.getBoolean("IsAttachment"));
+                Message message;
                 if (rs.getBoolean("IsAttachment")) {
-                    message.setAttachment(retrieveFileFromDB(rs.getInt("MessageID")).getAttachment());
+                     message = new Message(
+                            rs.getString("MessageContent"),
+                            rs.getString("SenderID"),
+                            rs.getInt("ChatID"),
+                            rs.getTimestamp("MessageTimestamp"),
+                            retrieveFileFromDB(rs.getInt("MessageID")).getAttachment(),
+                            rs.getBoolean("IsAttachment"));
+                }else{
+                    message = new Message(
+                            rs.getString("MessageContent"),
+                            rs.getString("SenderID"),
+                            rs.getInt("ChatID"),
+                            rs.getTimestamp("MessageTimestamp"));
                 }
                 messages.add(message);
             }

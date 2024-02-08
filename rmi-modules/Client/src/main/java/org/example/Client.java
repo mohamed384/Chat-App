@@ -95,7 +95,7 @@ public class Client extends Application {
             });
 
         stage.setTitle("Cypher App");
-        Image logo = new Image("/images/AppLogo.jpg");
+        Image logo = new Image("/images/AppLogo.png");
         stage.getIcons().add(logo);
         StageUtils.setMainStage(stage);
             // Start the pause

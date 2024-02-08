@@ -119,7 +119,7 @@ public class Server  extends  Application{
             }
         });
 
-    Image logo = new Image("/images/AppLogo.jpg");
+    Image logo = new Image("/images/AppLogo.png");
     primaryStage.getIcons().add(logo);
     primaryStage.setTitle("Server App");
 

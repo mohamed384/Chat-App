@@ -3,22 +3,19 @@ package org.example.CallBackImp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.example.DTOs.MessageDTO;
-import org.example.DTOs.UserDTO;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.*;
 import org.example.controller.FXMLController.AuthContainerController;
@@ -26,16 +23,14 @@ import org.example.controller.FXMLController.MessagePage;
 import org.example.controller.FXMLController.PaneLoaderFactory;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackClient;
-import org.example.models.Chat;
 import org.example.models.Enums.UserStatus;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+
+
 
 public class CallBackClientImp extends UnicastRemoteObject implements CallBackClient {
 
@@ -47,7 +42,7 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
 
 
 
-    Message22Controller message22Controller;
+    MessageChatController messageChatController;
     MessagePage messagePage;
 
 
@@ -55,8 +50,8 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     public CallBackClientImp() throws RemoteException{
 
     }
-    public void setMessage22Controller(Message22Controller message22Controller) {
-        this.message22Controller = message22Controller;
+    public void setMessage22Controller(MessageChatController messageChatController) {
+        this.messageChatController = messageChatController;
     }
     public void setMessagePage(MessagePage messagePage) {
         this.messagePage = messagePage;
@@ -78,16 +73,19 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     }
 
 
+
     public void receiveMsg(MessageDTO messageDTO) throws Exception {
 //        System.out.println("receiveMsg: "+msg);
 ////      //  System.out.println("sender: "+senderPhoneNumber);
-        System.out.println("this is callback client receive msg" + message22Controller + " this is the callallback client " + this);
         boolean done;
-        if (messageDTO.isAttachment()) {
+        System.out.println("this is receive message");
+        System.out.println(messageDTO.getMessageContent());
+        System.out.println(messageDTO.getIsAttachment());
+        if (messageDTO.getIsAttachment()) {
             System.out.println("this is an attachment");
-            done =  message22Controller.receiveAttachment(messageDTO);
+            done =  messageChatController.receiveAttachment(messageDTO);
         } else{
-            done = message22Controller.receiveMessage(messageDTO);
+            done = messageChatController.receiveMessage(messageDTO);
         }
 
         if(!done){
@@ -111,8 +109,12 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
                             System.out.println("Notification clicked");
                         });
 
-                notificationBuilder.darkStyle();
+
+
                 notificationBuilder.show();
+
+
+                notificationSound();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -216,6 +218,12 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
         }
     }
 
+    private  void notificationSound(){
+        String mediaUrl = getClass().getResource("/media/Notification.mp3").toExternalForm();
+        Media media = new Media(mediaUrl);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
+    }
 
 
 

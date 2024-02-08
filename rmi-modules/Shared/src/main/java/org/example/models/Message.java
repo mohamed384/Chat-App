@@ -15,6 +15,9 @@ public class Message {
     //TODO add attachment to messageDTO and delete target
     public Message(){}
 
+    public boolean getIsAttachment() {
+        return isAttachment;
+    }
 //    public Message(String senderID, int chatID, byte[] attachment) {
 //        this.senderID = senderID;
 //        this.chatID = chatID;
@@ -22,12 +25,12 @@ public class Message {
 //        isAttachment = true; //TODO: check if this is necessary
 //    }
 
-    public Message(String senderID, int receiverID, String messageContent, boolean isAttachment) {
-        this.senderID = senderID;
-        this.chatID = receiverID;
-        this.messageContent = messageContent;
-        this.isAttachment = isAttachment;
-    }
+//    public Message(String senderID, int receiverID, String messageContent, boolean isAttachment) {
+//        this.senderID = senderID;
+//        this.chatID = receiverID;
+//        this.messageContent = messageContent;
+//        this.isAttachment = isAttachment;
+//    }
 
     public Message( String messageContent,String senderID, int chatID, Timestamp timestamp) {
         this.senderID = senderID;
@@ -36,11 +39,12 @@ public class Message {
         this.timestamp = timestamp;
     }
 
-    public Message(String messageContent, String senderID, int chatID, Timestamp messageTimestamp, boolean isAttachment) {
+    public Message(String messageContent, String senderID, int chatID, Timestamp messageTimestamp, byte[] attachment, boolean isAttachment) {
         this.messageContent = messageContent;
         this.senderID = senderID;
         this.chatID = chatID;
         this.timestamp = messageTimestamp;
+        this.attachment= attachment;
         this.isAttachment = isAttachment;
     }
 
@@ -76,9 +80,7 @@ public class Message {
         this.messageContent = messageContent;
     }
 
-    public boolean isAttachment() {
-        return isAttachment;
-    }
+
 
     public void setIsAttachment(boolean attachment) {
         isAttachment = attachment;

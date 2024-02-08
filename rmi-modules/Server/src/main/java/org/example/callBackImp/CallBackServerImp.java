@@ -9,7 +9,6 @@ import org.example.DTOs.MessageDTO;
 import org.example.DTOs.UserDTO;
 import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
-import org.example.models.Chat;
 import org.example.models.Enums.UserStatus;
 import org.example.models.Message;
 import java.io.Serializable;
@@ -130,8 +129,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         Message message = new Message();
         MessageDAOSaveHelper test;
         MessageDTO ee = null;
-        if (!messageDTO.isAttachment()) {
-
+        if (!messageDTO.getIsAttachment()) {
             message.setSenderID(messageDTO.getSenderID());
             message.setMessageContent(messageDTO.getMessageContent());
             message.setIsAttachment(false);
@@ -151,12 +149,12 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
         List<String> participants = chatDAO.getChatParticipants(messageDTO.getSenderID(), messageDTO.getChatID());
 
-        if(messageDTO.isAttachment()) {
+        if(messageDTO.getIsAttachment()) {
             ee = messageService.retrieveFileFromDB(test.getGeneratedKey());
             System.out.println("######################");
             System.out.println(ee.getMessageContent());
             System.out.println(ee.getSenderID());
-            System.out.println(ee.isAttachment());
+            System.out.println(ee.getIsAttachment());
             System.out.println("test Key "+test.getGeneratedKey());
         }
 
@@ -165,7 +163,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
             try {
                 if(callBackClient != null) {
 
-                    if(messageDTO.isAttachment()){
+                    if(messageDTO.getIsAttachment()){
                         callBackClient.receiveMsg(ee);
                     }else {
                         callBackClient.receiveMsg(messageDTO);

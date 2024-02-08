@@ -11,6 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.UserDTO;
@@ -18,8 +21,6 @@ import org.example.Utils.CheckFiledValidation;
 import org.example.Utils.Enum.ValidationTypes;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
-import org.example.controller.FXMLController.MessagePage;
-import org.example.interfaces.CallBackClient;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
@@ -29,7 +30,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.rmi.Naming;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -66,7 +66,7 @@ public class UserAuthService {
 
 
 
-    protected void switchToMessagePage(ActionEvent actionEvent) {
+    protected void switchToMainPage(ActionEvent actionEvent) {
 
         Parent newScreenParent;
         try {
@@ -82,6 +82,11 @@ public class UserAuthService {
         currentStage.setScene(newScreenScene);
 
         currentStage.show();
+
+        String mediaUrl = getClass().getResource("/media/Opening.mp3").toExternalForm();
+        Media media = new Media(mediaUrl);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
     }
 
 
@@ -132,7 +137,7 @@ public class UserAuthService {
             if (user != null && !userOnlient) {
                 UserToken userToken = UserToken.getInstance();
                 userToken.setUser(user);
-                switchToMessagePage(actionEvent);
+                switchToMainPage(actionEvent);
                 UserToken.getInstance().getUser().setUserStatus(UserStatus.Online);
                 System.out.println("login from client auth service is successfully done" + UserToken.getInstance().getUser().getUserStatus());
                 //UserToken.getInstance().getUser().setUserMode(UserMode.Available);
@@ -241,7 +246,7 @@ public class UserAuthService {
             callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
 
-            switchToMessagePage(actionEvent);
+            switchToMainPage(actionEvent);
             return true;
 
         } else {
