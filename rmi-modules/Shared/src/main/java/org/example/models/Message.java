@@ -48,8 +48,16 @@ public class Message {
         this.isAttachment = isAttachment;
     }
 
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public int getMessageID() {
         return messageID;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
     public void setMessageID(int messageID) {

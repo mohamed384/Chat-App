@@ -9,8 +9,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="82.0" prefWidth="247.0" style="-fx-background-color: #9b75d0;;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-<HBox prefHeight="68.0" prefWidth="247.0">
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="82.0" prefWidth="247.0" style="-fx-background-color: #9b75d0;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<HBox style="-fx-border-radius: 20px;" prefHeight="68.0" prefWidth="247.0">
    <children>
       <ImageView fitHeight="65.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -19,9 +19,9 @@
       </ImageView>
       <VBox alignment="CENTER" prefHeight="82.0" prefWidth="129.0">
          <children>
-            <Label fx:id="FileName" prefHeight="18.0" prefWidth="126.0" text="File: name" />
-            <Label fx:id="FileType" prefHeight="18.0" prefWidth="131.0" text="File typr: name" />
-            <Label fx:id="FileSize" prefHeight="18.0" prefWidth="127.0" text="Size:  20  MB" />
+            <Label fx:id="FileName" prefHeight="18.0" prefWidth="126.0" text="File: name" style=" -fx-text-fill: white; -fx-font-size: 13px;" />
+            <Label fx:id="FileType" prefHeight="18.0" prefWidth="131.0" text="File typr: name" style="-fx-text-fill: white; -fx-font-size: 13px;" />
+            <Label fx:id="FileSize" prefHeight="18.0" prefWidth="127.0" text="Size:  20  MB" style=" -fx-text-fill: white; -fx-font-size: 13px;" />
          </children>
       </VBox>
       <Button fx:id="downloadBtn" mnemonicParsing="false" prefHeight="82.0" prefWidth="35.0" styleClass="transparent" stylesheets="@../styles/MainPage.css">

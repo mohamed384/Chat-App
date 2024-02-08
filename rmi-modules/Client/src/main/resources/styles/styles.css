@@ -8,7 +8,11 @@
 }
 
 .scroll-pane {
-    -fx-background-image: url('/images/background.png');
+    -fx-background-image: url('/images/Chatbg.png');
     -fx-background-repeat: repeat;
     -fx-background-size: contain;
+}
+
+.stack-pane:hover {
+    -fx-background-color: #6f8187;
 }

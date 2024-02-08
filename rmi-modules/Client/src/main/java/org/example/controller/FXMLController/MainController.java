@@ -16,6 +16,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -70,6 +72,11 @@ public class MainController implements Initializable {
 
 
     public MainController(){
+
+        String mediaUrl = getClass().getResource("/media/Opening.mp3").toExternalForm();
+        Media media = new Media(mediaUrl);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
 
        try {
             callBackServer = (CallBackServer)StubContext.getStub("CallBackServerStub");

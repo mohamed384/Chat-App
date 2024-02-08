@@ -20,14 +20,13 @@ public class EmojiController {
     public void initialize() {
         emojiList.getChildren().forEach(child -> {
             if (child instanceof Text) {
-                // Add an event handler to each Text node representing an emoji
                 ((Text) child).setOnMouseClicked(event -> {
                     // Retrieve the clicked emoji
                     String emoji = ((Text) child).getText();
-                    // Append the emoji to the TextField in the other controller
                     if (textFieldController != null) {
                         textFieldController.appendText(emoji);
                     }
+                    child.setStyle("-fx-background-color: #6f8187;");
                 });
             }
         });

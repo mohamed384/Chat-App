@@ -144,7 +144,7 @@ public class MessageChatController implements Initializable {
         String message = messageDTO.getMessageContent();
         String senderPhoneNumber = messageDTO.getSenderID();
         if(senderPhoneNumber.equals(UserToken.getInstance().getUser().getPhoneNumber())) {
-            bubbleMessageSender(MessageContainer.labelText(message));
+            bubbleMessageSender(MessageContainer.labelTextSender(message) ,  messageDTO.getTimestamp());
         } else {
             bubleReceiverMessage(messageDTO);
         }
@@ -167,9 +167,9 @@ public class MessageChatController implements Initializable {
 
         Parent filePane = loadFilePane(fileController);
         if (messageDTO.getSenderID().equals( UserToken.getInstance().getUser().getPhoneNumber())) {
-            bubbleMessageSender(filePane);
+            bubbleMessageSender(filePane , messageDTO.getTimestamp());
         } else {
-            bubbleReceiverFileMessage(filePane , messageDTO.getSenderID());
+            bubbleReceiverFileMessage(filePane , messageDTO.getSenderID() , messageDTO.getTimestamp());
         }
 
     }
@@ -201,15 +201,14 @@ public class MessageChatController implements Initializable {
             emojiPane = loader.load();
             System.out.println("FXML loaded successfully");
             EmojiController emojiController = loader.getController();
-            emojiController.setTextFieldInOtherController(textField); // Pass a reference to the TextField
+            emojiController.setTextFieldInOtherController(textField);
             emojiPopOver = new PopOver(emojiPane);
-            emojiPopOver.setDetachable(false); // To prevent closing when clicking outside
-            emojiPopOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT); // Set arrow position
-            emojiPopOver.setHideOnEscape(true); // Hide when pressing ESC
+            emojiPopOver.setDetachable(false);
+            emojiPopOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+            emojiPopOver.setHideOnEscape(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         ///////////////////////////  retrieve all messages from the server
@@ -252,9 +251,9 @@ public class MessageChatController implements Initializable {
     public void startBot(ActionEvent event) {
         chatBotBtn = !chatBotBtn;
         if (chatBotBtn) {
-            updateBotState(BOT_ACTIVE_COLOR, "Bot is started");
+            updateBotState(BOT_ACTIVE_COLOR, "Bot has started");
         } else {
-            updateBotState(BOT_INACTIVE_COLOR, "Bot is stopped");
+            updateBotState(BOT_INACTIVE_COLOR, "Bot has stopped");
         }
     }
 
@@ -269,18 +268,17 @@ public class MessageChatController implements Initializable {
         FileController fileController = retriveFileControllerII(messageDTO.getMessageContent(), messageDTO.getAttachment());
         fileController.setAttachmentFromDB(messageDTO);
         Parent filePane = loadFilePane(fileController);
-        bubbleReceiverFileMessage(filePane , messageDTO.getSenderID());
-
+        bubbleReceiverFileMessage(filePane , messageDTO.getSenderID() , messageDTO.getTimestamp());
 
         return true;
     }
 
 
 
-    public void bubbleReceiverFileMessage(Parent filePane , String receiverPhoneNumber) {
+    public void bubbleReceiverFileMessage(Parent filePane , String receiverPhoneNumber , Timestamp timestamp) {
 
 
-        BorderPane borderPane = MessageContainer.getDateTime(new Timestamp(new Date().getTime()));
+        BorderPane borderPane = MessageContainer.getDateTime(timestamp);
 
         ImageView imageView = MessageContainer.getImageForReceiveMessage(MessageContainer.user(receiverPhoneNumber));
 
@@ -288,14 +286,19 @@ public class MessageChatController implements Initializable {
 //      //  hBox.setMinSize(text.getWidth() , text.getHeight());
         hBox.setPadding(new Insets(5));
         HBox.setMargin(imageView, new Insets(0, 5, 0, 0));
+        filePane.setStyle("-fx-background-color: #7635D0;" );
         hBox.getChildren().add(filePane);
         hBox.getChildren().add(imageView);
         hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.setMaxWidth(Double.MAX_VALUE);
+        hBox.setMaxHeight(Double.MAX_VALUE);
 
 
         VBox messageBubble = new VBox();
         messageBubble.getChildren().add(hBox);
         messageBubble.getChildren().add(borderPane);
+        messageBubble.maxWidth(hBox.getWidth());
+        messageBubble.maxHeight(hBox.getHeight());
         messageBubble.setStyle("-fx-background-color: rgba(0, 0, 0, 0); -fx-background-radius: 5px; -fx-padding: 10px;");
 
 
@@ -315,7 +318,8 @@ public class MessageChatController implements Initializable {
             progressBar = fileController.getProgressBar();
             fileController.setProgressBar(progressBar);
             Parent filePane = loadFilePane(fileController);
-            bubbleMessageSender(filePane);
+            filePane.setStyle("-fx-background-color: #9b75d0;");
+            bubbleMessageSender(filePane , new Timestamp(new Date().getTime()));
             Task<Void> task = createFileUploadTask(fileController, file);
             startFileUploadTask(task);
         } else {
@@ -410,6 +414,8 @@ public class MessageChatController implements Initializable {
                     messageDTO1.setSenderID(UserToken.getInstance().getUser().getPhoneNumber());
                     messageDTO1.setIsAttachment(true);
 
+                    fileController.setAttachmentFromDB(messageDTO1);
+
                     callBackServer.sendMsg(messageDTO1);
 
                 } catch (IOException e) {
@@ -480,19 +486,21 @@ public class MessageChatController implements Initializable {
     }
 
 
-    public void bubbleMessageSender(Node node) {
+    public void bubbleMessageSender(Node node , Timestamp timestamp) {
 
         ImageView imageView = MessageContainer.getImageForReceiveMessage(UserToken.getInstance().getUser());
 
         HBox hBox = new HBox(10);
         hBox.getChildren().addAll(imageView, node);
 
-        BorderPane borderPane = MessageContainer.getDateTime(new Timestamp(new Date().getTime()));
+        BorderPane borderPane = MessageContainer.getDateTime(timestamp);
 
         VBox messageBubble = new VBox();
         messageBubble.setMaxHeight(Double.MAX_VALUE);
         messageBubble.getChildren().add(hBox);
         messageBubble.getChildren().add(borderPane);
+        messageBubble.maxWidth(hBox.getWidth());
+        messageBubble.maxHeight(hBox.getHeight());
         messageBubble.setStyle("-fx-background-color: rgba(0, 0, 0, 0); ; -fx-background-radius: 5px; -fx-padding: 10px;");
 
 
@@ -513,7 +521,7 @@ public class MessageChatController implements Initializable {
 
         ImageView imageView = MessageContainer.getImageForReceiveMessage(user);
 
-        HBox hBox = MessageContainer.getHBoxForReceiveMessage(imageView , MessageContainer.labelText(messageDTO.getMessageContent()));
+        HBox hBox = MessageContainer.getHBoxForReceiveMessage(imageView , MessageContainer.labelTextRecive(messageDTO.getMessageContent()));
 
         BorderPane borderPane =MessageContainer.getDateTime(new Timestamp(new Date().getTime()));
         
@@ -521,7 +529,8 @@ public class MessageChatController implements Initializable {
         VBox messageBubble = new VBox();
         messageBubble.getChildren().add(hBox);
         messageBubble.getChildren().add(borderPane);
-
+        messageBubble.maxWidth(hBox.getWidth());
+        messageBubble.maxHeight(hBox.getHeight());
 
         messageBubble.setStyle("-fx-background-color: rgba(0, 0, 0, 0); -fx-background-radius: 5px; -fx-padding: 10px;");
 
@@ -538,7 +547,7 @@ public class MessageChatController implements Initializable {
         if(message.isEmpty()){
             return;
         }
-        bubbleMessageSender(MessageContainer.labelText(message));
+        bubbleMessageSender(MessageContainer.labelTextSender(message) , new Timestamp(new Date().getTime()));
 
 
         Platform.runLater(() -> {
@@ -551,7 +560,9 @@ public class MessageChatController implements Initializable {
                 messageDTO.setChatID(chatID);
                 messageDTO.setSenderID(UserToken.getInstance().getUser().getPhoneNumber());
                 messageDTO.setIsAttachment(false);
+                messageDTO.setTimestamp(new Timestamp(new Date().getTime()));
                 callBackServer.sendMsg(messageDTO);
+
             } catch (RemoteException | MalformedURLException | NotBoundException e) {
                 throw new RuntimeException(e);
             }
@@ -578,10 +589,11 @@ public class MessageChatController implements Initializable {
                     String botResult = BotClass.getBotResult(messageDTO.getMessageContent());
 
                     Platform.runLater(() ->
-                            bubbleMessageSender(MessageContainer.labelText(botResult)));
+                        bubbleMessageSender( MessageContainer.labelTextSender(botResult) , new Timestamp(new Date().getTime())));
                     messageDTO.setMessageContent(botResult);
                     messageDTO.setChatID(chatID);
                     messageDTO.setSenderID(UserToken.getInstance().getUser().getPhoneNumber());
+                    messageDTO.setTimestamp(new Timestamp(new Date().getTime()));
                     messageDTO.setIsAttachment(false);
 
                     callBackServer.sendMsg(messageDTO);

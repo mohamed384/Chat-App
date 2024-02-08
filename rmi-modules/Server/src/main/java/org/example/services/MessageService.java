@@ -6,6 +6,7 @@ import org.example.DTOs.MessageDTO;
 import org.example.models.Mapper.MessageMapper;
 import org.example.models.Message;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,8 +33,10 @@ public class MessageService {
     }
 
     public List<MessageDTO> retrieveAllMessages(int chatID) {
-        return messageDAO.retrieveAllMessages(chatID).stream()
+        List<MessageDTO> messages = messageDAO.retrieveAllMessages(chatID).stream()
                 .map(messageMapper::toDTO)
                 .collect(Collectors.toList());
+        Collections.reverse(messages);
+        return messages;
     }
 }

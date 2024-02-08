@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.CallBackImp.CallBackClientImp;
 import org.example.Utils.StubContext;
+import org.example.Utils.UserCash;
 import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.CallBackServer;
@@ -64,6 +65,7 @@ public class Client extends Application {
                     remoteObject.updateUser(UserToken.getInstance().getUser());
                     callBackServer.logout( UserToken.getInstance().getUser().getPhoneNumber());
                     callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
+                    UserCash.shutdownScheduler();
                 }
             } catch (RemoteException e) {
                 throw new RuntimeException(e);

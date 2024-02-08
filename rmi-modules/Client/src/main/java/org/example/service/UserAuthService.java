@@ -84,10 +84,7 @@ public class UserAuthService {
 
         currentStage.show();
 
-        String mediaUrl = getClass().getResource("/media/Opening.mp3").toExternalForm();
-        Media media = new Media(mediaUrl);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+
     }
 
 
