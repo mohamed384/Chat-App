@@ -24,8 +24,16 @@ public class MessageDTO implements Serializable {
     }
 
     private boolean isAttachment;
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
     private Timestamp timestamp;
 
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
 
     private byte[] attachment;
     public MessageDTO(){

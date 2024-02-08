@@ -152,9 +152,9 @@ public class MessagePage implements Initializable {
         updateList();
         handleSelection();
 
-//        minProfile.setOnMouseClicked(event -> {
-//
-//        });
+        minProfile.setOnMouseClicked(event -> {
+
+        });
 
 
 //        if(!ChatListManager.getInstance().getContacts().isEmpty())

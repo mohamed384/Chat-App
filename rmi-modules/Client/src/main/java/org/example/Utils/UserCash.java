@@ -43,6 +43,8 @@ public class UserCash {
                 e.printStackTrace();
             }
         }, 3, TimeUnit.HOURS);
+
+
     }
 
     public static String[] loadUser() {
@@ -64,6 +66,10 @@ public class UserCash {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void shutdownScheduler() {
+        scheduler.shutdown();
     }
 
 }

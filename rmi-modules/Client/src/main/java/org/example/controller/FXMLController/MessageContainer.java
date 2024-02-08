@@ -21,15 +21,28 @@ import java.time.format.DateTimeFormatter;
 
 public class MessageContainer {
 
+private static Label labelText(String text){
+    Label label = new Label();
+    label.setWrapText(true);
+    label.setStyle("-fx-font-weight: bold");
+    label.setMaxWidth(Double.MAX_VALUE);
+    label.setMaxHeight(Double.MAX_VALUE);
+    label.setText(text);
 
-    public static Label labelText(String text){
-        Label label = new Label();
-        label.setWrapText(true);
-        label.setStyle("-fx-font-weight: bold");
-        label.setMaxWidth(Double.MAX_VALUE);
-        label.setMaxHeight(Double.MAX_VALUE);
-        label.setText(text);
-        label.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; -fx-text-fill: white;");
+    return label;
+}
+
+    public static Label labelTextSender(String text){
+        Label label = labelText(text);
+        label.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; " +
+                " -fx-font-size: 16px;  -fx-text-fill: white;");
+        return label;
+    }
+
+    public static Label labelTextRecive(String text){
+        Label label = labelText(text);
+        label.setStyle("-fx-background-color: #7635D0; -fx-background-radius: 5px; -fx-padding: 10px; " +
+                "-fx-font-size: 16px; -fx-text-fill: white;");
         return label;
     }
 
@@ -50,8 +63,8 @@ public class MessageContainer {
         Circle clip = new Circle(15, 15, 15);
         imageView.setClip(clip);
         imageView.setImage(imageSender);
-        imageView.setFitWidth(40);
-        imageView.setFitHeight(40);
+        imageView.setFitWidth(50);
+        imageView.setFitHeight(50);
         return imageView;
     }
 
@@ -64,22 +77,24 @@ public class MessageContainer {
         hBox.getChildren().add(text);
         hBox.getChildren().add(imageView);
         hBox.setAlignment(Pos.CENTER_RIGHT);
+        hBox.setMaxWidth(Double.MAX_VALUE);
+        hBox.setMaxHeight(Double.MAX_VALUE);
         return hBox;
     }
 
 
     public static BorderPane getDateTime(Timestamp timestamp){
         Label timeLabel = new Label();
+        timeLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 10px;");
         BorderPane borderPane = new BorderPane();
-        LocalTime currentTime = LocalTime.now();
+        LocalTime currentTime = timestamp.toLocalDateTime().toLocalTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
-        if(timestamp.toLocalDateTime().toLocalTime() != currentTime){
-            currentTime = timestamp.toLocalDateTime().toLocalTime();
-        }
         String timeString = currentTime.format(formatter);
         timeLabel.setText(timeString);
         borderPane.setPrefSize(timeLabel.getPrefWidth(), timeLabel.getPrefHeight());
         borderPane.setCenter(timeLabel);
+        borderPane.maxHeight(timeLabel.getPrefHeight());
+        borderPane.maxHeight(timeLabel.getPrefWidth());
         return borderPane;
     }
 

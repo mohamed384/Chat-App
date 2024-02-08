@@ -16,6 +16,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -69,10 +71,17 @@ public class MainController implements Initializable {
     LinearGradient gradient;
 
 
-    public MainController() {
 
-        try {
-            callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+
+    public MainController(){
+
+        String mediaUrl = getClass().getResource("/media/Opening.mp3").toExternalForm();
+        Media media = new Media(mediaUrl);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
+
+       try {
+            callBackServer = (CallBackServer)StubContext.getStub("CallBackServerStub");
 
             System.out.println(callBackServer);
             callBackClient = new CallBackClientImp();
@@ -154,17 +163,16 @@ public class MainController implements Initializable {
 
     @FXML
     public void goToNotification(ActionEvent event) {
-        newNotification.setVisible(false);
 
-        BorderPane pane = PaneLoaderFactory.notificationPageLoader().getKey();
-        //NotificationController controller = PaneLoaderFactory.notificationPageLoader().getValue();
-        //controller.setCallBackServer(callBackServer);
-        NotificationController controller = PaneLoaderFactory.getInstance().getNotificationController();
-        callBackClient.setNotificationController(controller);
-        pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-        borderPane.setCenter(null);
-        borderPane.setCenter(pane);
+            BorderPane pane = PaneLoaderFactory.notificationPageLoader().getKey();
+            //NotificationController controller = PaneLoaderFactory.notificationPageLoader().getValue();
+            //controller.setCallBackServer(callBackServer);
+            NotificationController controller = PaneLoaderFactory.getInstance().getNotificationController();
+            callBackClient.setNotificationController(controller);
+            pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+            borderPane.setCenter(null);
+            borderPane.setCenter(pane);
 
     }
 
@@ -178,10 +186,10 @@ public class MainController implements Initializable {
         alert.setContentText("Are you sure you want to close the Cypher?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK){
 
 
-            GridPane pane = PaneLoaderFactory.authContainerPane().getKey();
+            GridPane pane  = PaneLoaderFactory.authContainerPane().getKey();
 
             pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -199,7 +207,7 @@ public class MainController implements Initializable {
                 UserToken.getInstance().getUser().setUserStatus(UserStatus.Offline);
                 remoteObject.logout(UserToken.getInstance().getUser());
                 remoteObject.updateUser(UserToken.getInstance().getUser());
-                callBackServer.logout(number);
+                callBackServer.logout( number);
                 callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
             } catch (RemoteException e) {
@@ -212,8 +220,6 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        newNotification.setVisible(false);
-        PaneLoaderFactory.getInstance().setMainController(this);
         gradient = new LinearGradient(
                 0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0, Color.web("#6639a6")),
