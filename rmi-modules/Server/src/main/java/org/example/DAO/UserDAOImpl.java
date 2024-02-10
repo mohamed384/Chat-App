@@ -22,12 +22,6 @@ public class UserDAOImpl implements DAO<User> {
         try (Connection connection = DBConnection.getConnection()) {
             if (connection != null) {
 
-                User existingUser = findByPhoneNumber(user.getPhoneNumber());
-                if (existingUser != null) {
-                    System.out.println("Phone number already exists");
-                    return false;
-                }
-
                 if (user == null) {
                     System.out.println("User is null");
                 } else if (user.getUserStatus() == null) {

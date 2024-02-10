@@ -8,7 +8,6 @@ import org.example.DTOs.ChatDTO;
 import org.example.models.Chat;
 import org.example.models.Mapper.ChatMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +56,30 @@ public class ChatService {
             return true;
         }
         return  false;
+    }
+
+    public boolean isGroupChat(int chatID){
+        return chatDAO.isGroupChat(chatID);
+    }
+
+    public String getGroupAdminID(int chatID){
+
+        String id = chatDAO.getGroupAdminID(chatID);
+        System.out.println("ChatService getGroupAdminID id: "+id);
+        return id;
+    }
+    public void deleteGroupParticipant(int chatId, String participantId){
+        chatParticipantDAO.deleteGroupParticipant(chatId,participantId);
+    }
+
+   public  boolean contactExists(int chatId, String groupName){
+        return chatParticipantDAO.contactExists(chatId,groupName);
+    }
+    public boolean addNewUserToGroup(int chatId,String participantUserID){
+        return chatParticipantDAO.addNewUserToGroup(chatId,participantUserID);
+    }
+    public boolean updateChatGroup(int chatId, byte[] chatImage, String chatName){
+     return   chatDAO.updateChatGroup(chatId,chatImage,chatName);
     }
 
 }

@@ -27,7 +27,7 @@ public interface ChatDAO extends DAO<Chat> {
     List<String> getChatParticipants(String sender, int ChatID);
 
     void deleteChat(Chat chat);
-
+     boolean updateChatGroup(int chatId, byte[] chatImage, String chatName);
 
 }
 

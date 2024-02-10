@@ -6,32 +6,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.example.Utils.LoadImage;
 import org.example.models.Enums.Gender;
 import org.example.service.UserAuthService;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class USerSignUpController implements Initializable {
+public class UserSignUpController implements Initializable {
 
     @FXML
     private Label phoneValidLabel;
@@ -78,7 +71,13 @@ public class USerSignUpController implements Initializable {
     );
 
     public void loadImage() {
+        Image imageLoad = LoadImage.loadImage();
+        if(imageLoad !=null){
             imageSignUp.setImage(LoadImage.loadImage());
+
+        }else {
+            imageSignUp.setImage(new Image("./images/user.png"));
+        }
     }
 
     @Override
@@ -116,13 +115,13 @@ public class USerSignUpController implements Initializable {
 
 
 
-    public USerSignUpController() {
+    public UserSignUpController() {
         this.userAuthService = new UserAuthService();
     }
 
 
     @FXML
-    protected void signup(ActionEvent actionEvent) throws RemoteException {
+    protected void signup(ActionEvent actionEvent)  {
         try {
             Boolean bool =  userAuthService.signup(actionEvent, phoneSignUp, NameSignUp, EmailLogin, selectedCountry,
                      birthDateSignUp, passwordSignUp,

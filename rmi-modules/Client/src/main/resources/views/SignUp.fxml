@@ -13,14 +13,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="600.0" minWidth="600.0" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.USerSignUpController">
+<BorderPane minHeight="600.0" minWidth="600.0" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controller.FXMLController.UserSignUpController">
    <center>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
       <children>
           <Button layoutX="195.0" layoutY="483.0" mnemonicParsing="false" onAction="#signup" styleClass="btn-sigUp" text="SIGN UP" textFill="WHITE" />
-          <Label alignment="CENTER" layoutX="80.0" prefHeight="100.0" prefWidth="336.0" text="Create Account" textAlignment="CENTER" textFill="#392467">
+          <Label alignment="CENTER" layoutX="82.0" layoutY="-7.0" prefHeight="100.0" prefWidth="336.0" text="Create Account" textAlignment="CENTER" textFill="#392467">
               <font>
                   <Font name="Roboto" size="48.0" />
               </font>
@@ -31,11 +32,6 @@
           <TextField fx:id="phoneSignUp" layoutX="14.0" layoutY="214.0" prefHeight="40.0" prefWidth="224.0" promptText="Phone Number" styleClass="custom-text-field" />
           <TextField fx:id="NameSignUp" layoutX="262.0" layoutY="214.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="224.0" promptText="Name" styleClass="custom-text-field" />
           <TextField fx:id="EmailLogin" layoutX="14.0" layoutY="285.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="224.0" promptText="Email" styleClass="custom-text-field" />
-          <ImageView fx:id="imageSignUp" fitHeight="100.0" fitWidth="100.0" layoutX="198.0" layoutY="100.0" onMouseClicked="#loadImage" pickOnBounds="true" smooth="false" styleClass="user-image">
-              <image>
-                  <Image url="@../images/user.png" />
-              </image>
-          </ImageView>
           <DatePicker fx:id="birthDateSignUp" layoutX="15.0" layoutY="418.0" prefHeight="26.0" prefWidth="224.0" promptText="Date of Birth">
               <cursor>
                   <Cursor fx:constant="HAND" />
@@ -57,6 +53,23 @@
             <RadioButton fx:id="maleRadio" layoutX="262.0" layoutY="423.0" mnemonicParsing="false" text="Male" />
             <RadioButton fx:id="femaleRadio" layoutX="343.0" layoutY="423.0" mnemonicParsing="false" text="Female" />
             <ComboBox fx:id="countryComboBox" layoutX="262.0" layoutY="285.0" prefHeight="40.0" prefWidth="224.0" promptText="Country" />
+            <StackPane layoutX="155.0" layoutY="93.0" prefHeight="113.0" prefWidth="190.0">
+               <children>
+                <ImageView fx:id="imageSignUp" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#loadImage" pickOnBounds="true" smooth="false" styleClass="user-image">
+                    <image>
+                        <Image url="@../images/user.png" />
+                    </image>
+                </ImageView>
+                  <ImageView fitHeight="32.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/upload.png" />
+                     </image>
+                     <StackPane.margin>
+                        <Insets left="70.0" top="70.0" />
+                     </StackPane.margin>
+                  </ImageView>
+               </children>
+            </StackPane>
       </children>
       </Pane>
    </center>

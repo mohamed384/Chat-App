@@ -59,18 +59,15 @@ public class GroupController implements Initializable {
 
     @FXML
     public void createGroup() {
-        ObservableList<Integer> checkedIndices = contactList.getCheckModel().getCheckedIndices();
+        ObservableList<UserDTO> checkedIndices = contactList.getCheckModel().getCheckedItems();
 
-        UserDTO checkedUser = null;
-        for (Integer index : checkedIndices) {
-            checkedUser  = observableList.get(index);
-        }
+
         if(groupName.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("choose group name");
             alert.setTitle("enter Group Name");
             alert.showAndWait();
-        }else if(checkedUser == null){
+        }else if(checkedIndices.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("choose group members");
             alert.setTitle("No contacts added to group");
@@ -86,7 +83,7 @@ public class GroupController implements Initializable {
             Stage stage = (Stage) createGroupBtn.getScene().getWindow();
             stage.close();
             //backend logic here
-            List<UserDTO> dtos = observableList;
+            List<UserDTO> dtos = checkedIndices;
             List<String> phoneList = new ArrayList<>(dtos.stream()
                     .map(UserDTO::getPhoneNumber)
                     .toList());

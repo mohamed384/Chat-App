@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
@@ -35,14 +36,14 @@ private static Label labelText(String text){
     public static Label labelTextSender(String text){
         Label label = labelText(text);
         label.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; " +
-                " -fx-font-size: 16px;  -fx-text-fill: white;");
+                " -fx-font-size: 12px;  -fx-text-fill: white;");
         return label;
     }
 
     public static Label labelTextRecive(String text){
         Label label = labelText(text);
         label.setStyle("-fx-background-color: #7635D0; -fx-background-radius: 5px; -fx-padding: 10px; " +
-                "-fx-font-size: 16px; -fx-text-fill: white;");
+                "-fx-font-size: 12px; -fx-text-fill: white;");
         return label;
     }
 
@@ -57,25 +58,26 @@ private static Label labelText(String text){
     }
 
 
-    public static ImageView getImageForReceiveMessage(UserDTO user){
-        Image imageSender = new Image(new ByteArrayInputStream(user.getPicture()));
-        ImageView imageView = new ImageView();
-        Circle clip = new Circle(15, 15, 15);
-        imageView.setClip(clip);
-        imageView.setImage(imageSender);
-        imageView.setFitWidth(50);
-        imageView.setFitHeight(50);
-        return imageView;
+    public static Circle getImageForReceiveMessage(UserDTO user){
+//        Image imageSender = new Image(new ByteArrayInputStream(user.getPicture()));
+//        ImageView imageView = new ImageView();
+        Circle circle = new Circle(15, 15, 15);
+        circle.setFill(new ImagePattern(new Image(new ByteArrayInputStream(user.getPicture()))));
+//        imageView.setClip(clip);
+//        imageView.setImage(imageSender);
+//        imageView.setFitWidth(50);
+//        imageView.setFitHeight(50);
+        return circle;
     }
 
 
-    public static HBox getHBoxForReceiveMessage(ImageView imageView , Node text ){
+    public static HBox getHBoxForReceiveMessage(Circle circle , Node text ){
         HBox hBox = new HBox(10);
 //      //  hBox.setMinSize(text.getWidth() , text.getHeight());
         hBox.setPadding(new Insets(5));
-        HBox.setMargin(imageView, new Insets(0, 5, 0, 0));
+        HBox.setMargin(circle, new Insets(0, 5, 0, 0));
         hBox.getChildren().add(text);
-        hBox.getChildren().add(imageView);
+        hBox.getChildren().add(circle);
         hBox.setAlignment(Pos.CENTER_RIGHT);
         hBox.setMaxWidth(Double.MAX_VALUE);
         hBox.setMaxHeight(Double.MAX_VALUE);

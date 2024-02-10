@@ -4,10 +4,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 
 public class MessageNode {
     public Label userName;
-    public ImageView userImg;
+    public Circle userImg;
     public HBox messageItem;
     MessagePage messagePage;
     public void setUserName(String name) {
@@ -19,6 +21,6 @@ public class MessageNode {
     }
 
     public void setUserImg(Image image) {
-        userImg.setImage(image);
+        userImg.setFill(new ImagePattern(image));
     }
 }

@@ -56,33 +56,110 @@ public class ChatParticipantDAOImpl implements ChatParticipantDAO {
         return false;
     }
 
-    @Override
-    public void delete(ChatParticipant chatParticipant) {
-        String query = "DELETE FROM ChatParticipants WHERE ChatID = ? AND ParticipantUserID = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, chatParticipant.getChatID());
-            pstmt.setString(2, chatParticipant.getParticipantUserID());
+//    @Override
+//    public void deleteGroupParticipant(int chatId, String participantId) {
+//        String query = "DELETE FROM ChatParticipants WHERE ChatID = ? AND ParticipantUserID = ?";
+//        try (Connection connection = DBConnection.getConnection();
+//             PreparedStatement pstmt = connection.prepareStatement(query)) {
+//            pstmt.setInt(1, chatId);
+//            pstmt.setString(2,participantId);
+//
+//            pstmt.executeUpdate();
+//
+//            boolean done =  updateAdmin(chatId);
+//            if(!done){
+//                System.out.println("admin updated");
+//                deleteChat(chatId);
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-            pstmt.executeUpdate();
+    @Override
+    public void deleteGroupParticipant(int chatId, String participantId) {
+        String queryCheckLastMember = "SELECT COUNT(*) FROM ChatParticipants WHERE ChatID = ?";
+        String queryDeleteParticipant = "DELETE FROM ChatParticipants WHERE ChatID = ? AND ParticipantUserID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmtCheckLastMember = connection.prepareStatement(queryCheckLastMember);
+             PreparedStatement pstmtDeleteParticipant = connection.prepareStatement(queryDeleteParticipant)) {
+
+            // Check if the participant being deleted is the last member
+            pstmtCheckLastMember.setInt(1, chatId);
+            ResultSet rs = pstmtCheckLastMember.executeQuery();
+            rs.next();
+            int memberCount = rs.getInt(1);
+
+            // Delete the participant
+            pstmtDeleteParticipant.setInt(1, chatId);
+            pstmtDeleteParticipant.setString(2, participantId);
+            pstmtDeleteParticipant.executeUpdate();
+
+            boolean update = false;
+            if (memberCount == 1) {
+               update =  deleteChat(chatId);
+            }
+
+            if(!update)
+                updateAdmin(chatId);
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public boolean deleteChatParticipants(String sender, String receiver) {
-        String query = "DELETE FROM ChatParticipants WHERE ChatID IN (SELECT * FROM (SELECT ChatID FROM ChatParticipants WHERE ParticipantUserID = ? OR ParticipantUserID = ?) AS temp)";
+
+    public boolean updateAdmin(int chatId) {
+        String query = "UPDATE Chat SET AdminID = (SELECT ParticipantUserID FROM ChatParticipants WHERE ChatID = ? ORDER BY ParticipantStartDate ASC LIMIT 1) WHERE ChatID = ?";
+
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, sender);
-            pstmt.setString(2, receiver);
 
+            pstmt.setInt(1, chatId);
+            pstmt.setInt(2, chatId);
             pstmt.executeUpdate();
-            return true;
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
+    }
+
+
+
+    public boolean deleteChat(int chatid) {
+        String sql = "DELETE FROM Chat WHERE ChatID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, chatid);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    @Override
+    public boolean deleteChatParticipants(String sender, String receiver) {
+//        String query = "DELETE FROM ChatParticipants WHERE ChatID IN (SELECT * FROM (SELECT ChatID FROM ChatParticipants WHERE ParticipantUserID = ? OR ParticipantUserID = ?) AS temp)";
+//        try (Connection connection = DBConnection.getConnection();
+//             PreparedStatement pstmt = connection.prepareStatement(query)) {
+//            pstmt.setString(1, sender);
+//            pstmt.setString(2, receiver);
+//
+//            pstmt.executeUpdate();
+//            return true;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
         return false;
     }
 
@@ -100,4 +177,50 @@ public class ChatParticipantDAOImpl implements ChatParticipantDAO {
         return false;
 
     }
+
+    public boolean contactExists(int chatId, String groupName) {
+        String query = "SELECT * FROM ChatParticipants WHERE ChatID = ? AND ParticipantUserID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, chatId);
+            pstmt.setString(2, groupName);
+
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
+    @Override
+    public boolean addNewUserToGroup(int chatId,String participantUserID) {
+        String query = "INSERT INTO ChatParticipants (ChatID, ParticipantUserID) VALUES (?, ?)";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, chatId);
+            pstmt.setString(2, participantUserID);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -9,9 +9,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -19,19 +16,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import org.controlsfx.control.HiddenSidesPane;
 import org.example.CallBackImp.CallBackClientImp;
 import org.example.DTOs.ChatDTO;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
+import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -42,7 +40,6 @@ public class MessagePage implements Initializable {
     @FXML
     private BorderPane contactListview;
 
-    @FXML
     private HiddenSidesPane hiddenSidesPane;
 
     @FXML
@@ -77,7 +74,7 @@ public class MessagePage implements Initializable {
     ChatRMI chatRMI;
 
     @FXML
-    ImageView boxImage;
+    Circle boxImage;
 
     @FXML
     Label boxLabelName;
@@ -100,6 +97,7 @@ public class MessagePage implements Initializable {
         groupChatRMIController = (GroupChatRMI) StubContext.getStub("GroupChatControllerStub");
 
 
+
     }
     public void setSelectedContact(String selectedContact) {
         this.selectedContact = selectedContact;
@@ -114,12 +112,7 @@ public class MessagePage implements Initializable {
 
 
     public void showProfile(MouseEvent mouseEvent) {
-        if (hiddenSidesPane.getPinnedSide() == null) {
-            hiddenSidesPane.setPinnedSide(Side.RIGHT);
 
-        } else {
-            hiddenSidesPane.setPinnedSide(null);
-        }
     }
 
 
@@ -138,12 +131,34 @@ public class MessagePage implements Initializable {
         this.callBackClient = callBackClient;
     }
 
+    @FXML
+    public void goToProfile(MouseEvent event) {
+
+//        BorderPane borderPane = PaneLoaderFactory.getInstance().getMainBorderPane();
+//        BorderPane pane = PaneLoaderFactory.profilePageLoader().getKey();
+//        pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+//        pane.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+//        borderPane.setCenter(null);
+//        BorderPane.setAlignment(pane, Pos.CENTER);
+//        BorderPane.setMargin(pane, new Insets(0, 0, 0, 0));
+//        borderPane.setCenter(pane);
+
+        BorderPane profilePane = PaneLoaderFactory.profilePageLoader().getKey();
+       // UserProfileController userProfileController = PaneLoaderFactory.getInstance().getUserProfileController();
+
+        Platform.runLater(() -> {
+            BorderPane mainBorder = (BorderPane) StageUtils.getMainStage().getScene().getRoot();
+            mainBorder.setCenter(profilePane);
+        });
+
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         NoChatsVbox.setVisible(false);
         listView.setPlaceholder(null);
-        boxImage.setImage(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture())));
+        boxImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture()))));
         boxLabelName.setText(UserToken.getInstance().getUser().getDisplayName());
 
         PaneLoaderFactory.getInstance().setMessagePage(this);
@@ -238,8 +253,8 @@ public class MessagePage implements Initializable {
                 System.out.println("newValue" +newValue);
 
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageChatController.fxml"));
-                    borderPane = loader.load();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageChat.fxml"));
+                    hiddenSidesPane = loader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -250,6 +265,7 @@ public class MessagePage implements Initializable {
                     messageChatController.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
 
                 } else {
+                    System.out.println("this is message page checking admin id" + newValue.getChatID());
                     messageChatController.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
                 }
 
@@ -270,7 +286,7 @@ public class MessagePage implements Initializable {
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            contactListview.setCenter(borderPane);
+            contactListview.setCenter(hiddenSidesPane);
 
 
             // Add your action here

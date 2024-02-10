@@ -15,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -40,7 +42,7 @@ public class ContactMainController  implements Initializable {
     public BorderPane searchList;
     public Button deleteBtn;
     @FXML
-    private ImageView contactImage;
+    private Circle contactImage;
     @FXML
     private Label nameLabel;
     @FXML
@@ -95,8 +97,8 @@ public class ContactMainController  implements Initializable {
                     UserProfile.setVisible(true);
                     cypherImg.setVisible(false);
                     UserProfile.toFront();
-
-                    contactImage.setImage(new Image(new ByteArrayInputStream(selectedItem.getPicture())));
+                    contactImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(selectedItem.getPicture()))));
+                   // contactImage.setImage(new Image(new ByteArrayInputStream(selectedItem.getPicture())));
                     nameLabel.setText(selectedItem.getDisplayName());
                     bioLabel.setText(selectedItem.getBio());
                     phoneLabel.setText(selectedItem.getPhoneNumber());
@@ -153,7 +155,7 @@ public class ContactMainController  implements Initializable {
                     setText(null);
                     if (getTreeItem().getValue().getDisplayName().equals("Contacts") || getTreeItem().getValue().getDisplayName().equals("Online") || getTreeItem().getValue().getDisplayName().equals( "Offline") ){
                         setText(getTreeItem().getValue().getDisplayName());
-                        setFont(new Font("Arial", 18));
+                        //setFont(new Font("Arial", 18));
 
                     }else {
                         try {

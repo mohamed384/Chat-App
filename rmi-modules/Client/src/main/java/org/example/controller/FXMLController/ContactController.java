@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 
@@ -21,7 +23,7 @@ public class ContactController {
     private ImageView status;
 
     @FXML
-    private ImageView userImg;
+    private Circle userImg;
 
     @FXML
     private Label userName;
@@ -37,7 +39,7 @@ public class ContactController {
     public ContactController(Image image , String userName, String userNumber , Image status){
         this.userName.setText(userName);
         this.userNumber.setText(userNumber);
-        this.userImg.setImage(image);
+        this.userImg.setFill(new ImagePattern(image));
         this.status.setImage(status);
     }
 
@@ -55,7 +57,7 @@ public class ContactController {
         userNumber.setText(number);
     }
     public void setUserImg(byte [] img){
-        userImg.setImage(new Image(new ByteArrayInputStream(img)));
+        userImg.setFill(new ImagePattern(new Image(new ByteArrayInputStream(img))));
     }
     public void setStatus(UserMode userMode, UserStatus userStatus){
         Image statusImage;

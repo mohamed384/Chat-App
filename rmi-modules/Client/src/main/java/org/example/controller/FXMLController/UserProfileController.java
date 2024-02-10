@@ -15,6 +15,7 @@ import javafx.scene.shape.Circle;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.LoadImage;
 import org.example.Utils.UserToken;
+import org.example.controller.FXMLController.interfaces.Observer;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
 import org.example.service.UserProfileService;
@@ -25,6 +26,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserProfileController implements Initializable {
@@ -50,33 +53,15 @@ public class UserProfileController implements Initializable {
     UserDTO userDTO;
     private final UserProfileService userProfileService;
 
+    private List<Observer> observers = new ArrayList<>();
+
     public UserProfileController() {
         userProfileService = new UserProfileService();
     }
-    public static class StatusItem {
-        private String statusText;
-        private Image statusIcon;
 
-        public StatusItem(String statusText, String iconPath) {
-            this.statusText = statusText;
-            this.statusIcon = new Image(iconPath);
-        }
-
-        public String getStatusText() {
-            return statusText;
-        }
-
-        public Image getStatusIcon() {
-            return statusIcon;
-        }
-
-        @Override
-        public String toString() {
-            return statusText;
-        }
-    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        PaneLoaderFactory.getInstance().setUserProfileController(this);
 
         userDTO = UserToken.getInstance().getUser();
         nameField.setText(userDTO.getDisplayName());
@@ -85,6 +70,7 @@ public class UserProfileController implements Initializable {
         profileImg.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
         initialzeComboBox();
         btnUpdateAccordingField();
+        addObserver(PaneLoaderFactory.getInstance().getMainController());
     }
 
 
@@ -171,6 +157,7 @@ public class UserProfileController implements Initializable {
             alert.setContentText("Updated Failed please try again later");
             alert.showAndWait();
         }
+        notifyObservers();
         //userProfileService.updateUser(UserToken.getInstance().getUser());
 
     }
@@ -186,9 +173,27 @@ public class UserProfileController implements Initializable {
 
             });
 
+        }else{
+            profileImg.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
+            isUpdateBtnEnabled = false;
+            updateBtn.setDisable(true);
         }
 
     }
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(userDTO);
+        }
+    }
+
 
 
 

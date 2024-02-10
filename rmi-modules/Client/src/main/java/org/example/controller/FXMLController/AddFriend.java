@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
@@ -37,7 +39,7 @@ public class AddFriend {
     private ImageView requestImage;
 
     @FXML
-    private ImageView searchImage;
+    private Circle searchImage;
 
     @FXML
     private HBox searchResult;
@@ -114,7 +116,7 @@ public class AddFriend {
                     requestButton.setVisible(true);
                     searchResult.setVisible(true);
                     SearchName.setText(userDTO.getDisplayName());
-                    searchImage.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
+                    searchImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(userDTO.getPicture()))));
                     searchNumber.setText(userDTO.getPhoneNumber());
                     if (UserToken.getInstance().getUser().getPhoneNumber().equals(userDTO.getPhoneNumber())) {
                         requestButton.setDisable(true);
@@ -158,7 +160,6 @@ public class AddFriend {
     @FXML
     void sendAddRequest(ActionEvent event) {
         UserSendNotification remoteObject = UserNotificationController();
-
 
         String senderId = UserToken.getInstance().getUser().getPhoneNumber();
         String receiverId = userDTO.getPhoneNumber();

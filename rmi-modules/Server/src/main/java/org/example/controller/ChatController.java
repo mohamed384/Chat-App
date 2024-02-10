@@ -45,5 +45,33 @@ public class ChatController extends UnicastRemoteObject implements ChatRMI {
         return chatService.deleteChat(sender,receiver);
     }
 
+    @Override
+    public boolean isGroupChat(int chatID) throws RemoteException {
+        return chatService.isGroupChat(chatID);
+    }
 
+    @Override
+    public String getGroupAdminID(int chatID) throws RemoteException {
+
+        String id = chatService.getGroupAdminID(chatID);
+        System.out.println("ChatService getGroupAdminID id: "+id);
+        return id;
+    }
+    @Override
+    public void deleteGroupParticipant(int chatId, String participantId)throws RemoteException{
+        chatService.deleteGroupParticipant(chatId,participantId);
+    }
+
+    @Override
+    public boolean contactExists(int chatId, String groupName) throws RemoteException {
+        return chatService.contactExists(chatId,groupName);
+    }
+    @Override
+    public boolean addNewUserToGroup(int chatId,String participantUserID) throws RemoteException {
+        return chatService.addNewUserToGroup(chatId,participantUserID);
+    }
+    @Override
+    public boolean updateChatGroup(int chatId, byte[] chatImage, String chatName) throws RemoteException{
+       return chatService.updateChatGroup(chatId,chatImage,chatName);
+    }
 }

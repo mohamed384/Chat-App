@@ -1,54 +1,44 @@
 package org.example.controller.FXMLController;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.*;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.util.Pair;
-import org.controlsfx.control.HiddenSidesPane;
-import org.controlsfx.control.Notifications;
 import org.example.CallBackImp.CallBackClientImp;
+import org.example.DTOs.UserDTO;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
-import org.example.interfaces.CallBackClient;
+import org.example.controller.FXMLController.interfaces.Observer;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserStatus;
 
-import javax.management.Notification;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+public class MainController implements Initializable, Observer {
 
     public VBox nav;
+    @FXML
+    private Circle userProfile;
     @FXML
     private ImageView newNotification;
     @FXML
@@ -73,10 +63,9 @@ public class MainController implements Initializable {
 
     public MainController() {
 
-        String mediaUrl = getClass().getResource("/media/Opening.mp3").toExternalForm();
-        Media media = new Media(mediaUrl);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        notifySound( "/media/Opening.mp3");
+
+
 
         try {
             callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
@@ -90,9 +79,13 @@ public class MainController implements Initializable {
             callBackServer.login(number, callBackClient);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
-        }
+       }
+        PaneLoaderFactory.setMainBorderPane(borderPane);
+        PaneLoaderFactory.setCallBackClient(callBackClient);
 
-
+    }
+    public BorderPane getBorderPane() {
+        return borderPane;
     }
 
     public void setNewNotification() {
@@ -100,7 +93,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void goToProfile(ActionEvent event) {
+    public void goToProfile(MouseEvent event) {
 
         BorderPane pane = PaneLoaderFactory.profilePageLoader().getKey();
         pane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -209,6 +202,9 @@ public class MainController implements Initializable {
                 callBackServer.logout(number);
                 callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
+
+               notifySound( "/media/log_off.mp3");
+
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -217,8 +213,18 @@ public class MainController implements Initializable {
 
     }
 
+    public void notifySound(String url){
+        String mediaUrl = getClass().getResource(url).toExternalForm();
+        Media media = new Media(mediaUrl);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Image image = new Image(new ByteArrayInputStream(UserToken.getInstance().getUser().getPicture()));
+        userProfile.setFill(new ImagePattern(image));
+        
         newNotification.setVisible(false);
         PaneLoaderFactory.getInstance().setMainController(this);
         gradient = new LinearGradient(
@@ -228,4 +234,12 @@ public class MainController implements Initializable {
         );
         //nav.setBackground(new Background(new BackgroundFill(gradient, CornerRadii.EMPTY, Insets.EMPTY)));
     }
+
+    @Override
+    public void update(UserDTO user) {
+        Image image = new Image(new ByteArrayInputStream(user.getPicture()));
+        userProfile.setFill(new ImagePattern(image));
+    }
+
+
 }

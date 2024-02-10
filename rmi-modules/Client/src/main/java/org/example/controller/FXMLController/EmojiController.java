@@ -1,6 +1,7 @@
 package org.example.controller.FXMLController;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -13,13 +14,14 @@ public class EmojiController {
     private TextFlow emojiList;
 
 
-    private MessageChatController messageChatController;
+
 
     private TextField textFieldController;
 
     public void initialize() {
         emojiList.getChildren().forEach(child -> {
             if (child instanceof Text) {
+
                 ((Text) child).setOnMouseClicked(event -> {
                     // Retrieve the clicked emoji
                     String emoji = ((Text) child).getText();

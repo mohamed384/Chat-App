@@ -18,6 +18,7 @@ import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserSendNotification;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.Naming;
@@ -97,7 +98,7 @@ public class NotificationController implements Initializable {
                         NotificationNodeController controller = loader.getController();
                         controller.setUserName(item.getName());
                         controller.setNotificationController(NotificationController.this);
-                        Image image = new Image("/images/profile.jpg");
+                        Image image = new Image(new ByteArrayInputStream(item.getPicture()));
                         controller.setUserImg(image);
                         controller.setUserNumber(item.getPhoneSender());
                         setGraphic(notificationItem);

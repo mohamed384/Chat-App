@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import org.example.Utils.StubContext;
 import org.example.Utils.UserToken;
 import org.example.interfaces.CallBackServer;
@@ -22,7 +24,7 @@ public class NotificationNodeController implements Initializable {
     @FXML
     public HBox notificationItem;
     @FXML
-    public ImageView userImg;
+    public Circle userImg;
     @FXML
     public Label userName;
     @FXML
@@ -58,7 +60,7 @@ public class NotificationNodeController implements Initializable {
     }
 
     void setUserImg(Image image) {
-        userImg.setImage(image);
+        userImg.setFill(new ImagePattern(image));
     }
 
 

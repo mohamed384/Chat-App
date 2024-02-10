@@ -17,6 +17,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,8 +30,8 @@ import org.example.utils.MessageDAOSaveHelper;
 
 public class CallBackServerImp extends UnicastRemoteObject implements CallBackServer, Serializable {
 
-    static Map<String, CallBackClient> clients = new HashMap<>();
-    static Map<String, CallBackClient> logoutClients = new HashMap<>();
+    static Map<String, CallBackClient> clients = new ConcurrentHashMap<>();
+    static Map<String, CallBackClient> logoutClients = new ConcurrentHashMap<>();
     private final MessageDAOImpl messageDAO;
     private final ContactDAOImpl contactDAOImpl;
     private final ChatDAOImpl chatDAO;

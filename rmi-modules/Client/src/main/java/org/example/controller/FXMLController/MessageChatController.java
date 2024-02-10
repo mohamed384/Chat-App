@@ -8,17 +8,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import org.controlsfx.control.HiddenSidesPane;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 import org.example.DTOs.MessageDTO;
@@ -36,7 +39,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
@@ -50,10 +52,8 @@ import java.util.concurrent.TimeUnit;
 public class MessageChatController implements Initializable {
     @FXML
     public Button bot;
-
     @FXML
-    ImageView profileImage;
-
+    Circle profileImage;
     @FXML
     private Label receiver;
     @FXML
@@ -68,24 +68,20 @@ public class MessageChatController implements Initializable {
     @FXML
     private TextField textField;
 
+    @FXML
+    HiddenSidesPane chatComponentPage;
+
     CallBackServer callBackServer;
-    String receiverPhoneNumber;
     ChatRMI chatRMI;
-
     URL url;
-
     int chatID;
-    public Path uploadedFilePath;
-
     ProgressBar progressBar;
-
     List<String> receiverPhoneNumbers;
-
     MessageDTO messageDTO;
-
     private boolean chatBotBtn = false;
     private static final String BOT_ACTIVE_COLOR = "#6639a6";
     private static final String BOT_INACTIVE_COLOR = "#cfbceb";
+
 
 
 
@@ -95,25 +91,116 @@ public class MessageChatController implements Initializable {
         this.chatRMI = (ChatRMI) StubContext.getStub("ChatControllerStub");
     }
 
-    public  void setDataSource(String receiverName, byte[] receiverImage,int ChatID){
+
+
+    public void setDataSource(String receiverName, byte[] receiverImage, int ChatID) {
         this.chatID = ChatID;
         System.out.println("chat data source" + ChatID);
-        Platform.runLater(() ->{
+
+        Platform.runLater(() -> {
             receiver.setText(receiverName);
-            profileImage.setImage(new Image(new ByteArrayInputStream(receiverImage)));
+            profileImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(receiverImage))));
         });
 
         try {
-            receiverPhoneNumbers = chatRMI.getChatParticipants(UserToken.getInstance().getUser().getPhoneNumber(),chatID);
+            receiverPhoneNumbers = chatRMI.getChatParticipants(UserToken.getInstance().getUser().getPhoneNumber(), chatID);
+
+            Task<VBox> task;
+            if (chatRMI.isGroupChat(chatID)) {
+                task = loadGroupProfile(receiverName, receiverImage, receiverPhoneNumbers , chatID);
+            } else {
+                task = loadSingleProfile(receiverName,receiverImage, receiverPhoneNumbers);
+            }
+
+            task.setOnSucceeded(e -> {
+                VBox profile = task.getValue();
+                if (profile != null) {
+                    Platform.runLater(() -> chatComponentPage.setRight(profile));
+                }
+            });
+
+            new Thread(task).start();
+
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-
-        System.out.println("this is message page in set data source" + this);
-        System.out.println(receiverName + " message22" );
-
-
     }
+
+
+
+//    private VBox loadGroupProfile( String receiver , byte[] image ,  List<String> list ,int chatID) throws IOException {
+//
+//        System.out.println("this is group profile");
+//        GroupSliderHiden  groupSliderHiden = new GroupSliderHiden();
+//        groupSliderHiden.setDataGroup(receiver, image, list , chatID);
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/GroupHiddenPane.fxml"));
+//        loader.setController(groupSliderHiden);
+//        VBox vbox = loader.load();
+//
+//        return vbox;
+//    }
+
+
+    private Task<VBox> loadGroupProfile(String receiver, byte[] image, List<String> list, int chatID) {
+        Task<VBox> loadTask = new Task<VBox>() {
+            @Override
+            protected VBox call() throws Exception {
+                System.out.println("this is group profile");
+                GroupSliderHiden groupSliderHiden = new GroupSliderHiden();
+                groupSliderHiden.setDataGroup(receiver, image, list, chatID);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/GroupHiddenPane.fxml"));
+                loader.setController(groupSliderHiden);
+                VBox vbox = loader.load();
+                return vbox;
+            }
+        };
+
+        loadTask.setOnFailed(event -> {
+            System.out.println("Failed to load the group profile");
+        });
+
+        new Thread(loadTask).start();
+        return loadTask;
+    }
+
+
+
+    private Task<VBox> loadSingleProfile(String receiver, byte[] image, List<String> list) {
+        Task<VBox> loadTask = new Task<VBox>() {
+            @Override
+            protected VBox call() throws Exception {
+                System.out.println("this is single profile");
+                SingleSlideHiden singleSlideHiden = new SingleSlideHiden();
+                singleSlideHiden.setData(receiver, image, list);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/SingleHiddenPane.fxml"));
+                loader.setController(singleSlideHiden);
+                VBox vbox = loader.load();
+                return vbox;
+            }
+        };
+
+        loadTask.setOnFailed(event -> {
+            System.out.println("Failed to load the single profile");
+        });
+
+        new Thread(loadTask).start();
+        return loadTask;
+    }
+
+
+
+
+
+//    private VBox loadSingleProfile( String receiver , byte[] image ,  List<String> list) throws IOException {
+//        System.out.println("this is single profile");
+//        SingleSlideHiden singleSlideHiden = new SingleSlideHiden();
+//        singleSlideHiden.setData(receiver, image, list);
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/SingleHiddenPane.fxml")); // Correct FXML file
+//        loader.setController(singleSlideHiden);
+//        VBox vbox = loader.load();
+//
+//        return vbox;
+//    }
 
     @FXML
     public void handleSendEmojiButton() {
@@ -125,10 +212,10 @@ public class MessageChatController implements Initializable {
         }
     }
 
-
-    public void setTextFieldText(String text) {
-        textField.setText(text);
-    }
+//
+//    public void setTextFieldText(String text) {
+//        textField.setText(text);
+//    }
 
 
 
@@ -243,6 +330,13 @@ public class MessageChatController implements Initializable {
     }
 
     public void showProfile(MouseEvent mouseEvent) {
+
+        if (chatComponentPage.getPinnedSide() == null) {
+            chatComponentPage.setPinnedSide(Side.RIGHT);
+
+        } else {
+            chatComponentPage.setPinnedSide(null);
+        }
     }
 
 
@@ -279,15 +373,15 @@ public class MessageChatController implements Initializable {
 
         BorderPane borderPane = MessageContainer.getDateTime(timestamp);
 
-        ImageView imageView = MessageContainer.getImageForReceiveMessage(MessageContainer.user(receiverPhoneNumber));
+        Circle circle = MessageContainer.getImageForReceiveMessage(MessageContainer.user(receiverPhoneNumber));
 
         HBox hBox = new HBox();
 //      //  hBox.setMinSize(text.getWidth() , text.getHeight());
         hBox.setPadding(new Insets(5));
-        HBox.setMargin(imageView, new Insets(0, 5, 0, 0));
+        HBox.setMargin(circle, new Insets(0, 5, 0, 0));
         filePane.setStyle("-fx-background-color: #7635D0;" );
         hBox.getChildren().add(filePane);
-        hBox.getChildren().add(imageView);
+        hBox.getChildren().add(circle);
         hBox.setAlignment(Pos.CENTER_RIGHT);
         hBox.setMaxWidth(Double.MAX_VALUE);
         hBox.setMaxHeight(Double.MAX_VALUE);
@@ -303,6 +397,10 @@ public class MessageChatController implements Initializable {
 
         Platform.runLater(() -> {
             vboxMessage.getChildren().add(messageBubble);
+            scrollPane.setVvalue(1.0);
+        });
+
+        Platform.runLater(()->{
             scrollPane.setVvalue(1.0);
         });
     }
@@ -487,10 +585,10 @@ public class MessageChatController implements Initializable {
 
     public void bubbleMessageSender(Node node , Timestamp timestamp) {
 
-        ImageView imageView = MessageContainer.getImageForReceiveMessage(UserToken.getInstance().getUser());
+        Circle circle = MessageContainer.getImageForReceiveMessage(UserToken.getInstance().getUser());
 
         HBox hBox = new HBox(10);
-        hBox.getChildren().addAll(imageView, node);
+        hBox.getChildren().addAll(circle, node);
 
         BorderPane borderPane = MessageContainer.getDateTime(timestamp);
 
@@ -507,6 +605,10 @@ public class MessageChatController implements Initializable {
             vboxMessage.getChildren().add(messageBubble);
             scrollPane.setVvalue(1.0);
         });
+
+        Platform.runLater(()->{
+            scrollPane.setVvalue(1.0);
+        });
     }
 
 
@@ -518,9 +620,9 @@ public class MessageChatController implements Initializable {
 
         UserDTO user = MessageContainer.user(messageDTO.getSenderID());
 
-        ImageView imageView = MessageContainer.getImageForReceiveMessage(user);
+        Circle circle = MessageContainer.getImageForReceiveMessage(user);
 
-        HBox hBox = MessageContainer.getHBoxForReceiveMessage(imageView , MessageContainer.labelTextRecive(messageDTO.getMessageContent()));
+        HBox hBox = MessageContainer.getHBoxForReceiveMessage(circle , MessageContainer.labelTextRecive(messageDTO.getMessageContent()));
 
         BorderPane borderPane =MessageContainer.getDateTime(new Timestamp(new Date().getTime()));
         
@@ -535,6 +637,10 @@ public class MessageChatController implements Initializable {
 
         Platform.runLater(() -> {
             vboxMessage.getChildren().add(messageBubble);
+            scrollPane.setVvalue(1.0);
+        });
+
+        Platform.runLater(()->{
             scrollPane.setVvalue(1.0);
         });
     }
