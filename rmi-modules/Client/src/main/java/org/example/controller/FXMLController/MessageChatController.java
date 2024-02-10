@@ -188,14 +188,13 @@ public class MessageChatController implements Initializable {
 
         PaneLoaderFactory.getInstance().setMessage22Controller(this);
         this.url = url;
-        try {
-            this.callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
-        } catch (NotBoundException | MalformedURLException | RemoteException e) {
-            e.printStackTrace();
-        }
+
+            this.callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+           // this.callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+
         /////////////////////////// load emoji
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/emoji.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Emoji.fxml"));
         VBox emojiPane;
         try {
             emojiPane = loader.load();
@@ -552,7 +551,8 @@ public class MessageChatController implements Initializable {
 
         Platform.runLater(() -> {
             try {
-                callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+                callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+                //callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
 
                 System.out.println("callBackServer from message page" + callBackServer);
 
@@ -563,7 +563,7 @@ public class MessageChatController implements Initializable {
                 messageDTO.setTimestamp(new Timestamp(new Date().getTime()));
                 callBackServer.sendMsg(messageDTO);
 
-            } catch (RemoteException | MalformedURLException | NotBoundException e) {
+            } catch (RemoteException  e) {
                 throw new RuntimeException(e);
             }
         });
@@ -582,7 +582,8 @@ public class MessageChatController implements Initializable {
         if(chatBotBtn == true){
             new Thread(() -> {
                 try {
-                    callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
+                    callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+                    //callBackServer = (CallBackServer) Naming.lookup("rmi://localhost:1099/CallBackServerStub");
 
                     System.out.println("callBackServer from message page" + callBackServer);
 

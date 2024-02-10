@@ -79,7 +79,7 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
 
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         clients.put(phoneNumber, callBackClient);
 
@@ -229,7 +229,8 @@ public class CallBackServerImp extends UnicastRemoteObject implements CallBackSe
         CallBackClient callBackClient = clients.get(phoneNumber);
         try {
             System.out.println("updateContactList: in CallBackServerImp");
-            callBackClient.updateContactList();
+            if(callBackClient!=null)
+                callBackClient.updateContactList();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

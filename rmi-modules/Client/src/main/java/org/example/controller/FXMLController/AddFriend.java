@@ -55,7 +55,8 @@ public class AddFriend {
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
         try {
-            remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
+            remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+            //remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,7 +71,8 @@ public class AddFriend {
     private UserSendNotification UserNotificationController() {
         UserSendNotification remoteObject = null;
         try {
-            remoteObject = (UserSendNotification) Naming.lookup("rmi://localhost:1099/UserSendNotificationStub");
+            remoteObject = (UserSendNotification) StubContext.getStub("UserSendNotificationStub");
+           // remoteObject = (UserSendNotification) Naming.lookup("rmi://localhost:1099/UserSendNotificationStub");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,7 +82,8 @@ public class AddFriend {
     private UserContact UserContactController() {
         UserContact remoteObject = null;
         try {
-            remoteObject = (UserContact) Naming.lookup("rmi://localhost:1099/UserContactStub");
+            remoteObject = (UserContact) StubContext.getStub("UserContactStub");
+          //  remoteObject = (UserContact) Naming.lookup("rmi://localhost:1099/UserContactStub");
         } catch (Exception e) {
             e.printStackTrace();
         }

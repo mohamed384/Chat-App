@@ -28,7 +28,8 @@ public class ContactService {
     private UserContact UserContactRemote() {
         UserContact remoteObject = null;
         try {
-            remoteObject = (UserContact) Naming.lookup("rmi://localhost:1099/UserContactStub");
+            remoteObject =(UserContact)StubContext.getStub("UserContactStub");
+           // remoteObject = (UserContact) Naming.lookup("rmi://localhost:1099/UserContactStub");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,7 +49,8 @@ public class ContactService {
     public UserDTO getUserByFriendID(String friendID) {
         UserDTO user = null;
         try {
-            UserAuthentication remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
+            UserAuthentication remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+           // UserAuthentication remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
             user = remoteObject.getUser(friendID);
         } catch (Exception e) {
             System.out.println("Error while getting user by friendID " + e.getMessage());

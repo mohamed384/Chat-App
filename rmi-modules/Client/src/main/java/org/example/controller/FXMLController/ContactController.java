@@ -64,11 +64,11 @@ public class ContactController {
             return;
         }
         if(userStatus == UserStatus.Offline)
-            statusImage = new Image(getClass().getResource("/images/offline-2.png").toExternalForm());
+            statusImage = new Image(getClass().getResourceAsStream("/images/offline-2.png"));
         else {
-            statusImage = userMode == UserMode.Available ? new Image(getClass().getResource("/images/online.png").toExternalForm()) :
-                    userMode == UserMode.Busy ? new Image(getClass().getResource("/images/busy.png").toExternalForm()):
-                            new Image(getClass().getResource("/images/idle.png").toExternalForm());
+            statusImage = userMode == UserMode.Available ? new Image(getClass().getResourceAsStream("/images/online.png")) :
+                    userMode == UserMode.Busy ? new Image(getClass().getResourceAsStream("/images/busy.png")):
+                            new Image(getClass().getResourceAsStream("/images/idle.png"));
         }
         this.status.setImage(statusImage);
     }

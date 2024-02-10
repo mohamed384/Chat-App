@@ -38,7 +38,8 @@ public class NotificationController implements Initializable {
     private UserSendNotification UserNotificationController() {
         UserSendNotification remoteObject = null;
         try {
-            remoteObject = (UserSendNotification) Naming.lookup("rmi://localhost:1099/UserSendNotificationStub");
+            remoteObject = (UserSendNotification) StubContext.getStub("UserSendNotificationStub");
+          //  remoteObject = (UserSendNotification) Naming.lookup("rmi://localhost:1099/UserSendNotificationStub");
         } catch (Exception e) {
             e.printStackTrace();
         }

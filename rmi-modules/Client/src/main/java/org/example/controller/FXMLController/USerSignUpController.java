@@ -72,6 +72,7 @@ public class USerSignUpController implements Initializable {
     String selectedGender = Gender.male.name();
     @FXML
     ComboBox<String> countryComboBox;
+    private final UserAuthService userAuthService;
     private final List<String> countriesList = Arrays.asList(
             "Egypt", "South Africa", "Arab Saudi", "Algeria", "Morocco"
     );
@@ -113,7 +114,7 @@ public class USerSignUpController implements Initializable {
     }
 
 
-    private final UserAuthService userAuthService;
+
 
     public USerSignUpController() {
         this.userAuthService = new UserAuthService();

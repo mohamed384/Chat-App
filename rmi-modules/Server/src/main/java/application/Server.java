@@ -19,7 +19,7 @@ import java.rmi.RemoteException;
 import java.sql.Connection;
 
 
-public class Server  extends  Application{
+public class Server extends Application {
 
     public static void main(String[] args) {
 
@@ -69,16 +69,27 @@ public class Server  extends  Application{
         }
 
              */
+        if (args.length > 0) {
+            String serverIP = args[0];
+            StubContext.setServerIP(serverIP);
+            System.out.println("conntect to machine with  IP: " + serverIP);
+        }
+        else {
+            StubContext.setServerIP("127.0.0.1");
+            System.out.println("conntect to my useless local machine");
+        }
 
-            launch(args);
+
+
+
+        launch(args);
 
         System.exit(0);
 
     }
 
 
-
-@Override
+    @Override
     public void start(Stage primaryStage) throws Exception {
 
         // Load the FXML file for the start screen
@@ -92,7 +103,7 @@ public class Server  extends  Application{
 
             CallBackServer callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
 
-            if(callBackServer != null) {
+            if (callBackServer != null) {
                 try {
                     callBackServer.logoutAll();
                 } catch (RemoteException e) {
@@ -119,9 +130,9 @@ public class Server  extends  Application{
             }
         });
 
-    Image logo = new Image("/images/AppLogo.png");
-    primaryStage.getIcons().add(logo);
-    primaryStage.setTitle("Server App");
+        Image logo = new Image("/images/AppLogo.png");
+        primaryStage.getIcons().add(logo);
+        primaryStage.setTitle("Server App");
 
         // Start the pause
         pause.play();

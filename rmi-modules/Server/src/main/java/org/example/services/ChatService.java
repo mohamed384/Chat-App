@@ -45,6 +45,8 @@ public class ChatService {
     }
     public boolean deleteChat(String sender, String receiver){
         Chat chat = chatDAO.getPrivateChat(sender, receiver);
+        if(chat == null)
+            return false;
         boolean chatParticipantsDeleted = chatParticipantDAO.deleteChatParticipants(chat.getChatID());
         boolean messagesDeleted = false;
         if (chatParticipantsDeleted){

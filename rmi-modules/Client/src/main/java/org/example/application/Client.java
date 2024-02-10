@@ -27,6 +27,17 @@ import java.rmi.RemoteException;
 public class Client extends Application {
 
     public static void main(String[] args) {
+        if (args.length > 0) {
+            String serverIP = args[0];
+            StubContext.setServerIP(serverIP);
+            System.out.println("conntect to machine with  IP: " + serverIP);
+        }
+        else {
+            StubContext.setServerIP("127.0.0.1");
+            System.out.println("conntect to my useless local machine");
+        }
+
+
         launch();
         System.exit(0);
 

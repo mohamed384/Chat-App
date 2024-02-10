@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -152,6 +153,8 @@ public class ContactMainController  implements Initializable {
                     setText(null);
                     if (getTreeItem().getValue().getDisplayName().equals("Contacts") || getTreeItem().getValue().getDisplayName().equals("Online") || getTreeItem().getValue().getDisplayName().equals( "Offline") ){
                         setText(getTreeItem().getValue().getDisplayName());
+                        setFont(new Font("Arial", 18));
+
                     }else {
                         try {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ContactNode.fxml"));

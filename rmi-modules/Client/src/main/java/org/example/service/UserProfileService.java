@@ -35,7 +35,8 @@ public class UserProfileService {
     private UserAuthentication UserAuthRemoteObject() {
         UserAuthentication remoteObject = null;
         try {
-            remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
+            remoteObject = (UserAuthentication) StubContext.getStub("UserAuthenticationStub");
+           // remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
         } catch (Exception e) {
             e.printStackTrace();
         }
