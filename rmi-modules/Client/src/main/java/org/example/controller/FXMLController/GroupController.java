@@ -8,10 +8,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -44,10 +46,8 @@ public class GroupController implements Initializable {
     ObservableList<UserDTO> observableList;
 
    @FXML
-   ImageView groupImage;
+   Circle groupImage;
 
-   @FXML
-    Circle imageProfileClip;
     String groupNameString;
     private final ContactService contactService;
     GroupChatRMI groupChatRMIController;
@@ -75,7 +75,6 @@ public class GroupController implements Initializable {
         }
         else{
             groupNameString= groupName.getText();
-            System.out.println(groupName);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(groupNameString +" group created");
             alert.setTitle("Created Successfully");
@@ -88,8 +87,10 @@ public class GroupController implements Initializable {
                     .map(UserDTO::getPhoneNumber)
                     .toList());
             phoneList.add(UserToken.getInstance().getUser().getPhoneNumber());
+            ImagePattern imagePattern = (ImagePattern) groupImage.getFill();
+            Image image = imagePattern.getImage();
             try {
-                groupChatRMIController.createGroupChat(groupNameString,LoadImage.convertImageToByteArray(groupImage.getImage()),
+                groupChatRMIController.createGroupChat(groupNameString,LoadImage.convertImageToByteArray(image),
                         UserToken.getInstance().getUser().getPhoneNumber(),phoneList);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -101,8 +102,12 @@ public class GroupController implements Initializable {
 
    @FXML
     void upLoadImage(MouseEvent event) {
+       Image image = LoadImage.loadImage();
+       if (image != null) {
+           groupImage.setFill(new ImagePattern(image));
 
-     groupImage.setImage(LoadImage.loadImage());
+       }
+
 
     }
 
@@ -113,6 +118,7 @@ public class GroupController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        groupImage.setFill(new ImagePattern(new Image("/images/group-icon.png")));
         populateContactList();
       //  cellFactory();
 

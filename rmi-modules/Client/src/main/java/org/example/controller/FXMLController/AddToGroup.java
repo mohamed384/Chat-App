@@ -2,23 +2,17 @@ package org.example.controller.FXMLController;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
@@ -31,7 +25,6 @@ import org.example.Utils.UserToken;
 import org.example.controller.FXMLController.UtilsFX.StageUtils;
 import org.example.interfaces.*;
 
-import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -43,7 +36,7 @@ import java.util.stream.Collectors;
 public class AddToGroup implements Initializable {
 
     @FXML
-    private Button AddToGroup;
+    private Button addToGroupBtn;
 
     @FXML
     private CheckListView<UserDTO> contactList;
@@ -58,7 +51,6 @@ public class AddToGroup implements Initializable {
     private Circle imageProfileClip;
     int groupId;
 
-    private CallBackServer callBackServer;
     UserContact userContact;
 
 
@@ -137,17 +129,9 @@ public class AddToGroup implements Initializable {
         if(usersObservableLis !=null)
             contactList.setItems(usersObservableLis);
         this.groupSliderHiden = groupSliderHiden;
-
-        AddToGroup.setDisable(true);
-
-
-
-
         updateUI();
 
-
     }
-
 
     private void updateUI() {
         groupName.setText(name);
@@ -157,26 +141,18 @@ public class AddToGroup implements Initializable {
 
 
 
-    private UserAuthentication UserAuthRemoteObject() {
-        UserAuthentication remoteObject = null;
-        try {
-            remoteObject = (UserAuthentication) Naming.lookup("rmi://localhost:1099/UserAuthenticationStub");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return remoteObject;
-    }
-
-
-
-
-
     public void Add(ActionEvent event) {
-       Platform.runLater(()-> AddToGroup.setDisable(true));
 
         List<UserDTO> selected = contactList.getCheckModel().getCheckedItems();
         try {
-            if(!selected.isEmpty()) {
+            if(selected.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("choose a member to add");
+                alert.setTitle("No contacts selected");
+                alert.showAndWait();
+                return;
+            }
+
                 for (UserDTO userSelected : selected) {
                     chatRMIController.addNewUserToGroup(groupId, userSelected.getPhoneNumber());
                     usersObservableLis.add(userSelected);
@@ -193,13 +169,11 @@ public class AddToGroup implements Initializable {
                 alert.setHeaderText("Added");
                 alert.setTitle("Added Successfully");
                 alert.showAndWait();
-                Stage stage = (Stage) AddToGroup.getScene().getWindow();
+                Stage stage = (Stage) addToGroupBtn.getScene().getWindow();
                 stage.close();
                 notifySound();
                 refresh();
-            }else{
 
-            }
 
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -241,18 +215,8 @@ public class AddToGroup implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        contactList.getCheckModel().getCheckedItems().addListener((ListChangeListener<UserDTO>) c -> {
-            if (contactList.getCheckModel().getCheckedItems().isEmpty()) {
-                AddToGroup.setDisable(true);
-            } else {
-                AddToGroup.setDisable(false);
-            }
-        });
-
         groupName.setText(name);
         groupImage.setImage(groupPhoto);
-        AddToGroup.setDisable(true);
 
 
     }

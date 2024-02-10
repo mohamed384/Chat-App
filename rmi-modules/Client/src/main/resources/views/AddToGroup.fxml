@@ -52,7 +52,7 @@
             <VBox.margin>
                 <Insets left="10.0" right="10.0" />
             </VBox.margin></CheckListView>
-        <Button fx:id="AddToGroup" mnemonicParsing="false" onAction="#Add" prefHeight="45.0" prefWidth="102.0" stylesheets="@../styles/MainPage.css" text="Add">
+        <Button fx:id="addToGroupBtn" mnemonicParsing="false" onAction="#Add" prefHeight="45.0" prefWidth="102.0" stylesheets="@../styles/MainPage.css" text="Add" >
             <VBox.margin>
                 <Insets bottom="10.0" top="15.0" />
             </VBox.margin>

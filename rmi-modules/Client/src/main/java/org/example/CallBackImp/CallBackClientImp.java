@@ -29,6 +29,9 @@ import javafx.scene.media.MediaPlayer;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -146,31 +149,36 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
     public void serverShutdownMessage() {
         running = false;
         Platform.runLater(() -> {
-            AtomicInteger i = new AtomicInteger(10);
+            final int[] countdownSeconds = {10};
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("Close the Application");
-            alert.setContentText("The server is shutting down, and the App will close after " + i.get() + " seconds");
+            alert.setContentText("The server is shutting down, and the App will close after " + countdownSeconds[0] + " seconds");
 
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-                if (i.get() != 0) {
-                    i.decrementAndGet();
-                    alert.setContentText("The server is shutting down, and the App will close after " + i.get() + " seconds");
-                } else {
-                    alert.close();
+            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+            executorService.scheduleAtFixedRate(() -> {
+                countdownSeconds[0]--;
+                if (countdownSeconds[0] == 0) {
+                    executorService.shutdown();
                     Platform.exit();
                     System.exit(0);
                 }
-            }));
-            timeline.setCycleCount(11);
-            timeline.play();
 
+                Platform.runLater(() -> alert.setContentText("The server is shutting down, and the App will close after " + countdownSeconds[0] + " seconds"));
+            }, 1, 1, TimeUnit.SECONDS);
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                timeline.stop();
+            if(!result.isPresent()){
+                executorService.shutdown();
                 Platform.exit();
                 System.exit(0);
             }
+            else if (result.isPresent() && (result.get() == ButtonType.OK || result.get() == ButtonType.CLOSE)) {
+                executorService.shutdown();
+                Platform.exit();
+                System.exit(0);
+            }
+
+
         });
     }
 

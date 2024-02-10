@@ -48,3 +48,6 @@
 .button:hover {
     -fx-background-color: #5d25da; /* Lighter shade of purple */
 }
+.button:focused{
+    -fx-background-color: #5d25da; /* Lighter shade of purple */
+}

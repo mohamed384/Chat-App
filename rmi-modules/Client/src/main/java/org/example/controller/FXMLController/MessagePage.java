@@ -224,7 +224,7 @@ public class MessagePage implements Initializable {
 
                                     controller.setUserName(item.getChatName());
                                     controller.setUserImg(item.getChatImage());
-                                    controller.setUserNumber("");
+                                    controller.setUserNumber("Group chat");
                                     controller.setStatus(null, null);
 
                             }
@@ -233,10 +233,7 @@ public class MessagePage implements Initializable {
                         }
 
 
-//                        System.out.println("name from cell" + selectedUser.getDisplayName());
-                        // controller.setMessageController(MessagePage.this); // Pass the reference
-//                     //   Image image = new Image("/images/profile.jpg");
-//                        Image image = new Image(new ByteArrayInputStream(selectedUser.getPicture()));
+
                         setGraphic(notificationItem);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -272,24 +269,10 @@ public class MessagePage implements Initializable {
 
             }
 
-//            Message22Controller message22Controller = PaneLoaderFactory.getInstance().getMessage22Controller();
-
             callBackClient.setMessage22Controller(PaneLoaderFactory.getInstance().getMessage22Controller());
-            //contactListview.setCenter(PaneLoaderFactory.getmessage22Pane().getKey());
-
-//            FXMLLoader loader = new FXMLLoader();
-//            BorderPane borderPane = null;
-//            try {
-//                loader.setLocation(message22Controller.getFxmlUrl());
-//                borderPane = loader.load();
-//                // Now you can use 'root' as the root of your scene
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             contactListview.setCenter(hiddenSidesPane);
 
 
-            // Add your action here
         });
 
     }

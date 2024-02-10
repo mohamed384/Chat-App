@@ -134,7 +134,7 @@
                                                 <Insets right="10.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <Label text="Eslam Ahmed" textAlignment="CENTER">
+                                          <Label text="" textAlignment="CENTER">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -212,7 +212,7 @@
                                     <Image url="@../images/user.png" />
                                  </image>
                               </ImageView>
-                              <Label prefHeight="19.0" prefWidth="124.0" text="Eslam Ahmed">
+                              <Label prefHeight="19.0" prefWidth="124.0" text="">
                                  <font>
                                     <Font name="System Bold" size="13.0" />
                                  </font>
@@ -307,7 +307,7 @@
                               <Image url="@../images/user.png" />
                            </image>
                         </ImageView>
-                        <Label text="Eslam Ahmed" textAlignment="CENTER">
+                        <Label text="" textAlignment="CENTER">
                            <font>
                               <Font size="17.0" />
                            </font>

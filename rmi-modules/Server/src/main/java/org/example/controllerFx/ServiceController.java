@@ -98,7 +98,7 @@ public class ServiceController  implements Initializable {
 
         onOffButton.setDisable(true);
 
-        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
 
         pause.setOnFinished(e -> onOffButton.setDisable(false));
         pause.play();

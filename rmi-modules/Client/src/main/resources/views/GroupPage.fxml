@@ -18,20 +18,21 @@
             <Insets bottom="5.0" top="10.0" />
          </VBox.margin>
          <children>
-            <ImageView fx:id="groupImage" fitHeight="98.0" fitWidth="123.0" onMouseClicked="#upLoadImage" pickOnBounds="true" preserveRatio="true">
+<!--            <ImageView fx:id="groupImage" fitHeight="98.0" fitWidth="123.0" onMouseClicked="#upLoadImage" pickOnBounds="true" preserveRatio="true">-->
 
-               <clip>
-                  <Circle fx:id="imageProfileClip" centerX="50" centerY="50" radius="50" />
-               </clip>
+<!--               <clip>-->
+<!--                  <Circle fx:id="imageProfileClip" centerX="50" centerY="50" radius="50" />-->
+<!--               </clip>-->
 
-               <image>
-                  <Image url="@../images/profile.jpg" />
-               </image>
+<!--               <image>-->
+<!--                  <Image url="@../images/group-icon.png" />-->
+<!--               </image>-->
 
-               <HBox.margin>
-                  <Insets left="5.0" right="10.0" />
-               </HBox.margin>
-            </ImageView>
+<!--               <HBox.margin>-->
+<!--                  <Insets left="5.0" right="10.0" />-->
+<!--               </HBox.margin>-->
+<!--            </ImageView>-->
+            <Circle fx:id="groupImage" onMouseClicked="#upLoadImage" centerX="50" centerY="50" radius="50" />
             <TextField fx:id="groupName" prefHeight="52.0" prefWidth="204.0" promptText="Group Name">
                <HBox.margin>
                   <Insets left="15.0" right="5.0" />

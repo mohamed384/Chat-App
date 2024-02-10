@@ -25,9 +25,9 @@
          <children>
             <VBox alignment="CENTER" prefHeight="413.0" prefWidth="560.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="onOffButton"  mnemonicParsing="false" styleClass="transparent" stylesheets="@../styles/mainStyle.css">
+                  <Button fx:id="onOffButton" mnemonicParsing="false" styleClass="transparent" stylesheets="@../styles/mainStyle.css">
                      <graphic>
-                        <ImageView fx:id="toggleImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="toggleImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                            <image>
                               <Image url="@../images/red.png" />
                            </image>

@@ -8,15 +8,12 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Circle;
@@ -40,7 +37,7 @@ import java.util.stream.Collectors;
 public class DeleteFromGroup implements Initializable {
 
     @FXML
-    private Button DeleteFromGroup;
+    private Button deleteFromGroupBtn;
 
     @FXML
     private CheckListView<UserDTO> contactList;
@@ -127,28 +124,26 @@ public class DeleteFromGroup implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        contactList.getCheckModel().getCheckedItems().addListener((ListChangeListener<UserDTO>) c -> {
-            if (contactList.getCheckModel().getCheckedItems().isEmpty()) {
-                DeleteFromGroup.setDisable(true);
-            } else {
-                DeleteFromGroup.setDisable(false);
-            }
-        });
-
         if(usersObservableLis !=null)
             contactList.setItems(usersObservableLis);
 
         groupName.setText(name);
         groupImage.setImage(groupPhoto);
-       // DeleteFromGroup.setDisable(true);
 
 
     }
 
     public void delete(ActionEvent event) {
-        Platform.runLater(()-> DeleteFromGroup.setDisable(true));
+//        Platform.runLater(()-> deleteFromGroupBtn.setDisable(true));
     List<UserDTO> selected = contactList.getCheckModel().getCheckedItems();
         try {
+            if(selected.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("choose a member to delete");
+                alert.setTitle("No contacts selected");
+                alert.showAndWait();
+                return;
+            }
             for(UserDTO userSelected :selected){
                 chatRMI.deleteGroupParticipant(groupId , userSelected.getPhoneNumber());
                 usersObservableLis.remove(userSelected);
@@ -165,7 +160,7 @@ public class DeleteFromGroup implements Initializable {
             alert.setHeaderText("Delete");
             alert.setTitle("Deleted Successfully");
             alert.showAndWait();
-            Stage stage = (Stage) DeleteFromGroup.getScene().getWindow();
+            Stage stage = (Stage) deleteFromGroupBtn.getScene().getWindow();
             stage.close();
             notifySound();
             refresh();
@@ -178,20 +173,6 @@ public class DeleteFromGroup implements Initializable {
 
     }
 
-//    private void refresh(){
-//
-//        BorderPane borderPane = null;
-//
-//        borderPane = PaneLoaderFactory.messagePageLoader().getKey();
-//
-////            ChatListManager.getInstance().addContact(selectedItem);
-//        BorderPane mainBorder = (BorderPane)  StageUtils.getMainStage().getScene().getRoot();
-//        mainBorder.setCenter(borderPane);
-//        MessagePage   messagePage = PaneLoaderFactory.getInstance().getMessagePage();
-//        messagePage.setSelectedContact(groupName.getText());
-//        messagePage.updateList();
-//
-//    }
 
 
     private void refresh(){

@@ -216,7 +216,7 @@
             </GridPane>
             <ImageView fx:id="cypherImg" fitHeight="196.0" fitWidth="562.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                <image>
-                  <Image url="@../images/cypher.png" />
+                  <Image url="@../images/cypher-purple.png" />
                </image>
             </ImageView>
          </children>
