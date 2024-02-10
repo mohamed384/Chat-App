@@ -222,5 +222,67 @@ public class ChatDAOImpl implements ChatDAO {
 
     }
 
+    public boolean isGroupChat(int chatID) {
+        String query = "SELECT AdminID FROM Chat WHERE ChatID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, chatID);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int adminID = rs.getInt("AdminID");
+
+                return adminID != 0;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+  public String getGroupAdminID(int chatID){
+      System.out.println("Chat id from getGroupAdminID" + chatID);
+        String query = "SELECT * FROM Chat WHERE ChatID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, chatID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) { // Add this line
+                System.out.println("admin id from getGroupAdminID "+rs.getString("AdminID"));
+                return rs.getString("AdminID");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+  }
+   @Override
+    public boolean updateChatGroup(int chatId, byte[] chatImage, String chatName) {
+        String sql = "UPDATE Chat SET ChatImage = ?, ChatName = ? WHERE ChatID = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setBytes(1, chatImage);
+            preparedStatement.setString(2, chatName);
+            preparedStatement.setInt(3, chatId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            return  rowsUpdated >0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
+
 
 }

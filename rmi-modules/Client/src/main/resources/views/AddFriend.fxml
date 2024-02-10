@@ -44,7 +44,7 @@
             </Button>
          </children>
       </HBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="674.0">
+      <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="559.0">
          <children>
             <Label prefHeight="30.0" prefWidth="120.0" text="Add Friends" textFill="#0f3d3e">
                <HBox.margin>
@@ -55,16 +55,6 @@
                </font>
             </Label>
             <Button prefHeight="33.0" prefWidth="0.0" style="-fx-background-color: transparent;" text=" ">
-               <graphic>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/close-window.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-               </graphic>
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin>

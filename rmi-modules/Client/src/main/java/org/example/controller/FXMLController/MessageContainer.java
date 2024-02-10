@@ -35,14 +35,14 @@ private static Label labelText(String text){
     public static Label labelTextSender(String text){
         Label label = labelText(text);
         label.setStyle("-fx-background-color: #9b75d0; -fx-background-radius: 5px; -fx-padding: 10px; " +
-                " -fx-font-size: 16px;  -fx-text-fill: white;");
+                " -fx-font-size: 12px;  -fx-text-fill: white;");
         return label;
     }
 
     public static Label labelTextRecive(String text){
         Label label = labelText(text);
         label.setStyle("-fx-background-color: #7635D0; -fx-background-radius: 5px; -fx-padding: 10px; " +
-                "-fx-font-size: 16px; -fx-text-fill: white;");
+                "-fx-font-size: 12px; -fx-text-fill: white;");
         return label;
     }
 

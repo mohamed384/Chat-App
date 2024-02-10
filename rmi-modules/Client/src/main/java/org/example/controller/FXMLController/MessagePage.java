@@ -41,7 +41,6 @@ public class MessagePage implements Initializable {
     @FXML
     private BorderPane contactListview;
 
-    @FXML
     private HiddenSidesPane hiddenSidesPane;
 
     @FXML
@@ -99,6 +98,7 @@ public class MessagePage implements Initializable {
         groupChatRMIController = (GroupChatRMI) StubContext.getStub("GroupChatControllerStub");
 
 
+
     }
     public void setSelectedContact(String selectedContact) {
         this.selectedContact = selectedContact;
@@ -113,12 +113,7 @@ public class MessagePage implements Initializable {
 
 
     public void showProfile(MouseEvent mouseEvent) {
-        if (hiddenSidesPane.getPinnedSide() == null) {
-            hiddenSidesPane.setPinnedSide(Side.RIGHT);
 
-        } else {
-            hiddenSidesPane.setPinnedSide(null);
-        }
     }
 
 
@@ -238,7 +233,7 @@ public class MessagePage implements Initializable {
 
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MessageChatController.fxml"));
-                    borderPane = loader.load();
+                    hiddenSidesPane = loader.load();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -249,6 +244,7 @@ public class MessagePage implements Initializable {
                     messageChatController.setDataSource(newValue.getChatName(), newValue.getChatImage(), newValue.getChatID());
 
                 } else {
+                    System.out.println("this is message page checking admin id" + newValue.getChatID());
                     messageChatController.setDataSource(newValue.getReceiverName(), newValue.getReceiverImage(), newValue.getChatID());
                 }
 
@@ -269,7 +265,7 @@ public class MessagePage implements Initializable {
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
-            contactListview.setCenter(borderPane);
+            contactListview.setCenter(hiddenSidesPane);
 
 
             // Add your action here

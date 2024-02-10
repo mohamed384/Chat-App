@@ -77,7 +77,13 @@ public class USerSignUpController implements Initializable {
     );
 
     public void loadImage() {
+        Image imageLoad = LoadImage.loadImage();
+        if(imageLoad !=null){
             imageSignUp.setImage(LoadImage.loadImage());
+
+        }else {
+            imageSignUp.setImage(new Image("./images/user.png"));
+        }
     }
 
     @Override
@@ -121,7 +127,7 @@ public class USerSignUpController implements Initializable {
 
 
     @FXML
-    protected void signup(ActionEvent actionEvent) throws RemoteException {
+    protected void signup(ActionEvent actionEvent)  {
         try {
             Boolean bool =  userAuthService.signup(actionEvent, phoneSignUp, NameSignUp, EmailLogin, selectedCountry,
                      birthDateSignUp, passwordSignUp,

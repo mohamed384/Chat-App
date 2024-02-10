@@ -12,4 +12,6 @@ public interface ChatParticipantDAO extends DAO<ChatParticipant> {
     default void delete(ChatParticipant t){};
 
     boolean deleteChatParticipants(String sender, String receiver);
+     void deleteGroupParticipant(int ChatId, String participantId);
+     boolean addNewUserToGroup(int chatId,String participantUserID);
 }

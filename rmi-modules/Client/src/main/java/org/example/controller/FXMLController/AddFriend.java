@@ -156,7 +156,6 @@ public class AddFriend {
     void sendAddRequest(ActionEvent event) {
         UserSendNotification remoteObject = UserNotificationController();
 
-
         String senderId = UserToken.getInstance().getUser().getPhoneNumber();
         String receiverId = userDTO.getPhoneNumber();
         System.out.println("Sender ID: " + senderId);

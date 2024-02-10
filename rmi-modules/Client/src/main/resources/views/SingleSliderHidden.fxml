@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" spacing="15.0" styleClass="VBox" stylesheets="@../styles/MainPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="ProfilePhoto" fitHeight="113.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/happy-face.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="ProfileName" alignment="CENTER" prefHeight="27.0" prefWidth="318.0" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" prefHeight="74.0" prefWidth="300.0" spacing="10.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="62.0" prefWidth="78.0" spacing="6.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/call.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Call">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="62.0" prefWidth="78.0" spacing="6.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/video-camera.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="Video">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <VBox alignment="CENTER" prefHeight="264.0" prefWidth="300.0" spacing="5.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="37.0" prefWidth="300.0" spacing="10.0" styleClass="light-color">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="29.0" text="Bio: ">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="ProfileBio" prefHeight="22.0" prefWidth="238.0" wrapText="true" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="300.0" spacing="10.0" styleClass="light-color">
+               <children>
+                  <Label text="PhoneNumber">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="PhoneNumber" prefHeight="22.0" prefWidth="175.0" wrapText="true" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="300.0" spacing="10.0" styleClass="light-color">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="42.0" text="Email">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="profileEmail" prefHeight="22.0" prefWidth="230.0" wrapText="true" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="300.0" spacing="10.0" styleClass="light-color">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="56.0" text="Country">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="profileCountry" prefHeight="22.0" prefWidth="218.0" wrapText="true" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="34.0" prefWidth="300.0" spacing="10.0" styleClass="light-color">
+               <children>
+                  <Label prefHeight="20.0" prefWidth="50.0" text="Gender">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="profileGender" prefHeight="22.0" prefWidth="222.0" wrapText="true" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

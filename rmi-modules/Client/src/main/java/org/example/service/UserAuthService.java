@@ -26,6 +26,7 @@ import org.example.interfaces.CallBackServer;
 import org.example.interfaces.UserAuthentication;
 import org.example.models.Enums.UserMode;
 import org.example.models.Enums.UserStatus;
+import org.example.models.User;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -235,6 +236,15 @@ public class UserAuthService {
         if (remoteObject != null) {
             UserDTO user1 = new UserDTO(phone, name, email, password, passwordConfirm, selectedGender, selectedCountry,
                     birthDate, "", UserStatus.Online, UserMode.Available, image);
+            UserDTO existingUser = remoteObject.getUser(phone);
+            if (existingUser != null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Phone number Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Phone number already exists.");
+                alert.showAndWait();
+                return false;
+            }
             if(!remoteObject.signup(user1)) return false;
             UserToken userToken = UserToken.getInstance();
             userToken.setUser(user1);

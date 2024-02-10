@@ -14,6 +14,7 @@
    <left>
       <VBox fx:id="nav" alignment="CENTER" prefHeight="600.0" prefWidth="53.0" styleClass="VBox" BorderPane.alignment="CENTER">
          <children>
+
             <Button fx:id="profile" mnemonicParsing="false" onAction="#goToProfile" prefHeight="51.0" prefWidth="73.0" styleClass="transparent">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">

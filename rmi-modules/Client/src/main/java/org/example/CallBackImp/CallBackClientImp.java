@@ -109,12 +109,9 @@ public class CallBackClientImp extends UnicastRemoteObject implements CallBackCl
                             System.out.println("Notification clicked");
                         });
 
-
-
                 notificationBuilder.show();
-
-
                 notificationSound();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

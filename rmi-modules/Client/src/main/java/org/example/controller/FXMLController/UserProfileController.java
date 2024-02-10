@@ -186,6 +186,10 @@ public class UserProfileController implements Initializable {
 
             });
 
+        }else{
+            profileImg.setImage(new Image(new ByteArrayInputStream(userDTO.getPicture())));
+            isUpdateBtnEnabled = false;
+            updateBtn.setDisable(true);
         }
 
     }

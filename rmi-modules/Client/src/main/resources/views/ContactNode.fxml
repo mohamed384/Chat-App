@@ -19,7 +19,7 @@
                 <clip>
                     <Circle centerX="25" centerY="25" radius="25" />
                 </clip>
-                <Image url="@../images/user.png"/>
+                <Image url="@../images/user.png" />
             <StackPane.margin>
                <Insets />
             </StackPane.margin>
@@ -36,9 +36,9 @@
         </StackPane>
         <VBox prefHeight="40.0" prefWidth="114.0">
             <children>
-                <Label fx:id="userName" text="" textFill="#041014">
+                <Label fx:id="userName" prefHeight="19.0" prefWidth="119.0" text="" textFill="#041014" wrapText="true">
                     <font>
-                        <Font name="System Bold" size="14.0" />
+                        <Font name="System Bold" size="13.0" />
                     </font>
                     <VBox.margin>
                         <Insets bottom="5.0" left="15.0" right="10.0" top="10.0" />
@@ -47,9 +47,9 @@
                         <Cursor fx:constant="TEXT" />
                     </cursor>
                 </Label>
-                <Label fx:id="userNumber" text="" textFill="#040f1280">
+                <Label fx:id="userNumber" prefHeight="20.0" prefWidth="150.0" text="" textFill="#040f1280" wrapText="true">
                     <font>
-                        <Font size="14.0" />
+                        <Font name="System italic" size="14.0" />
                     </font>
                     <VBox.margin>
                         <Insets left="15.0" />

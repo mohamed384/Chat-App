@@ -57,21 +57,20 @@
                <children>
                       <HBox fx:id="minProfile" alignment="CENTER_LEFT" prefHeight="73.0" prefWidth="182.0">
                           <children>
-                                                <ImageView fx:id="boxImage" fitHeight="42.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
-                                                    <clip>
-                                                        <Circle centerX="20" centerY="20" radius="25" />
-                                                    </clip>
-      
-                                                          <image>
-                                                      <Image url="@../images/user.png" />
-                                                   </image>
-                                                   <HBox.margin>
-                                                      <Insets left="15.0" right="10.0" />
-                                                   </HBox.margin>
-                                                </ImageView>
+                              <ImageView fx:id="boxImage" fitHeight="42.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                                  <clip>
+                                      <Circle centerX="20" centerY="20" radius="25" />
+                                  </clip>
+                                  <image>
+                                      <Image url="@../images/user.png" />
+                                  </image>
+                                  <HBox.margin>
+                                      <Insets left="15.0" right="10.0" />
+                                  </HBox.margin>
+                              </ImageView>
 
       
-                                    <Label fx:id="boxLabelName" prefHeight="26.0" prefWidth="115.0" text="Eslam Ahmed" textFill="WHITE">
+                              <Label fx:id="boxLabelName" prefHeight="26.0" prefWidth="115.0" text="Eslam Ahmed" textFill="WHITE">
                                   <font>
                                       <Font name="System Bold" size="14.0" />
                                   </font>

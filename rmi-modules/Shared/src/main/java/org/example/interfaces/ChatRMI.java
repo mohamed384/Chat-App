@@ -20,7 +20,14 @@ public interface ChatRMI extends Remote {
 
      boolean deleteChat(String sender, String receiver) throws RemoteException;
 
+     boolean isGroupChat(int chatID) throws RemoteException;
+     String getGroupAdminID(int chatID) throws RemoteException;
+      void deleteGroupParticipant(int chatId, String participantId) throws RemoteException;
 
+//      boolean addGroupParticipant(int chatId, String participantId) throws RemoteException;
+      boolean contactExists( int chatId , String groupName) throws RemoteException;
+     boolean addNewUserToGroup(int chatId,String participantUserID) throws RemoteException;
+      boolean updateChatGroup(int chatId, byte[] chatImage, String chatName) throws RemoteException;
 }
 
 

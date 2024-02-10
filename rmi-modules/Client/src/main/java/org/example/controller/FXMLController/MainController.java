@@ -73,10 +73,9 @@ public class MainController implements Initializable {
 
     public MainController(){
 
-        String mediaUrl = getClass().getResource("/media/Opening.mp3").toExternalForm();
-        Media media = new Media(mediaUrl);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        notifySound( "/media/Opening.mp3");
+
+
 
        try {
             callBackServer = (CallBackServer)StubContext.getStub("CallBackServerStub");
@@ -91,7 +90,8 @@ public class MainController implements Initializable {
        } catch (RemoteException e) {
             throw new RuntimeException(e);
        }
-
+        PaneLoaderFactory.setMainBorderPane(borderPane);
+        PaneLoaderFactory.setCallBackClient(callBackClient);
 
     }
 
@@ -204,12 +204,22 @@ public class MainController implements Initializable {
                 callBackServer.logout( number);
                 callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
+
+               notifySound( "/media/log_off.mp3");
+
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
 
         }
 
+    }
+
+    public void notifySound(String url){
+        String mediaUrl = getClass().getResource(url).toExternalForm();
+        Media media = new Media(mediaUrl);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
     }
 
     @Override

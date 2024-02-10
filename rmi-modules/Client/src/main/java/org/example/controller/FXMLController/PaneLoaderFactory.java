@@ -3,10 +3,18 @@ package org.example.controller.FXMLController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
+import org.controlsfx.control.HiddenSidesPane;
+import org.example.CallBackImp.CallBackClientImp;
+import org.example.interfaces.CallBackClient;
 
 import java.io.IOException;
 
 public class PaneLoaderFactory {
+
+    private static BorderPane mainBorderPane;
+
+    private static CallBackClientImp callBackClient;
+
     public static ContactMainController contactMainController;
     public static MessagePage messagePage;
 
@@ -18,6 +26,7 @@ public class PaneLoaderFactory {
 
     private PaneLoaderFactory(){
     }
+
 
     public static PaneLoaderFactory getInstance(){
         if(instance==null){
@@ -92,6 +101,24 @@ public class PaneLoaderFactory {
     }
 
 
+    public static void setMainBorderPane(BorderPane borderPane) {
+        mainBorderPane = borderPane;
+    }
+
+    public static BorderPane getMainBorderPane() {
+        return mainBorderPane;
+    }
+
+    public static void setCallBackClient(CallBackClientImp callBackClient) {
+        callBackClient = callBackClient;
+    }
+
+    public static CallBackClientImp getCallBackClient() {
+        return callBackClient;
+    }
+
+
+
 
 
     public static Pair<BorderPane,NotificationController> notificationPageLoader(){
@@ -147,11 +174,11 @@ public class PaneLoaderFactory {
         return new Pair<>(pane, controller);
     }
 
-    public static Pair<BorderPane, MessageChatController> getmessage22Pane(){
+    public static Pair<HiddenSidesPane, MessageChatController> getmessage22Pane(){
         FXMLLoader loader = new FXMLLoader(PaneLoaderFactory.class.getResource("/views/MessageChatController.fxml"));
-        BorderPane pane = null;
+        HiddenSidesPane pane = null;
         try {
-            pane = (BorderPane) loader.load();
+            pane = (HiddenSidesPane) loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
