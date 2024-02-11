@@ -101,9 +101,10 @@ public class MessageChatController implements Initializable {
             receiver.setText(receiverName);
             profileImage.setFill(new ImagePattern(new Image(new ByteArrayInputStream(receiverImage))));
         });
-
+        System.out.println("set data source" + chatRMI);
         try {
             receiverPhoneNumbers = chatRMI.getChatParticipants(UserToken.getInstance().getUser().getPhoneNumber(), chatID);
+
 
             Task<VBox> task;
             if (chatRMI.isGroupChat(chatID)) {
@@ -122,7 +123,7 @@ public class MessageChatController implements Initializable {
             new Thread(task).start();
 
         } catch (RemoteException e) {
-            throw new RuntimeException(e);
+           e.printStackTrace();
         }
     }
 
@@ -637,7 +638,7 @@ public class MessageChatController implements Initializable {
 
         Platform.runLater(() -> {
             vboxMessage.getChildren().add(messageBubble);
-            scrollPane.setVvalue(1.0);
+//            scrollPane.setVvalue(1.0);
         });
 
         Platform.runLater(()->{
@@ -670,7 +671,7 @@ public class MessageChatController implements Initializable {
                 callBackServer.sendMsg(messageDTO);
 
             } catch (RemoteException  e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
     }
@@ -679,7 +680,7 @@ public class MessageChatController implements Initializable {
     public  boolean receiveMessage(MessageDTO messageDTO){
         System.out.println("this is message page in receive message" + this);
 
-        if (chatID != this.chatID){
+        if (messageDTO.getChatID() != this.chatID){
             return false;
         }
 

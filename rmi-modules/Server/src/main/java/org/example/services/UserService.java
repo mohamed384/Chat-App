@@ -3,6 +3,7 @@ package org.example.services;
 
 import org.example.DTOs.UserDTO;
 import org.example.DAO.UserDAOImpl;
+import org.example.utils.EmailService;
 import org.example.utils.SessionManager;
 import org.example.models.Enums.UserStatus;
 import org.example.models.Mapper.UserMapper;
@@ -46,22 +47,19 @@ public class UserService {
         System.out.println("from User service"+ user.getPicture());
         SessionManager.getInstance().startSession(userDto);
         System.out.println("I'm SessionManager from Server Service before accessing userDAO.Create()" + userDto);
+        EmailService.sendEmailAsync(userDto.getEmailAddress() , userDto.getDisplayName());
         return userDAO.create(user);
     }
     public UserDTO login (String phoneNumber,  String password) {
-
         User user = userDAO.findByPhoneNumber(phoneNumber);
-        String passwordHash ;
+
         if(user == null){
             System.out.println("user Not Found");
-             return null;
+            return null;
         }
-        passwordHash = user.getPasswordHash();
-        password = PasswordHashing.hashPassword(password);
 
-        if (passwordHash.equals(password)) {
+        if (PasswordHashing.passwordMatch(password, user.getPasswordHash())) {
             System.out.println("Login successful");
-            //UserDTO userDto = userMapper.toDTO(user);
             UserDTO userDto = UserMapper.INSTANCE.toDTO(user);
 
             SessionManager.getInstance().startSession(userDto);
@@ -73,7 +71,6 @@ public class UserService {
         return null;
 
     }
-
     public boolean logout(UserDTO userDto) {
         if (userDto == null) {
             System.out.println("From logout: UserDTO is null");

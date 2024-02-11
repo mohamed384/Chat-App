@@ -45,6 +45,12 @@ public class UserAuthService {
         //TODO Error Here check it please by running client without server Exception thrown from here
         if(CallBackClientImp.running) {
            callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
+//           if(callBackServer == null){
+//                Alert alert = new Alert(Alert.AlertType.ERROR);
+//                alert.setTitle("Error");
+//                alert.setHeaderText("the server is not running");
+//                alert.setContentText("please try again later..");
+//           }
        }else {
            Alert alert = new Alert(Alert.AlertType.ERROR);
            alert.setTitle("Error");
@@ -127,9 +133,8 @@ public class UserAuthService {
 
 
         UserDTO user;
-        if (remoteObject != null) {
+        if (remoteObject != null || callBackServer !=null) {
             user = remoteObject.login(phone, password);
-
             callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
             boolean userOnlient = callBackServer.isOnline(phone);
 
@@ -233,7 +238,8 @@ public class UserAuthService {
 
 
         UserAuthentication remoteObject = UserAuthRemoteObject();
-        if (remoteObject != null) {
+        if (remoteObject != null || callBackServer!= null) {
+            callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
             UserDTO user1 = new UserDTO(phone, name, email, password, passwordConfirm, selectedGender, selectedCountry,
                     birthDate, "", UserStatus.Online, UserMode.Available, image);
             UserDTO existingUser = remoteObject.getUser(phone);
@@ -250,7 +256,6 @@ public class UserAuthService {
             userToken.setUser(user1);
             System.out.println("signup from client auth service is successfully done");
 
-            callBackServer = (CallBackServer) StubContext.getStub("CallBackServerStub");
             callBackServer.notifyStatusUpdate(UserToken.getInstance().getUser());
 
 

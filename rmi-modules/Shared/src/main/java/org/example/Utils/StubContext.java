@@ -67,7 +67,10 @@ public class StubContext {
 
     public static Remote getStub(String name) {
         try {
+            System.out.println("--------- rregistry????");
             Registry registry = LocateRegistry.getRegistry(serverIP, ServerPort);
+            System.out.println("-----" + registry);
+            if(registry == null) return null;
             //String registryURL = "rmi://" + serverIP  + "/" + name;
             Remote stub = registry.lookup(name);
             //Remote stub = Naming.lookup(name);
@@ -76,13 +79,13 @@ public class StubContext {
 
             if (stub != null) {
                 stubs.put(name, stub);
+                return stub;
             }
-            return stub;
         } catch (Exception e) {
-            System.out.println("getStub exception ya naas");
-            e.printStackTrace();
             return null;
+
         }
+        return null;
     }
 
     public static Remote getStub(String name, String serverIP) {

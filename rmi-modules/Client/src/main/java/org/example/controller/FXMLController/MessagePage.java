@@ -144,7 +144,7 @@ public class MessagePage implements Initializable {
 //        borderPane.setCenter(pane);
 
         BorderPane profilePane = PaneLoaderFactory.profilePageLoader().getKey();
-       // UserProfileController userProfileController = PaneLoaderFactory.getInstance().getUserProfileController();
+        // UserProfileController userProfileController = PaneLoaderFactory.getInstance().getUserProfileController();
 
         Platform.runLater(() -> {
             BorderPane mainBorder = (BorderPane) StageUtils.getMainStage().getScene().getRoot();
@@ -222,10 +222,10 @@ public class MessagePage implements Initializable {
 
                             } else {
 
-                                    controller.setUserName(item.getChatName());
-                                    controller.setUserImg(item.getChatImage());
-                                    controller.setUserNumber("Group chat");
-                                    controller.setStatus(null, null);
+                                controller.setUserName(item.getChatName());
+                                controller.setUserImg(item.getChatImage());
+                                controller.setUserNumber("Group chat");
+                                controller.setStatus(null, null);
 
                             }
                         } catch (Exception e) {
@@ -280,7 +280,7 @@ public class MessagePage implements Initializable {
     public void updateList() {
         ProgressIndicator progressIndicator = new ProgressIndicator();
         listView.setPlaceholder(progressIndicator);
-     // Show the progress indicator while data is loading
+        // Show the progress indicator while data is loading
         Task<ObservableList<ChatDTO>> task = new Task<>() {
             @Override
             protected ObservableList<ChatDTO> call() throws Exception {
@@ -322,7 +322,7 @@ public class MessagePage implements Initializable {
                 listView.setItems(result);
                 listView.toFront();
                 NoChatsVbox.setVisible(false);
-                }
+            }
         });
         new Thread(task).start();
 

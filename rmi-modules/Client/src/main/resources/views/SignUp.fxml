@@ -44,7 +44,7 @@
                   <Font size="14.0" />
               </font>
           </Label>
-            <Label fx:id="phoneValidLabel" layoutX="17.0" layoutY="254.0" prefHeight="17.0" prefWidth="209.0" styleClass="valid-label" text="phone number must be 11 numbers" />
+            <Label fx:id="phoneValidLabel" layoutX="17.0" layoutY="254.0" prefHeight="17.0" prefWidth="209.0" styleClass="valid-label" text="phone number must be 11 numbers and start with 01" />
             <Label fx:id="nameValidLabel" layoutX="262.0" layoutY="254.0" prefHeight="17.0" prefWidth="223.0" styleClass="valid-label" text="please enter a valid name" />
             <Label fx:id="emailValidLabel" layoutX="15.0" layoutY="325.0" prefHeight="17.0" prefWidth="223.0" styleClass="valid-label" text="please enter a valid email" />
             <Label fx:id="counrtyValidLabel" layoutX="262.0" layoutY="325.0" prefHeight="17.0" prefWidth="223.0" styleClass="valid-label" text="please choose country " />

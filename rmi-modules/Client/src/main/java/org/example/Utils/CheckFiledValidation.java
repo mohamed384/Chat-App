@@ -35,7 +35,6 @@ public class CheckFiledValidation {
             textfield.getStyleClass().add("not-valid-text-field");
             return false;
         } else {
-
             TextLabel.getStyleClass().add("valid-label");
             TextLabel.getStyleClass().remove("not-valid-label");
             textfield.getStyleClass().remove("not-valid-text-field");

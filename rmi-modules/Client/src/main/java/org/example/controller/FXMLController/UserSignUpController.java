@@ -73,10 +73,8 @@ public class UserSignUpController implements Initializable {
     public void loadImage() {
         Image imageLoad = LoadImage.loadImage();
         if(imageLoad !=null){
-            imageSignUp.setImage(LoadImage.loadImage());
+            imageSignUp.setImage(imageLoad);
 
-        }else {
-            imageSignUp.setImage(new Image("./images/user.png"));
         }
     }
 

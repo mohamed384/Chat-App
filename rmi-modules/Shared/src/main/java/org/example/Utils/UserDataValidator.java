@@ -12,7 +12,7 @@ public class UserDataValidator {
     }
 
     public static boolean isValidPhoneNumber(String phoneNumber) {
-        return phoneNumber.length() == 11 && phoneNumber.matches("[0-9]+");
+        return phoneNumber.length() == 11 && phoneNumber.matches("01[0-9]+");
     }
 
     public static boolean isValidPassword(String password) {
